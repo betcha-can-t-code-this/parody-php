@@ -9,19 +9,19 @@ namespace Vm\Node;
  */
 class Comma extends AbstractNode
 {
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getName(): string
-	{
-		return '<comma>';
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getName(): string
+    {
+        return '<comma>';
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getType(): int
-	{
-		return NodeInterface::COMMA;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getType(): int
+    {
+        return NodeInterface::COMMA;
+    }
 }

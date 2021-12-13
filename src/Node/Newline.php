@@ -9,19 +9,19 @@ namespace Vm\Node;
  */
 class Newline extends AbstractNode
 {
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getName(): string
-	{
-		return '<newline>';
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getName(): string
+    {
+        return '<newline>';
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getType(): int
-	{
-		return NodeInterface::NEWLINE;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getType(): int
+    {
+        return NodeInterface::NEWLINE;
+    }
 }

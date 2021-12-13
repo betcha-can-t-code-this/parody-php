@@ -10,8 +10,8 @@ namespace Vm;
 interface CodegenInterface
 {
     /**
-     * @param \Vm\AstInterface $ast
+     * @param  \Vm\AstInterface $ast
      * @return void
      */
-	public function generate(AstInterface $ast);
+    public function generate(AstInterface $ast);
 }

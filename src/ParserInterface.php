@@ -9,42 +9,42 @@ namespace Vm;
  */
 interface ParserInterface
 {
-	/**
-	 * @param string $buffer
-	 * @return void
-	 */
-	public function parse(string $buffer);
+    /**
+     * @param  string $buffer
+     * @return void
+     */
+    public function parse(string $buffer);
 
-	/**
-	 * @return \Vm\LexerInterface
-	 */
-	public function getLexer(): LexerInterface;
+    /**
+     * @return \Vm\LexerInterface
+     */
+    public function getLexer(): LexerInterface;
 
-	/**
-	 * @param \Vm\LexerInterface $lexer
-	 * @return void
-	 */
-	public function setLexer(LexerInterface $lexer);
+    /**
+     * @param  \Vm\LexerInterface $lexer
+     * @return void
+     */
+    public function setLexer(LexerInterface $lexer);
 
-	/**
-	 * @return array
-	 */
-	public function getInput(): array;
+    /**
+     * @return array
+     */
+    public function getInput(): array;
 
-	/**
-	 * @param array $input
-	 * @return void
-	 */
-	public function setInput(array $input);
+    /**
+     * @param  array $input
+     * @return void
+     */
+    public function setInput(array $input);
 
-	/**
-	 * @return \Vm\AstInterface
-	 */
-	public function getAst(): AstInterface;
+    /**
+     * @return \Vm\AstInterface
+     */
+    public function getAst(): AstInterface;
 
-	/**
-	 * @param \Vm\AstInterface $ast
-	 * @return void
-	 */
-	public function setAst(AstInterface $ast);
+    /**
+     * @param  \Vm\AstInterface $ast
+     * @return void
+     */
+    public function setAst(AstInterface $ast);
 }

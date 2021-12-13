@@ -9,19 +9,19 @@ namespace Vm\Node;
  */
 class Mnemonic extends AbstractNode
 {
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getName(): string
-	{
-		return '<mnemonic>';
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getName(): string
+    {
+        return '<mnemonic>';
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getType(): int
-	{
-		return NodeInterface::MNEMONIC;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getType(): int
+    {
+        return NodeInterface::MNEMONIC;
+    }
 }

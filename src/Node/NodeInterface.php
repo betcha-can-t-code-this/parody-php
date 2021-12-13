@@ -9,43 +9,43 @@ namespace Vm\Node;
  */
 interface NodeInterface
 {
-	/**
-	 * @var int
-	 */
-	const COMMA = 0;
+    /**
+     * @var int
+     */
+    const COMMA = 0;
 
-	/**
-	 * @var int
-	 */
-	const MNEMONIC = 1;
+    /**
+     * @var int
+     */
+    const MNEMONIC = 1;
 
-	/**
-	 * @var int
-	 */
-	const NEWLINE = 2;
+    /**
+     * @var int
+     */
+    const NEWLINE = 2;
 
-	/**
-	 * @var int
-	 */
-	const NUMBER = 3;
+    /**
+     * @var int
+     */
+    const NUMBER = 3;
 
-	/**
-	 * @var int
-	 */
-	const REGISTER = 4;
+    /**
+     * @var int
+     */
+    const REGISTER = 4;
 
-	/**
-	 * @return string
-	 */
-	public function getName(): string;
+    /**
+     * @return string
+     */
+    public function getName(): string;
 
-	/**
-	 * @return mixed
-	 */
-	public function getValue();
+    /**
+     * @return mixed
+     */
+    public function getValue();
 
-	/**
-	 * @return int
-	 */
-	public function getType(): int;
+    /**
+     * @return int
+     */
+    public function getType(): int;
 }

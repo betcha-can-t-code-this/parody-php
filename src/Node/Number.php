@@ -9,19 +9,19 @@ namespace Vm\Node;
  */
 class Number extends AbstractNode
 {
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getName(): string
-	{
-		return '<number>';
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getName(): string
+    {
+        return '<number>';
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getType(): int
-	{
-		return NodeInterface::NUMBER;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getType(): int
+    {
+        return NodeInterface::NUMBER;
+    }
 }

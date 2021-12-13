@@ -12,10 +12,10 @@ use Vm\Node\NodeInterface;
 interface LexerInterface
 {
     /**
-     * @param string $buffer
+     * @param  string $buffer
      * @return \Vm\Node\NodeInterface
      */
-	public function lex(string $buffer);
+    public function lex(string $buffer);
 
     /**
      * @return \Vm\Node\NodeInterface[]
@@ -23,7 +23,7 @@ interface LexerInterface
     public function getTokenObjects(): array;
 
     /**
-     * @param \Vm\Node\NodeInterface $node
+     * @param  \Vm\Node\NodeInterface $node
      * @return void
      */
     public function addNode(NodeInterface $node);

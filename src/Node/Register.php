@@ -9,19 +9,19 @@ namespace Vm\Node;
  */
 class Register extends AbstractNode
 {
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getName(): string
-	{
-		return '<register>';
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getName(): string
+    {
+        return '<register>';
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getType(): int
-	{
-		return NodeInterface::REGISTER;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getType(): int
+    {
+        return NodeInterface::REGISTER;
+    }
 }

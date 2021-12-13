@@ -9,19 +9,19 @@ namespace Vm;
  */
 interface RuntimeInterface
 {
-	/**
-	 * @return void
-	 */
-	public function run();
+    /**
+     * @return void
+     */
+    public function run();
 
-	/**
-	 * @return \Vm\RegisterInterface
-	 */
-	public function getRegister(): RegisterInterface;
+    /**
+     * @return \Vm\RegisterInterface
+     */
+    public function getRegister(): RegisterInterface;
 
-	/**
-	 * @param \Vm\RegisterInterface $register
-	 * @return void
-	 */
-	public function setRegister(RegisterInterface $register);
+    /**
+     * @param  \Vm\RegisterInterface $register
+     * @return void
+     */
+    public function setRegister(RegisterInterface $register);
 }

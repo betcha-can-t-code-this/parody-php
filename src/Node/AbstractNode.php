@@ -9,40 +9,40 @@ namespace Vm\Node;
  */
 abstract class AbstractNode implements NodeInterface
 {
-	/**
-	 * @var mixed
-	 */
-	private $value;
+    /**
+     * @var mixed
+     */
+    private $value;
 
-	/**
-	 * @var \Vm\Node\NodeInterface[]
-	 */
-	private $childs = [];
+    /**
+     * @var \Vm\Node\NodeInterface[]
+     */
+    private $childs = [];
 
-	/**
-	 * @param mixed $value
-	 * @return static
-	 */
-	public function __construct($value)
-	{
-		$this->value = $value;
-	}
+    /**
+     * @param  mixed $value
+     * @return static
+     */
+    public function __construct($value)
+    {
+        $this->value = $value;
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	abstract public function getName(): string;
+    /**
+     * {@inheritdoc}
+     */
+    abstract public function getName(): string;
 
-	/**
-	 * {@inheritdoc}
-	 */
-	abstract public function getType(): int;
+    /**
+     * {@inheritdoc}
+     */
+    abstract public function getType(): int;
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getValue()
-	{
-		return $this->value;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
 }
