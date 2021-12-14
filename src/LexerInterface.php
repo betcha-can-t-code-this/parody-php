@@ -12,6 +12,31 @@ use Vm\Node\NodeInterface;
 interface LexerInterface
 {
     /**
+     * @var string
+     */
+    const T_SPACE = ' ';
+
+    /**
+     * @var string
+     */
+    const T_NEWLINE = "\n";
+
+    /**
+     * @var string
+     */
+    const T_START_COMMENT_LINE = '%';
+
+    /**
+     * @var string
+     */
+    const T_COMMA = ',';
+
+    /**
+     * @var string
+     */
+    const T_PREFIX_NUM = '#';
+
+    /**
      * @param  string $buffer
      * @return \Vm\Node\NodeInterface
      */

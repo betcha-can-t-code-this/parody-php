@@ -56,24 +56,30 @@ class Lexer implements LexerInterface
                 break;
             }
 
-            if ($this->token === ' ') {
+            if ($this->token === LexerInterface::T_SPACE) {
                 $this->token = '';
                 continue;
             }
 
-            if ($this->token === "\n") {
+            if ($this->token === LexerInterface::T_NEWLINE) {
                 $this->processNewline();
                 $this->token = '';
                 continue;
             }
 
-            if ($this->token === ',') {
+            if ($this->token === LexerInterface::T_START_COMMENT_LINE) {
+                $this->processCommentLine();
+                $this->token = '';
+                continue;
+            }
+
+            if ($this->token === LexerInterface::T_COMMA) {
                 $this->processComma();
                 $this->token = '';
                 continue;
             }
 
-            if ($this->token === '#') {
+            if ($this->token === LexerInterface::T_PREFIX_NUM) {
                 $this->processInteger();
                 $this->token = '';
                 continue;
@@ -173,8 +179,8 @@ class Lexer implements LexerInterface
 
         $this->token = '';
         $this->isNegative = $this->current() === '-'
-        ? true
-        : false;
+            ? true
+            : false;
 
         if ($this->isNegative) {
             $this->next();
@@ -227,6 +233,32 @@ class Lexer implements LexerInterface
     /**
      * @return void
      */
+    private function processCommentLine()
+    {
+        while (true) {
+            if ($this->isEOF()) {
+                break;
+            }
+
+            if ($this->current() === "\n") {
+                $this->token = $this->current();
+                break;
+            }
+
+            // ignore the current token except newline
+            // because this is in a scope of comment
+            // section.
+            $this->next();
+        }
+
+        if ($this->token === "\n") {
+            $this->processNewline();
+        }
+    }
+
+    /**
+     * @return void
+     */
     private function processRegister()
     {
         $this->addNode(new Register($this->token));
@@ -252,8 +284,8 @@ class Lexer implements LexerInterface
     private function getValidInstructions(): array
     {
         return [
-        "movb", "addb", "subb", "mulb",
-        "divb", "prib"
+            "movb", "addb", "subb", "mulb",
+            "divb", "prib"
         ];
     }
 
@@ -289,9 +321,8 @@ class Lexer implements LexerInterface
      */
     private function ensureValidInstructionAndRegister(string $buffer)
     {
-        if (!$this->isValidInstruction($buffer)
-            && !$this->isValidRegister($buffer)
-        ) {
+        if (!$this->isValidInstruction($buffer) &&
+            !$this->isValidRegister($buffer)) {
             throw new LexedEntityException("Current 'lexeme' is not valid register or instruction.");
         }
     }

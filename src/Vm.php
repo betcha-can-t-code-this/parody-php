@@ -1971,6 +1971,46 @@ final class Vm implements RuntimeInterface
     /**
      * @return void
      */
+    private function processBinarySubbR0ToR3()
+    {
+        $this->getRegister()->setR3(
+            $this->getRegister()->getR3() - $this->getRegister()->getR0()
+        );
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinarySubbR1ToR3()
+    {
+        $this->getRegister()->setR3(
+            $this->getRegister()->getR3() - $this->getRegister()->getR1()
+        );
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinarySubbR2ToR3()
+    {
+        $this->getRegister()->setR3(
+            $this->getRegister()->getR3() - $this->getRegister()->getR2()
+        );
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinarySubbR3ToR3()
+    {
+        $this->getRegister()->setR3(
+            $this->getRegister()->getR3() - $this->getRegister()->getR3()
+        );
+    }
+
+    /**
+     * @return void
+     */
     private function processUnaryPribR0()
     {
         echo sprintf("%d\n", $this->getRegister()->getR0());
