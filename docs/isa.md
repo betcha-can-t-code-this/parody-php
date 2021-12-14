@@ -5,8 +5,16 @@
   Add 8-bit immediate value with 8-bit destination register value and put
   its result to destination register.
 
+- addb reg8, reg8
+  Add 8-bit source register value with 8-bit destination register value and put
+  its result to destination register.
+
 - subb #<imm8>, reg8
   Subtract 8-bit immediate value with 8-bit destination register value and put
+  its result to destination register.
+
+- subb reg8, reg8
+  Subtract 8-bit source register value with 8-bit destination register value and put
   its result to destination register.
 
 - mulb #<imm8>, reg8
