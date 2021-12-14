@@ -211,6 +211,12 @@ final class Vm implements RuntimeInterface
         case Opcode::ADDB_R3_TO_R2:
             $this->processBinaryAddbRegsToR2();
             break;
+        case Opcode::ADDB_R0_TO_R3:
+        case Opcode::ADDB_R1_TO_R3:
+        case Opcode::ADDB_R2_TO_R3:
+        case Opcode::ADDB_R3_TO_R3:
+            $this->processBinaryAddbRegsToR3();
+            break;
         case Opcode::PRIB_R0:
         case Opcode::PRIB_R1:
         case Opcode::PRIB_R2:
@@ -470,7 +476,28 @@ final class Vm implements RuntimeInterface
             $this->processBinaryAddbR2ToR2();
             break;
         case Opcode::ADDB_R3_TO_R2:
-            $this->processBinaryAddbR3ToR2()
+            $this->processBinaryAddbR3ToR2();
+            break;
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryAddbRegsToR3()
+    {
+        switch ($this->current()) {
+        case Opcode::ADDB_R0_TO_R3:
+            $this->processBinaryAddbR0ToR3();
+            break;
+        case Opcode::ADDB_R1_TO_R3:
+            $this->processBinaryAddbR1ToR3();
+            break;
+        case Opcode::ADDB_R2_TO_R3:
+            $this->processBinaryAddbR2ToR3();
+            break;
+        case Opcode::ADDB_R3_TO_R3:
+            $this->processBinaryAddbR3ToR3();
             break;
         }
     }
@@ -1670,6 +1697,46 @@ final class Vm implements RuntimeInterface
     {
         $this->getRegister()->setR2(
             $this->getRegister()->getR2() + $this->getRegister()->getR3()
+        );
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryAddbR0ToR3()
+    {
+        $this->getRegister()->setR3(
+            $this->getRegister()->getR3() + $this->getRegister()->getR0()
+        );
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryAddbR1ToR3()
+    {
+        $this->getRegister()->setR3(
+            $this->getRegister()->getR3() + $this->getRegister()->getR1()
+        );
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryAddbR2ToR3()
+    {
+        $this->getRegister()->setR3(
+            $this->getRegister()->getR3() + $this->getRegister()->getR2()
+        );
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryAddbR3ToR3()
+    {
+        $this->getRegister()->setR3(
+            $this->getRegister()->getR3() + $this->getRegister()->getR3()
         );
     }
 

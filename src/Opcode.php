@@ -152,6 +152,26 @@ interface Opcode
     /**
      * @var int
      */
+    const ADDB_R0_TO_R3 = 0x2c;
+
+    /**
+     * @var int
+     */
+    const ADDB_R1_TO_R3 = 0x2d;
+
+    /**
+     * @var int
+     */
+    const ADDB_R2_TO_R3 = 0x2e;
+
+    /**
+     * @var int
+     */
+    const ADDB_R3_TO_R3 = 0x2f;
+
+    /**
+     * @var int
+     */
     const MOVB_IMM8_TO_R0 = 0x50;
 
     /**
