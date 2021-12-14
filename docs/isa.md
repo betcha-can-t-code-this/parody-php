@@ -1,14 +1,18 @@
 ### Instruction Set Architecture.
 
 ```
+- addb #<imm8>, reg8
+  Addb 8-bit immediate value with 8-bit destination register value and put
+  its result to destination register.
+
 - movb #<imm8>, reg8
-  Move immediate 8-bit value to general purpose register.
+  Move immediate 8-bit value to destination register.
 
 - movb reg8, reg8
-  Move 8-bit general purpose register value to another general purpose register.
+  Move 8-bit source register value to destination register.
 
 - prib reg8
-  Print 8-bit general purpose register value to teletype (TTY) console.
+  Print 8-bit source register value to teletype (TTY) console.
 
 - prib #<imm8>
   Print 8-bit immediate value to teletype (TTY) console.
