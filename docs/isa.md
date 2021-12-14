@@ -2,7 +2,19 @@
 
 ```
 - addb #<imm8>, reg8
-  Addb 8-bit immediate value with 8-bit destination register value and put
+  Add 8-bit immediate value with 8-bit destination register value and put
+  its result to destination register.
+
+- subb #<imm8>, reg8
+  Subtract 8-bit immediate value with 8-bit destination register value and put
+  its result to destination register.
+
+- mulb #<imm8>, reg8
+  Multiply 8-bit immediate value with 8-bit destination register value and put
+  its result to destination register.
+
+- divb #<imm8>, reg8
+  Divide 8-bit immediate value with 8-bit destination register value and put
   its result to destination register.
 
 - movb #<imm8>, reg8
