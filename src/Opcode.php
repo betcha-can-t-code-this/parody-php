@@ -192,6 +192,26 @@ interface Opcode
     /**
      * @var int
      */
+    const SUBB_R0_TO_R1 = 0x34;
+
+    /**
+     * @var int
+     */
+    const SUBB_R1_TO_R1 = 0x35;
+
+    /**
+     * @var int
+     */
+    const SUBB_R2_TO_R1 = 0x36;
+
+    /**
+     * @var int
+     */
+    const SUBB_R3_TO_R1 = 0x37;
+
+    /**
+     * @var int
+     */
     const MOVB_IMM8_TO_R0 = 0x50;
 
     /**

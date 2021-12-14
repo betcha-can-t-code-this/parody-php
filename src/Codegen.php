@@ -553,6 +553,34 @@ class Codegen implements CodegenInterface
             $result[] = Opcode::SUBB_R3_TO_R0;
             return;
         }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r0" 
+            && $ast->getChilds()[2]->getValue()->getValue() === "r1"
+        ) {
+            $result[] = Opcode::SUBB_R0_TO_R1;
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r1" 
+            && $ast->getChilds()[2]->getValue()->getValue() === "r1"
+        ) {
+            $result[] = Opcode::SUBB_R1_TO_R1;
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r2" 
+            && $ast->getChilds()[2]->getValue()->getValue() === "r1"
+        ) {
+            $result[] = Opcode::SUBB_R2_TO_R1;
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r3" 
+            && $ast->getChilds()[2]->getValue()->getValue() === "r1"
+        ) {
+            $result[] = Opcode::SUBB_R3_TO_R1;
+            return;
+        }
     }
 
     /**
