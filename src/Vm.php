@@ -139,111 +139,117 @@ final class Vm implements RuntimeInterface
     private function processOpcode()
     {
         switch ($this->current()) {
-        case Opcode::MOVB_IMM8_TO_R0:
-        case Opcode::MOVB_IMM8_TO_R1:
-        case Opcode::MOVB_IMM8_TO_R2:
-        case Opcode::MOVB_IMM8_TO_R3:
-            $this->processBinaryMovbImm8ToRegs();
-            break;
-        case Opcode::ADDB_IMM8_TO_R0:
-        case Opcode::ADDB_IMM8_TO_R1:
-        case Opcode::ADDB_IMM8_TO_R2:
-        case Opcode::ADDB_IMM8_TO_R3:
-            $this->processBinaryAddbImm8ToRegs();
-            break;
-        case Opcode::SUBB_IMM8_TO_R0:
-        case Opcode::SUBB_IMM8_TO_R1:
-        case Opcode::SUBB_IMM8_TO_R2:
-        case Opcode::SUBB_IMM8_TO_R3:
-            $this->processBinarySubbImm8ToRegs();
-            break;
-        case Opcode::MULB_IMM8_TO_R0:
-        case Opcode::MULB_IMM8_TO_R1:
-        case Opcode::MULB_IMM8_TO_R2:
-        case Opcode::MULB_IMM8_TO_R3:
-            $this->processBinaryMulbImm8ToRegs();
-            break;
-        case Opcode::DIVB_IMM8_TO_R0:
-        case Opcode::DIVB_IMM8_TO_R1:
-        case Opcode::DIVB_IMM8_TO_R2:
-        case Opcode::DIVB_IMM8_TO_R3:
-            $this->processBinaryDivbImm8ToRegs();
-            break;
-        case Opcode::MOVB_R0_TO_R0:
-        case Opcode::MOVB_R1_TO_R0:
-        case Opcode::MOVB_R2_TO_R0:
-        case Opcode::MOVB_R3_TO_R0:
-            $this->processBinaryMovbRegsToR0();
-            break;
-        case Opcode::MOVB_R0_TO_R1:
-        case Opcode::MOVB_R1_TO_R1:
-        case Opcode::MOVB_R2_TO_R1:
-        case Opcode::MOVB_R3_TO_R1:
-            $this->processBinaryMovbRegsToR1();
-            break;
-        case Opcode::MOVB_R0_TO_R2:
-        case Opcode::MOVB_R1_TO_R2:
-        case Opcode::MOVB_R2_TO_R2:
-        case Opcode::MOVB_R3_TO_R2:
-            $this->processBinaryMovbRegsToR2();
-            break;
-        case Opcode::MOVB_R0_TO_R3:
-        case Opcode::MOVB_R1_TO_R3:
-        case Opcode::MOVB_R2_TO_R3:
-        case Opcode::MOVB_R3_TO_R3:
-            $this->processBinaryMovbRegsToR3();
-            break;
-        case Opcode::ADDB_R0_TO_R0:
-        case Opcode::ADDB_R1_TO_R0:
-        case Opcode::ADDB_R2_TO_R0:
-        case Opcode::ADDB_R3_TO_R0:
-            $this->processBinaryAddbRegsToR0();
-            break;
-        case Opcode::ADDB_R0_TO_R1:
-        case Opcode::ADDB_R1_TO_R1:
-        case Opcode::ADDB_R2_TO_R1:
-        case Opcode::ADDB_R3_TO_R1:
-            $this->processBinaryAddbRegsToR1();
-            break;
-        case Opcode::ADDB_R0_TO_R2:
-        case Opcode::ADDB_R1_TO_R2:
-        case Opcode::ADDB_R2_TO_R2:
-        case Opcode::ADDB_R3_TO_R2:
-            $this->processBinaryAddbRegsToR2();
-            break;
-        case Opcode::ADDB_R0_TO_R3:
-        case Opcode::ADDB_R1_TO_R3:
-        case Opcode::ADDB_R2_TO_R3:
-        case Opcode::ADDB_R3_TO_R3:
-            $this->processBinaryAddbRegsToR3();
-            break;
-        case Opcode::SUBB_R0_TO_R0:
-        case Opcode::SUBB_R1_TO_R0:
-        case Opcode::SUBB_R2_TO_R0:
-        case Opcode::SUBB_R3_TO_R0:
-            $this->processBinarySubbRegsToR0();
-            break;
-        case Opcode::SUBB_R0_TO_R1:
-        case Opcode::SUBB_R1_TO_R1:
-        case Opcode::SUBB_R2_TO_R1:
-        case Opcode::SUBB_R3_TO_R1:
-            $this->processBinarySubbRegsToR1();
-            break;
-        case Opcode::SUBB_R0_TO_R2:
-        case Opcode::SUBB_R1_TO_R2:
-        case Opcode::SUBB_R2_TO_R2:
-        case Opcode::SUBB_R3_TO_R2:
-            $this->processBinarySubbRegsToR2();
-            break;
-        case Opcode::PRIB_R0:
-        case Opcode::PRIB_R1:
-        case Opcode::PRIB_R2:
-        case Opcode::PRIB_R3:
-            $this->processUnaryPribRegs();
-            break;
-        case Opcode::PRIB_IMM8:
-            $this->processUnaryPribImm8();
-            break;
+            case Opcode::MOVB_IMM8_TO_R0:
+            case Opcode::MOVB_IMM8_TO_R1:
+            case Opcode::MOVB_IMM8_TO_R2:
+            case Opcode::MOVB_IMM8_TO_R3:
+                $this->processBinaryMovbImm8ToRegs();
+                break;
+            case Opcode::ADDB_IMM8_TO_R0:
+            case Opcode::ADDB_IMM8_TO_R1:
+            case Opcode::ADDB_IMM8_TO_R2:
+            case Opcode::ADDB_IMM8_TO_R3:
+                $this->processBinaryAddbImm8ToRegs();
+                break;
+            case Opcode::SUBB_IMM8_TO_R0:
+            case Opcode::SUBB_IMM8_TO_R1:
+            case Opcode::SUBB_IMM8_TO_R2:
+            case Opcode::SUBB_IMM8_TO_R3:
+                $this->processBinarySubbImm8ToRegs();
+                break;
+            case Opcode::MULB_IMM8_TO_R0:
+            case Opcode::MULB_IMM8_TO_R1:
+            case Opcode::MULB_IMM8_TO_R2:
+            case Opcode::MULB_IMM8_TO_R3:
+                $this->processBinaryMulbImm8ToRegs();
+                break;
+            case Opcode::DIVB_IMM8_TO_R0:
+            case Opcode::DIVB_IMM8_TO_R1:
+            case Opcode::DIVB_IMM8_TO_R2:
+            case Opcode::DIVB_IMM8_TO_R3:
+                $this->processBinaryDivbImm8ToRegs();
+                break;
+            case Opcode::MOVB_R0_TO_R0:
+            case Opcode::MOVB_R1_TO_R0:
+            case Opcode::MOVB_R2_TO_R0:
+            case Opcode::MOVB_R3_TO_R0:
+                $this->processBinaryMovbRegsToR0();
+                break;
+            case Opcode::MOVB_R0_TO_R1:
+            case Opcode::MOVB_R1_TO_R1:
+            case Opcode::MOVB_R2_TO_R1:
+            case Opcode::MOVB_R3_TO_R1:
+                $this->processBinaryMovbRegsToR1();
+                break;
+            case Opcode::MOVB_R0_TO_R2:
+            case Opcode::MOVB_R1_TO_R2:
+            case Opcode::MOVB_R2_TO_R2:
+            case Opcode::MOVB_R3_TO_R2:
+                $this->processBinaryMovbRegsToR2();
+                break;
+            case Opcode::MOVB_R0_TO_R3:
+            case Opcode::MOVB_R1_TO_R3:
+            case Opcode::MOVB_R2_TO_R3:
+            case Opcode::MOVB_R3_TO_R3:
+                $this->processBinaryMovbRegsToR3();
+                break;
+            case Opcode::ADDB_R0_TO_R0:
+            case Opcode::ADDB_R1_TO_R0:
+            case Opcode::ADDB_R2_TO_R0:
+            case Opcode::ADDB_R3_TO_R0:
+                $this->processBinaryAddbRegsToR0();
+                break;
+            case Opcode::ADDB_R0_TO_R1:
+            case Opcode::ADDB_R1_TO_R1:
+            case Opcode::ADDB_R2_TO_R1:
+            case Opcode::ADDB_R3_TO_R1:
+                $this->processBinaryAddbRegsToR1();
+                break;
+            case Opcode::ADDB_R0_TO_R2:
+            case Opcode::ADDB_R1_TO_R2:
+            case Opcode::ADDB_R2_TO_R2:
+            case Opcode::ADDB_R3_TO_R2:
+                $this->processBinaryAddbRegsToR2();
+                break;
+            case Opcode::ADDB_R0_TO_R3:
+            case Opcode::ADDB_R1_TO_R3:
+            case Opcode::ADDB_R2_TO_R3:
+            case Opcode::ADDB_R3_TO_R3:
+                $this->processBinaryAddbRegsToR3();
+                break;
+            case Opcode::SUBB_R0_TO_R0:
+            case Opcode::SUBB_R1_TO_R0:
+            case Opcode::SUBB_R2_TO_R0:
+            case Opcode::SUBB_R3_TO_R0:
+                $this->processBinarySubbRegsToR0();
+                break;
+            case Opcode::SUBB_R0_TO_R1:
+            case Opcode::SUBB_R1_TO_R1:
+            case Opcode::SUBB_R2_TO_R1:
+            case Opcode::SUBB_R3_TO_R1:
+                $this->processBinarySubbRegsToR1();
+                break;
+            case Opcode::SUBB_R0_TO_R2:
+            case Opcode::SUBB_R1_TO_R2:
+            case Opcode::SUBB_R2_TO_R2:
+            case Opcode::SUBB_R3_TO_R2:
+                $this->processBinarySubbRegsToR2();
+                break;
+            case Opcode::SUBB_R0_TO_R3:
+            case Opcode::SUBB_R1_TO_R3:
+            case Opcode::SUBB_R2_TO_R3:
+            case Opcode::SUBB_R3_TO_R3:
+                $this->processBinarySubbRegsToR3();
+                break;
+            case Opcode::PRIB_R0:
+            case Opcode::PRIB_R1:
+            case Opcode::PRIB_R2:
+            case Opcode::PRIB_R3:
+                $this->processUnaryPribRegs();
+                break;
+            case Opcode::PRIB_IMM8:
+                $this->processUnaryPribImm8();
+                break;
         }
     }
 
@@ -253,18 +259,18 @@ final class Vm implements RuntimeInterface
     private function processBinaryMovbImm8ToRegs()
     {
         switch ($this->current()) {
-        case Opcode::MOVB_IMM8_TO_R0:
-            $this->processBinaryMovbImm8ToR0();
-            break;
-        case Opcode::MOVB_IMM8_TO_R1:
-            $this->processBinaryMovbImm8ToR1();
-            break;
-        case Opcode::MOVB_IMM8_TO_R2:
-            $this->processBinaryMovbImm8ToR2();
-            break;
-        case Opcode::MOVB_IMM8_TO_R3:
-            $this->processBinaryMovbImm8ToR3();
-            break;
+            case Opcode::MOVB_IMM8_TO_R0:
+                $this->processBinaryMovbImm8ToR0();
+                break;
+            case Opcode::MOVB_IMM8_TO_R1:
+                $this->processBinaryMovbImm8ToR1();
+                break;
+            case Opcode::MOVB_IMM8_TO_R2:
+                $this->processBinaryMovbImm8ToR2();
+                break;
+            case Opcode::MOVB_IMM8_TO_R3:
+                $this->processBinaryMovbImm8ToR3();
+                break;
         }
     }
 
@@ -274,18 +280,18 @@ final class Vm implements RuntimeInterface
     private function processBinaryAddbImm8ToRegs()
     {
         switch ($this->current()) {
-        case Opcode::ADDB_IMM8_TO_R0:
-            $this->processBinaryAddbImm8ToR0();
-            break;
-        case Opcode::ADDB_IMM8_TO_R1:
-            $this->processBinaryAddbImm8ToR1();
-            break;
-        case Opcode::ADDB_IMM8_TO_R2:
-            $this->processBinaryAddbImm8ToR2();
-            break;
-        case Opcode::ADDB_IMM8_TO_R3:
-            $this->processBinaryAddbImm8ToR3();
-            break;
+            case Opcode::ADDB_IMM8_TO_R0:
+                $this->processBinaryAddbImm8ToR0();
+                break;
+            case Opcode::ADDB_IMM8_TO_R1:
+                $this->processBinaryAddbImm8ToR1();
+                break;
+            case Opcode::ADDB_IMM8_TO_R2:
+                $this->processBinaryAddbImm8ToR2();
+                break;
+            case Opcode::ADDB_IMM8_TO_R3:
+                $this->processBinaryAddbImm8ToR3();
+                break;
         }
     }
 
@@ -295,18 +301,18 @@ final class Vm implements RuntimeInterface
     private function processBinarySubbImm8ToRegs()
     {
         switch ($this->current()) {
-        case Opcode::SUBB_IMM8_TO_R0:
-            $this->processBinarySubbImm8ToR0();
-            break;
-        case Opcode::SUBB_IMM8_TO_R1:
-            $this->processBinarySubbImm8ToR1();
-            break;
-        case Opcode::SUBB_IMM8_TO_R2:
-            $this->processBinarySubbImm8ToR2();
-            break;
-        case Opcode::SUBB_IMM8_TO_R3:
-            $this->processBinarySubbImm8ToR3();
-            break;
+            case Opcode::SUBB_IMM8_TO_R0:
+                $this->processBinarySubbImm8ToR0();
+                break;
+            case Opcode::SUBB_IMM8_TO_R1:
+                $this->processBinarySubbImm8ToR1();
+                break;
+            case Opcode::SUBB_IMM8_TO_R2:
+                $this->processBinarySubbImm8ToR2();
+                break;
+            case Opcode::SUBB_IMM8_TO_R3:
+                $this->processBinarySubbImm8ToR3();
+                break;
         }
     }
 
@@ -316,18 +322,18 @@ final class Vm implements RuntimeInterface
     private function processBinaryMulbImm8ToRegs()
     {
         switch ($this->current()) {
-        case Opcode::MULB_IMM8_TO_R0:
-            $this->processBinaryMulbImm8ToR0();
-            break;
-        case Opcode::MULB_IMM8_TO_R1:
-            $this->processBinaryMulbImm8ToR1();
-            break;
-        case Opcode::MULB_IMM8_TO_R2:
-            $this->processBinaryMulbImm8ToR2();
-            break;
-        case Opcode::MULB_IMM8_TO_R3:
-            $this->processBinaryMulbImm8ToR3();
-            break;
+            case Opcode::MULB_IMM8_TO_R0:
+                $this->processBinaryMulbImm8ToR0();
+                break;
+            case Opcode::MULB_IMM8_TO_R1:
+                $this->processBinaryMulbImm8ToR1();
+                break;
+            case Opcode::MULB_IMM8_TO_R2:
+                $this->processBinaryMulbImm8ToR2();
+                break;
+            case Opcode::MULB_IMM8_TO_R3:
+                $this->processBinaryMulbImm8ToR3();
+                break;
         }
     }
 
@@ -337,18 +343,18 @@ final class Vm implements RuntimeInterface
     private function processBinaryDivbImm8ToRegs()
     {
         switch ($this->current()) {
-        case Opcode::DIVB_IMM8_TO_R0:
-            $this->processBinaryDivbImm8ToR0();
-            break;
-        case Opcode::DIVB_IMM8_TO_R1:
-            $this->processBinaryDivbImm8ToR1();
-            break;
-        case Opcode::DIVB_IMM8_TO_R2:
-            $this->processBinaryDivbImm8ToR2();
-            break;
-        case Opcode::DIVB_IMM8_TO_R3:
-            $this->processBinaryDivbImm8ToR3();
-            break;
+            case Opcode::DIVB_IMM8_TO_R0:
+                $this->processBinaryDivbImm8ToR0();
+                break;
+            case Opcode::DIVB_IMM8_TO_R1:
+                $this->processBinaryDivbImm8ToR1();
+                break;
+            case Opcode::DIVB_IMM8_TO_R2:
+                $this->processBinaryDivbImm8ToR2();
+                break;
+            case Opcode::DIVB_IMM8_TO_R3:
+                $this->processBinaryDivbImm8ToR3();
+                break;
         }
     }
 
@@ -358,18 +364,18 @@ final class Vm implements RuntimeInterface
     private function processBinaryMovbRegsToR0()
     {
         switch ($this->current()) {
-        case Opcode::MOVB_R0_TO_R0:
-            $this->processBinaryMovbR0ToR0();
-            break;
-        case Opcode::MOVB_R1_TO_R0:
-            $this->processBinaryMovbR1ToR0();
-            break;
-        case Opcode::MOVB_R2_TO_R0:
-            $this->processBinaryMovbR2ToR0();
-            break;
-        case Opcode::MOVB_R3_TO_R0:
-            $this->processBinaryMovbR3ToR0();
-            break;
+            case Opcode::MOVB_R0_TO_R0:
+                $this->processBinaryMovbR0ToR0();
+                break;
+            case Opcode::MOVB_R1_TO_R0:
+                $this->processBinaryMovbR1ToR0();
+                break;
+            case Opcode::MOVB_R2_TO_R0:
+                $this->processBinaryMovbR2ToR0();
+                break;
+            case Opcode::MOVB_R3_TO_R0:
+                $this->processBinaryMovbR3ToR0();
+                break;
         }
     }
 
@@ -379,18 +385,18 @@ final class Vm implements RuntimeInterface
     private function processBinaryMovbRegsToR1()
     {
         switch ($this->current()) {
-        case Opcode::MOVB_R0_TO_R1:
-            $this->processBinaryMovbR0ToR1();
-            break;
-        case Opcode::MOVB_R1_TO_R1:
-            $this->processBinaryMovbR1ToR1();
-            break;
-        case Opcode::MOVB_R2_TO_R1:
-            $this->processBinaryMovbR2ToR1();
-            break;
-        case Opcode::MOVB_R3_TO_R1:
-            $this->processBinaryMovbR3ToR1();
-            break;
+            case Opcode::MOVB_R0_TO_R1:
+                $this->processBinaryMovbR0ToR1();
+                break;
+            case Opcode::MOVB_R1_TO_R1:
+                $this->processBinaryMovbR1ToR1();
+                break;
+            case Opcode::MOVB_R2_TO_R1:
+                $this->processBinaryMovbR2ToR1();
+                break;
+            case Opcode::MOVB_R3_TO_R1:
+                $this->processBinaryMovbR3ToR1();
+                break;
         }
     }
 
@@ -400,18 +406,18 @@ final class Vm implements RuntimeInterface
     private function processBinaryMovbRegsToR2()
     {
         switch ($this->current()) {
-        case Opcode::MOVB_R0_TO_R2:
-            $this->processBinaryMovbR0ToR2();
-            break;
-        case Opcode::MOVB_R1_TO_R2:
-            $this->processBinaryMovbR1ToR2();
-            break;
-        case Opcode::MOVB_R2_TO_R2:
-            $this->processBinaryMovbR2ToR2();
-            break;
-        case Opcode::MOVB_R3_TO_R2:
-            $this->processBinaryMovbR3ToR2();
-            break;
+            case Opcode::MOVB_R0_TO_R2:
+                $this->processBinaryMovbR0ToR2();
+                break;
+            case Opcode::MOVB_R1_TO_R2:
+                $this->processBinaryMovbR1ToR2();
+                break;
+            case Opcode::MOVB_R2_TO_R2:
+                $this->processBinaryMovbR2ToR2();
+                break;
+            case Opcode::MOVB_R3_TO_R2:
+                $this->processBinaryMovbR3ToR2();
+                break;
         }
     }
 
@@ -421,18 +427,18 @@ final class Vm implements RuntimeInterface
     private function processBinaryMovbRegsToR3()
     {
         switch ($this->current()) {
-        case Opcode::MOVB_R0_TO_R3:
-            $this->processBinaryMovbR0ToR3();
-            break;
-        case Opcode::MOVB_R1_TO_R3:
-            $this->processBinaryMovbR1ToR3();
-            break;
-        case Opcode::MOVB_R2_TO_R3:
-            $this->processBinaryMovbR2ToR3();
-            break;
-        case Opcode::MOVB_R3_TO_R3:
-            $this->processBinaryMovbR3ToR3();
-            break;
+            case Opcode::MOVB_R0_TO_R3:
+                $this->processBinaryMovbR0ToR3();
+                break;
+            case Opcode::MOVB_R1_TO_R3:
+                $this->processBinaryMovbR1ToR3();
+                break;
+            case Opcode::MOVB_R2_TO_R3:
+                $this->processBinaryMovbR2ToR3();
+                break;
+            case Opcode::MOVB_R3_TO_R3:
+                $this->processBinaryMovbR3ToR3();
+                break;
         }
     }
 
@@ -442,18 +448,18 @@ final class Vm implements RuntimeInterface
     private function processBinaryAddbRegsToR0()
     {
         switch ($this->current()) {
-        case Opcode::ADDB_R0_TO_R0:
-            $this->processBinaryAddbR0ToR0();
-            break;
-        case Opcode::ADDB_R1_TO_R0:
-            $this->processBinaryAddbR1ToR0();
-            break;
-        case Opcode::ADDB_R2_TO_R0:
-            $this->processBinaryAddbR2ToR0();
-            break;
-        case Opcode::ADDB_R3_TO_R0:
-            $this->processBinaryAddbR3ToR0();
-            break;
+            case Opcode::ADDB_R0_TO_R0:
+                $this->processBinaryAddbR0ToR0();
+                break;
+            case Opcode::ADDB_R1_TO_R0:
+                $this->processBinaryAddbR1ToR0();
+                break;
+            case Opcode::ADDB_R2_TO_R0:
+                $this->processBinaryAddbR2ToR0();
+                break;
+            case Opcode::ADDB_R3_TO_R0:
+                $this->processBinaryAddbR3ToR0();
+                break;
         }
     }
 
@@ -463,18 +469,18 @@ final class Vm implements RuntimeInterface
     private function processBinaryAddbRegsToR1()
     {
         switch ($this->current()) {
-        case Opcode::ADDB_R0_TO_R1:
-            $this->processBinaryAddbR0ToR1();
-            break;
-        case Opcode::ADDB_R1_TO_R1:
-            $this->processBinaryAddbR1ToR1();
-            break;
-        case Opcode::ADDB_R2_TO_R1:
-            $this->processBinaryAddbR2ToR1();
-            break;
-        case Opcode::ADDB_R3_TO_R1:
-            $this->processBinaryAddbR3ToR1();
-            break;
+            case Opcode::ADDB_R0_TO_R1:
+                $this->processBinaryAddbR0ToR1();
+                break;
+            case Opcode::ADDB_R1_TO_R1:
+                $this->processBinaryAddbR1ToR1();
+                break;
+            case Opcode::ADDB_R2_TO_R1:
+                $this->processBinaryAddbR2ToR1();
+                break;
+            case Opcode::ADDB_R3_TO_R1:
+                $this->processBinaryAddbR3ToR1();
+                break;
         }
     }
 
@@ -484,18 +490,18 @@ final class Vm implements RuntimeInterface
     private function processBinaryAddbRegsToR2()
     {
         switch ($this->current()) {
-        case Opcode::ADDB_R0_TO_R2:
-            $this->processBinaryAddbR0ToR2();
-            break;
-        case Opcode::ADDB_R1_TO_R2:
-            $this->processBinaryAddbR1ToR2();
-            break;
-        case Opcode::ADDB_R2_TO_R2:
-            $this->processBinaryAddbR2ToR2();
-            break;
-        case Opcode::ADDB_R3_TO_R2:
-            $this->processBinaryAddbR3ToR2();
-            break;
+            case Opcode::ADDB_R0_TO_R2:
+                $this->processBinaryAddbR0ToR2();
+                break;
+            case Opcode::ADDB_R1_TO_R2:
+                $this->processBinaryAddbR1ToR2();
+                break;
+            case Opcode::ADDB_R2_TO_R2:
+                $this->processBinaryAddbR2ToR2();
+                break;
+            case Opcode::ADDB_R3_TO_R2:
+                $this->processBinaryAddbR3ToR2();
+                break;
         }
     }
 
@@ -505,18 +511,18 @@ final class Vm implements RuntimeInterface
     private function processBinaryAddbRegsToR3()
     {
         switch ($this->current()) {
-        case Opcode::ADDB_R0_TO_R3:
-            $this->processBinaryAddbR0ToR3();
-            break;
-        case Opcode::ADDB_R1_TO_R3:
-            $this->processBinaryAddbR1ToR3();
-            break;
-        case Opcode::ADDB_R2_TO_R3:
-            $this->processBinaryAddbR2ToR3();
-            break;
-        case Opcode::ADDB_R3_TO_R3:
-            $this->processBinaryAddbR3ToR3();
-            break;
+            case Opcode::ADDB_R0_TO_R3:
+                $this->processBinaryAddbR0ToR3();
+                break;
+            case Opcode::ADDB_R1_TO_R3:
+                $this->processBinaryAddbR1ToR3();
+                break;
+            case Opcode::ADDB_R2_TO_R3:
+                $this->processBinaryAddbR2ToR3();
+                break;
+            case Opcode::ADDB_R3_TO_R3:
+                $this->processBinaryAddbR3ToR3();
+                break;
         }
     }
 
@@ -526,18 +532,18 @@ final class Vm implements RuntimeInterface
     private function processBinarySubbRegsToR0()
     {
         switch ($this->current()) {
-        case Opcode::SUBB_R0_TO_R0:
-            $this->processBinarySubbR0ToR0();
-            break;
-        case Opcode::SUBB_R1_TO_R0:
-            $this->processBinarySubbR1ToR0();
-            break;
-        case Opcode::SUBB_R2_TO_R0:
-            $this->processBinarySubbR2ToR0();
-            break;
-        case Opcode::SUBB_R3_TO_R0:
-            $this->processBinarySubbR3ToR0();
-            break;
+            case Opcode::SUBB_R0_TO_R0:
+                $this->processBinarySubbR0ToR0();
+                break;
+            case Opcode::SUBB_R1_TO_R0:
+                $this->processBinarySubbR1ToR0();
+                break;
+            case Opcode::SUBB_R2_TO_R0:
+                $this->processBinarySubbR2ToR0();
+                break;
+            case Opcode::SUBB_R3_TO_R0:
+                $this->processBinarySubbR3ToR0();
+                break;
         }
     }
 
@@ -547,18 +553,18 @@ final class Vm implements RuntimeInterface
     private function processBinarySubbRegsToR1()
     {
         switch ($this->current()) {
-        case Opcode::SUBB_R0_TO_R1:
-            $this->processBinarySubbR0ToR1();
-            break;
-        case Opcode::SUBB_R1_TO_R1:
-            $this->processBinarySubbR1ToR1();
-            break;
-        case Opcode::SUBB_R2_TO_R1:
-            $this->processBinarySubbR2ToR1();
-            break;
-        case Opcode::SUBB_R3_TO_R1:
-            $this->processBinarySubbR3ToR1();
-            break;
+            case Opcode::SUBB_R0_TO_R1:
+                $this->processBinarySubbR0ToR1();
+                break;
+            case Opcode::SUBB_R1_TO_R1:
+                $this->processBinarySubbR1ToR1();
+                break;
+            case Opcode::SUBB_R2_TO_R1:
+                $this->processBinarySubbR2ToR1();
+                break;
+            case Opcode::SUBB_R3_TO_R1:
+                $this->processBinarySubbR3ToR1();
+                break;
         }
     }
 
@@ -568,18 +574,39 @@ final class Vm implements RuntimeInterface
     private function processBinarySubbRegsToR2()
     {
         switch ($this->current()) {
-        case Opcode::SUBB_R0_TO_R2:
-            $this->processBinarySubbR0ToR2();
-            break;
-        case Opcode::SUBB_R1_TO_R2:
-            $this->processBinarySubbR1ToR2();
-            break;
-        case Opcode::SUBB_R2_TO_R2:
-            $this->processBinarySubbR2ToR2();
-            break;
-        case Opcode::SUBB_R3_TO_R2:
-            $this->processBinarySubbR3ToR2();
-            break;
+            case Opcode::SUBB_R0_TO_R2:
+                $this->processBinarySubbR0ToR2();
+                break;
+            case Opcode::SUBB_R1_TO_R2:
+                $this->processBinarySubbR1ToR2();
+                break;
+            case Opcode::SUBB_R2_TO_R2:
+                $this->processBinarySubbR2ToR2();
+                break;
+            case Opcode::SUBB_R3_TO_R2:
+                $this->processBinarySubbR3ToR2();
+                break;
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinarySubbRegsToR3()
+    {
+        switch ($this->current()) {
+            case Opcode::SUBB_R0_TO_R3:
+                $this->processBinarySubbR0ToR3();
+                break;
+            case Opcode::SUBB_R1_TO_R3:
+                $this->processBinarySubbR1ToR3();
+                break;
+            case Opcode::SUBB_R2_TO_R3:
+                $this->processBinarySubbR2ToR3();
+                break;
+            case Opcode::SUBB_R3_TO_R3:
+                $this->processBinarySubbR3ToR3();
+                break;
         }
     }
 
@@ -589,18 +616,18 @@ final class Vm implements RuntimeInterface
     private function processUnaryPribRegs()
     {
         switch ($this->current()) {
-        case Opcode::PRIB_R0:
-            $this->processUnaryPribR0();
-            break;
-        case Opcode::PRIB_R1:
-            $this->processUnaryPribR1();
-            break;
-        case Opcode::PRIB_R2:
-            $this->processUnaryPribR2();
-            break;
-        case Opcode::PRIB_R3:
-            $this->processUnaryPribR3();
-            break;
+            case Opcode::PRIB_R0:
+                $this->processUnaryPribR0();
+                break;
+            case Opcode::PRIB_R1:
+                $this->processUnaryPribR1();
+                break;
+            case Opcode::PRIB_R2:
+                $this->processUnaryPribR2();
+                break;
+            case Opcode::PRIB_R3:
+                $this->processUnaryPribR3();
+                break;
         }
     }
 

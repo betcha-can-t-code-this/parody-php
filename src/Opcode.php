@@ -232,6 +232,26 @@ interface Opcode
     /**
      * @var int
      */
+    const SUBB_R0_TO_R3 = 0x3c;
+
+    /**
+     * @var int
+     */
+    const SUBB_R1_TO_R3 = 0x3d;
+
+    /**
+     * @var int
+     */
+    const SUBB_R2_TO_R3 = 0x3e;
+
+    /**
+     * @var int
+     */
+    const SUBB_R3_TO_R3 = 0x3f;
+
+    /**
+     * @var int
+     */
     const MOVB_IMM8_TO_R0 = 0x50;
 
     /**

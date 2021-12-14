@@ -225,9 +225,9 @@ final class Parser implements ParserInterface
             );
         }
 
-        if ($insn[0]->getValue() === "movb" 
-            && (($insn[1]->getType() !== NodeInterface::REGISTER 
-            || $insn[1]->getType() !== NodeInterface::NUMBER) 
+        if ($insn[0]->getValue() === "movb"
+            && (($insn[1]->getType() !== NodeInterface::REGISTER
+            || $insn[1]->getType() !== NodeInterface::NUMBER)
             && $insn[3]->getType() !== NodeInterface::REGISTER)
         ) {
             throw new SyntaxException(
@@ -255,9 +255,9 @@ final class Parser implements ParserInterface
             );
         }
 
-        if ($insn[0]->getValue() === "addb" 
-            && (($insn[1]->getType() !== NodeInterface::REGISTER 
-            || $insn[1]->getType() !== NodeInterface::NUMBER) 
+        if ($insn[0]->getValue() === "addb"
+            && (($insn[1]->getType() !== NodeInterface::REGISTER
+            || $insn[1]->getType() !== NodeInterface::NUMBER)
             && $insn[3]->getType() !== NodeInterface::REGISTER)
         ) {
             throw new SyntaxException(
@@ -285,9 +285,9 @@ final class Parser implements ParserInterface
             );
         }
 
-        if ($insn[0]->getValue() === "subb" 
-            && (($insn[1]->getType() !== NodeInterface::REGISTER 
-            || $insn[1]->getType() !== NodeInterface::NUMBER) 
+        if ($insn[0]->getValue() === "subb"
+            && (($insn[1]->getType() !== NodeInterface::REGISTER
+            || $insn[1]->getType() !== NodeInterface::NUMBER)
             && $insn[3]->getType() !== NodeInterface::REGISTER)
         ) {
             throw new SyntaxException(
@@ -338,7 +338,7 @@ final class Parser implements ParserInterface
      */
     private function validateBinaryPribInstruction(array $insn)
     {
-        if ($insn[0]->getValue() === "prib" 
+        if ($insn[0]->getValue() === "prib"
             && ($insn[1]->getType() !== NodeInterface::NUMBER && $insn[1]->getType() !== NodeInterface::REGISTER)
         ) {
             throw new SyntaxException(
@@ -354,18 +354,18 @@ final class Parser implements ParserInterface
     private function runInstructionLineValidator(array $insn)
     {
         switch (sizeof($insn)) {
-        case 2:
-            $this->validateBinaryPribInstruction($insn);
-            break;
-        case 4:
-            $this->validateBinaryMovbInstruction($insn);
-            $this->validateBinaryAddbInstruction($insn);
-            $this->validateBinarySubbInstruction($insn);
-            $this->validateBinaryMulbInstruction($insn);
-            $this->validateBinaryDivbInstruction($insn);
-            break;
-        default:
-            throw new SyntaxException("Unknown instruction.");
+            case 2:
+                $this->validateBinaryPribInstruction($insn);
+                break;
+            case 4:
+                $this->validateBinaryMovbInstruction($insn);
+                $this->validateBinaryAddbInstruction($insn);
+                $this->validateBinarySubbInstruction($insn);
+                $this->validateBinaryMulbInstruction($insn);
+                $this->validateBinaryDivbInstruction($insn);
+                break;
+            default:
+                throw new SyntaxException("Unknown instruction.");
         }
     }
 
@@ -376,12 +376,12 @@ final class Parser implements ParserInterface
     private function determineNodeType(NodeInterface $node): int
     {
         switch ($node->getType()) {
-        case NodeInterface::MNEMONIC:
-            return AstInterface::AST_MNEMONIC;
-        case NodeInterface::REGISTER:
-            return AstInterface::AST_REGISTER;
-        case NodeInterface::NUMBER:
-            return AstInterface::AST_INTEGER_VALUE;
+            case NodeInterface::MNEMONIC:
+                return AstInterface::AST_MNEMONIC;
+            case NodeInterface::REGISTER:
+                return AstInterface::AST_REGISTER;
+            case NodeInterface::NUMBER:
+                return AstInterface::AST_INTEGER_VALUE;
         }
 
         return 0;

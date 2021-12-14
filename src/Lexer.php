@@ -289,7 +289,7 @@ class Lexer implements LexerInterface
      */
     private function ensureValidInstructionAndRegister(string $buffer)
     {
-        if (!$this->isValidInstruction($buffer) 
+        if (!$this->isValidInstruction($buffer)
             && !$this->isValidRegister($buffer)
         ) {
             throw new LexedEntityException("Current 'lexeme' is not valid register or instruction.");
