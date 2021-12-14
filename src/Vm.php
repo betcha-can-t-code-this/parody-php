@@ -217,6 +217,12 @@ final class Vm implements RuntimeInterface
         case Opcode::ADDB_R3_TO_R3:
             $this->processBinaryAddbRegsToR3();
             break;
+        case Opcode::SUBB_R0_TO_R0:
+        case Opcode::SUBB_R1_TO_R0:
+        case Opcode::SUBB_R2_TO_R0:
+        case Opcode::SUBB_R3_TO_R0:
+            $this->processBinarySubbRegsToR0();
+            break;
         case Opcode::PRIB_R0:
         case Opcode::PRIB_R1:
         case Opcode::PRIB_R2:
@@ -498,6 +504,27 @@ final class Vm implements RuntimeInterface
             break;
         case Opcode::ADDB_R3_TO_R3:
             $this->processBinaryAddbR3ToR3();
+            break;
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinarySubbRegsToR0()
+    {
+        switch ($this->current()) {
+        case Opcode::SUBB_R0_TO_R0:
+            $this->processBinarySubbR0ToR0();
+            break;
+        case Opcode::SUBB_R1_TO_R0:
+            $this->processBinarySubbR1ToR0();
+            break;
+        case Opcode::SUBB_R2_TO_R0:
+            $this->processBinarySubbR2ToR0();
+            break;
+        case Opcode::SUBB_R3_TO_R0:
+            $this->processBinarySubbR3ToR0();
             break;
         }
     }
@@ -1737,6 +1764,46 @@ final class Vm implements RuntimeInterface
     {
         $this->getRegister()->setR3(
             $this->getRegister()->getR3() + $this->getRegister()->getR3()
+        );
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinarySubbR0ToR0()
+    {
+        $this->getRegister()->setR0(
+            $this->getRegister()->getR0() - $this->getRegister()->getR0()
+        );
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinarySubbR1ToR0()
+    {
+        $this->getRegister()->setR0(
+            $this->getRegister()->getR0() - $this->getRegister()->getR1()
+        );
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinarySubbR2ToR0()
+    {
+        $this->getRegister()->setR0(
+            $this->getRegister()->getR0() - $this->getRegister()->getR2()
+        );
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinarySubbR3ToR0()
+    {
+        $this->getRegister()->setR0(
+            $this->getRegister()->getR0() - $this->getRegister()->getR3()
         );
     }
 

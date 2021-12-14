@@ -342,7 +342,7 @@ class Codegen implements CodegenInterface
         }
 
         if ($ast->getChilds()[1]->getValue()->getType() === NodeInterface::REGISTER 
-            && $ast->getChilds()[1]->getValue()->getType() === NodeInterface::REGISTER
+            && $ast->getChilds()[2]->getValue()->getType() === NodeInterface::REGISTER
         ) {
             $this->processBinaryAddbRegsToRegsInstruction($ast, $result);
             return;
@@ -508,6 +508,49 @@ class Codegen implements CodegenInterface
             && $ast->getChilds()[2]->getValue()->getValue() === "r3"
         ) {
             $result = array_merge($result, [Opcode::SUBB_IMM8_TO_R3], $serialized);
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getType() === NodeInterface::REGISTER 
+            && $ast->getChilds()[2]->getValue()->getType() === NodeInterface::REGISTER
+        ) {
+            $this->processBinarySubbRegsToRegsInstruction($ast, $result);
+            return;
+        }
+    }
+
+    /**
+     * @param  \Vm\AstInterface $ast
+     * @param  array            &$result
+     * @return void
+     */
+    private function processBinarySubbRegsToRegsInstruction(AstInterface $ast, array &$result)
+    {
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r0" 
+            && $ast->getChilds()[2]->getValue()->getValue() === "r0"
+        ) {
+            $result[] = Opcode::SUBB_R0_TO_R0;
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r1" 
+            && $ast->getChilds()[2]->getValue()->getValue() === "r0"
+        ) {
+            $result[] = Opcode::SUBB_R1_TO_R0;
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r2" 
+            && $ast->getChilds()[2]->getValue()->getValue() === "r0"
+        ) {
+            $result[] = Opcode::SUBB_R2_TO_R0;
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r3" 
+            && $ast->getChilds()[2]->getValue()->getValue() === "r0"
+        ) {
+            $result[] = Opcode::SUBB_R3_TO_R0;
             return;
         }
     }
