@@ -36,4 +36,7 @@
 
 - prib #<imm8>
   Print 8-bit immediate value to teletype (TTY) console.
+
+- jmp @<label>
+  Jump to specified label.
 ```

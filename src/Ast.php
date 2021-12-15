@@ -72,6 +72,16 @@ class Ast implements AstInterface
     /**
      * {@inheritdoc}
      */
+    public function getChildAt(int $index): ?AstInterface
+    {
+        return !isset($this->childs[$index])
+            ? null
+            : $this->childs[$index];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getChilds(): array
     {
         return $this->childs;

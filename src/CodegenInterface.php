@@ -14,4 +14,9 @@ interface CodegenInterface
      * @return void
      */
     public function generate(AstInterface $ast);
+
+    /**
+     * @return \Vm\JumpLabelInterface
+     */
+    public function getJumpLabel(): JumpLabelInterface;
 }

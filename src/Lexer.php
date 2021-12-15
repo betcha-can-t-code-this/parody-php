@@ -7,6 +7,7 @@ namespace Vm;
 use Vm\Exception\LexedEntityException;
 use Vm\Exception\SyntaxException;
 use Vm\Node\Comma;
+use Vm\Node\Label;
 use Vm\Node\Mnemonic;
 use Vm\Node\Newline;
 use Vm\Node\NodeInterface;
@@ -56,7 +57,8 @@ class Lexer implements LexerInterface
                 break;
             }
 
-            if ($this->token === LexerInterface::T_SPACE) {
+            if ($this->token === LexerInterface::T_SPACE ||
+                $this->token === LexerInterface::T_TAB) {
                 $this->token = '';
                 continue;
             }
@@ -81,6 +83,12 @@ class Lexer implements LexerInterface
 
             if ($this->token === LexerInterface::T_PREFIX_NUM) {
                 $this->processInteger();
+                $this->token = '';
+                continue;
+            }
+
+            if ($this->token === LexerInterface::T_START_LABEL) {
+                $this->processLabel();
                 $this->token = '';
                 continue;
             }
@@ -217,6 +225,54 @@ class Lexer implements LexerInterface
     /**
      * @return void
      */
+    private function processLabel()
+    {
+        $gotException = false;
+
+        while (true) {
+            if ($this->isEOF() || $this->current() === LexerInterface::T_NEWLINE) {
+                break;
+            }
+
+            if ($this->current() === LexerInterface::T_SPACE) {
+                $gotException = true;
+                break;
+            }
+
+            $this->token .= $this->current();
+            $this->next();
+        }
+
+        if ($gotException) {
+            throw new LexedEntityException(
+                "Label name cannot contain whitespace characters."
+            );
+
+            return;
+        }
+
+        if ($this->token[strlen($this->token) - 1] !== ':' &&
+            (!sizeof($this->tokenObjects) &&
+             end($this->tokenObjects)->getType() !== NodeInterface::MNEMONIC)) {
+            throw new LexedEntityException(
+                "Label name must ended by colon."
+            );
+        }
+
+        $this->token = substr(
+            $this->token,
+            1,
+            $this->token[strlen($this->token) - 1] === ':'
+                ? -1
+                : strlen($this->token)
+        );
+
+        $this->addNode(new Label($this->token));
+    }
+
+    /**
+     * @return void
+     */
     private function processMnemonic()
     {
         $this->addNode(new Mnemonic($this->token));
@@ -285,7 +341,8 @@ class Lexer implements LexerInterface
     {
         return [
             "movb", "addb", "subb", "mulb",
-            "divb", "prib"
+            "divb", "prib",
+            "jmp"
         ];
     }
 

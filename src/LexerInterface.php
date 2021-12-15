@@ -24,6 +24,11 @@ interface LexerInterface
     /**
      * @var string
      */
+    const T_TAB = "\t";
+
+    /**
+     * @var string
+     */
     const T_START_COMMENT_LINE = '%';
 
     /**
@@ -35,6 +40,16 @@ interface LexerInterface
      * @var string
      */
     const T_PREFIX_NUM = '#';
+
+    /**
+     * @var string
+     */
+    const T_START_LABEL = '@';
+
+    /**
+     * @var string
+     */
+    const T_COLON = ':';
 
     /**
      * @param  string $buffer

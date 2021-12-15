@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Vm;
 
+use Vm\Exception\AstException;
 use Vm\Node\NodeInterface;
 
 /**
@@ -11,6 +12,30 @@ use Vm\Node\NodeInterface;
  */
 class Codegen implements CodegenInterface
 {
+    /**
+     * @var \Vm\JumpLabelInterface;
+     */
+    private $jumpLabel;
+
+    /**
+     * @var array
+     */
+    private $patchJump = [];
+
+    /**
+     * @var array
+     */
+    private $patchLoop = [];
+
+    /**
+     * @param \Vm\JumpLabelInterface $jumpLabel
+     * @return static
+     */
+    public function __construct(JumpLabelInterface $jumpLabel)
+    {
+        $this->jumpLabel = $jumpLabel;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -25,10 +50,15 @@ class Codegen implements CodegenInterface
         $tmp = [];
         $gotException = false;
 
-        foreach ($ast->getChilds() as $vnode) {
-            if ($vnode->getType() !== AstInterface::AST_INSTRUCTION_LINE) {
+        foreach ($ast->getChilds() as $key => $vnode) {
+            if ($vnode->getType() !== AstInterface::AST_INSTRUCTION_LINE &&
+                $vnode->getType() !== AstInterface::AST_LABEL) {
                 $gotException = true;
                 break;
+            }
+
+            if ($vnode->getType() === AstInterface::AST_LABEL) {
+                $this->jumpLabel->add($vnode->getValue()->getValue(), sizeof($tmp) - 1);
             }
 
             $this->processInstructionLine($vnode, $tmp);
@@ -38,6 +68,25 @@ class Codegen implements CodegenInterface
             throw new AstException(
                 "Current ast node is not instruction line."
             );
+        }
+
+        // patching jump instruction, if any.
+        foreach ($this->patchJump as $el) {
+            $offset = $this->jumpLabel->fetch($el[2]);
+
+            if ($offset === -1) {
+                continue;
+            }
+
+            $lists    = $this->serializeVanillaNumberIntoDwordList($offset);
+            $patchOff = $el[0];
+
+            $tmp[$patchOff + 0] = Opcode::JUMP_REX_PREFIX;
+            $tmp[$patchOff + 1] = $el[1];
+            $tmp[$patchOff + 2] = $lists[0];
+            $tmp[$patchOff + 3] = $lists[1];
+            $tmp[$patchOff + 4] = $lists[2];
+            $tmp[$patchOff + 5] = $lists[3];
         }
 
         return join(
@@ -50,6 +99,11 @@ class Codegen implements CodegenInterface
         );
     }
 
+    public function getJumpLabel(): JumpLabelInterface
+    {
+        return $this->jumpLabel;
+    }
+
     /**
      * @param  \Vm\AstInterface $ast
      * @param  array            &$result
@@ -57,6 +111,11 @@ class Codegen implements CodegenInterface
      */
     private function processInstructionLine(AstInterface $ast, array &$result)
     {
+        if (sizeof($ast->getChilds()) === 2 &&
+            $ast->getChilds()[0]->getValue()->getValue() === "jmp") {
+            $this->processUnaryJumpInstruction($ast, $result);
+        }
+
         if (sizeof($ast->getChilds()) === 2
             && $ast->getChilds()[0]->getValue()->getValue() === "prib"
         ) {
@@ -92,6 +151,25 @@ class Codegen implements CodegenInterface
         ) {
             $this->processBinaryDivbInstruction($ast, $result);
         }
+    }
+
+    /**
+     * @param \Vm\AstInterface $ast
+     * @param array &$result
+     * @return void
+     */
+    private function processUnaryJumpInstruction(AstInterface $ast, array &$result)
+    {
+        if ($ast->getChilds()[1]->getValue()->getType() !== NodeInterface::LABEL) {
+            throw new AstException(
+                "Jump-related instruction must be followed by label name."
+            );
+        }
+
+        $name              = $ast->getChilds()[1]->getValue()->getValue();
+        $replacement       = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
+        $this->patchJump[] = [sizeof($result), JumpOpcode::JUMP_PLAIN, $name];
+        $result            = array_merge($result, $replacement);
     }
 
     /**
@@ -722,6 +800,20 @@ class Codegen implements CodegenInterface
     }
 
     /**
+     * @param int $number
+     * @return array
+     */
+    private function serializeVanillaNumberIntoDwordList(int $number): array
+    {
+        return [
+            (($number & 0xff000000) >> 24),
+            (($number & 0x00ff0000) >> 16),
+            (($number & 0x0000ff00) >>  8),
+            (($number & 0x000000ff) >>  0)
+        ];
+    }
+
+    /**
      * @param  int $number
      * @return array
      */
@@ -730,11 +822,11 @@ class Codegen implements CodegenInterface
         $normalized = abs($number);
 
         return [
-        ($number < 0 ? 0xff : 0xfe),
-        (($normalized & 0xff000000) >> 24),
-        (($normalized & 0x00ff0000) >> 16),
-        (($normalized & 0x0000ff00) >>  8),
-        (($normalized & 0x000000ff) >>  0)
+            ($number < 0 ? 0xff : 0xfe),
+            (($normalized & 0xff000000) >> 24),
+            (($normalized & 0x00ff0000) >> 16),
+            (($normalized & 0x0000ff00) >>  8),
+            (($normalized & 0x000000ff) >>  0)
         ];
     }
 }

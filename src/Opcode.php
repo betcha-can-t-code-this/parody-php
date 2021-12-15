@@ -373,4 +373,9 @@ interface Opcode
      * @var int
      */
     const PRIB_IMM8 = 0xbf;
+
+    /**
+     * @var int
+     */
+    const JUMP_REX_PREFIX = 0xc0;
 }

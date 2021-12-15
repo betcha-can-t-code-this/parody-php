@@ -35,6 +35,11 @@ interface NodeInterface
     const REGISTER = 4;
 
     /**
+     * @var int
+     */
+    const LABEL = 5;
+
+    /**
      * @return string
      */
     public function getName(): string;

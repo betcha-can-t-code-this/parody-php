@@ -118,11 +118,28 @@ final class Vm implements RuntimeInterface
     }
 
     /**
+     * @param int $ip
+     * @return void
+     */
+    private function setIp(int $ip)
+    {
+        $this->ip = $ip;
+    }
+
+    /**
      * @return void
      */
     private function incrementIp()
     {
         $this->ip++;
+    }
+
+    /**
+     * @return void
+     */
+    private function decrementIp()
+    {
+        $this->ip--;
     }
 
     /**
@@ -249,6 +266,9 @@ final class Vm implements RuntimeInterface
                 break;
             case Opcode::PRIB_IMM8:
                 $this->processUnaryPribImm8();
+                break;
+            case Opcode::JUMP_REX_PREFIX:
+                $this->processJumpRexPrefix();
                 break;
         }
     }
@@ -670,6 +690,21 @@ final class Vm implements RuntimeInterface
         $num = $num | (($tmp[3] & 0xff) <<  0);
 
         echo sprintf("%d\n", $sign == 0xfe ? $num : (-1 * $num));
+    }
+
+    /**
+     * @return void
+     */
+    private function processJumpRexPrefix()
+    {
+        $this->incrementIp();
+        $this->checkForEOF();
+
+        switch ($this->current()) {
+            case JumpOpcode::JUMP_PLAIN:
+                $this->processPlainJumpInstruction();
+                break;
+        }
     }
 
     /**
@@ -2038,6 +2073,41 @@ final class Vm implements RuntimeInterface
     private function processUnaryPribR3()
     {
         echo sprintf("%d\n", $this->getRegister()->getR3());
+    }
+
+    /**
+     * @return void
+     */
+    private function processPlainJumpInstruction()
+    {
+        $tmp = [];
+
+        $this->incrementIp();
+        $this->checkForEOF();
+
+        $tmp[] = $this->current();
+
+        $this->incrementIp();
+        $this->checkForEOF();
+
+        $tmp[] = $this->current();
+
+        $this->incrementIp();
+        $this->checkForEOF();
+
+        $tmp[] = $this->current();
+
+        $this->incrementIp();
+        $this->checkForEOF();
+
+        $tmp[] = $this->current();
+
+        $offset = 0       | (($tmp[0] & 0xff) << 24);
+        $offset = $offset | (($tmp[1] & 0xff) << 16);
+        $offset = $offset | (($tmp[2] & 0xff) <<  8);
+        $offset = $offset | (($tmp[3] & 0xff) <<  0);
+
+        $this->setIp($offset);
     }
 
     /**

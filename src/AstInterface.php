@@ -37,6 +37,11 @@ interface AstInterface
     const AST_INSTRUCTION_LINE = 4;
 
     /**
+     * @var int
+     */
+    const AST_LABEL = 5;
+
+    /**
      * @return \Vm\Node\NodeInterface|null
      */
     public function getValue(): ?NodeInterface;
@@ -57,6 +62,12 @@ interface AstInterface
      * @return void
      */
     public function setType(int $type);
+
+    /**
+     * @param int $index
+     * @return \Vm\AstInterface|null
+     */
+    public function getChildAt(int $index): ?AstInterface;
 
     /**
      * @return array

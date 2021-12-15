@@ -7,6 +7,7 @@ namespace Vm;
 use Throwable;
 use Vm\Exception\SyntaxException;
 use Vm\Node\Comma;
+use Vm\Node\Label;
 use Vm\Node\Mnemonic;
 use Vm\Node\Newline;
 use Vm\Node\NodeInterface;
@@ -74,6 +75,10 @@ final class Parser implements ParserInterface
         while (true) {
             if ($this->isEOF()) {
                 break;
+            }
+
+            if (is_a($this->current(), Label::class)) {
+                $this->processLabel();
             }
 
             if (is_a($this->current(), Mnemonic::class)) {
@@ -162,6 +167,14 @@ final class Parser implements ParserInterface
     private function isEOF(): bool
     {
         return $this->position >= sizeof($this->input);
+    }
+
+    /**
+     * @return void
+     */
+    private function processLabel()
+    {
+        $this->getAst()->addChild(new Ast(AstInterface::AST_LABEL, $this->current()));
     }
 
     /**
