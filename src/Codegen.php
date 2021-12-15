@@ -837,6 +837,30 @@ class Codegen implements CodegenInterface
             $result[] = Opcode::MULB_R3_TO_R2;
             return;
         }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r0" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r3") {
+            $result[] = Opcode::MULB_R0_TO_R3;
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r1" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r3") {
+            $result[] = Opcode::MULB_R1_TO_R3;
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r2" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r3") {
+            $result[] = Opcode::MULB_R2_TO_R3;
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r3" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r3") {
+            $result[] = Opcode::MULB_R3_TO_R3;
+            return;
+        }
     }
 
     /**

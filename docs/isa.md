@@ -21,6 +21,10 @@
   Multiply 8-bit immediate value with 8-bit destination register value and put
   its result to destination register.
 
+- mulb reg8, reg8
+  Multiply 8-bit source register value with 8-bit destination register value and put
+  its result to destination register.
+
 - divb #<imm8>, reg8
   Divide 8-bit immediate value with 8-bit destination register value and put
   its result to destination register.
