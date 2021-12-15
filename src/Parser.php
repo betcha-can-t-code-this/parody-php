@@ -327,6 +327,19 @@ final class Parser implements ParserInterface
                 )
             );
         }
+
+        if ($insn[0]->getValue() === "mulb" &&
+            (($insn[1]->getType() !== NodeInterface::REGISTER ||
+              $insn[1]->getType() !== NodeInterface::NUMBER) &&
+             $insn[3]->getType() !== NodeInterface::REGISTER)) {
+            throw new SyntaxException(
+                sprintf(
+                    "First operand must be register or numeric constant, and second operand must be " .
+                    "register (line: %d).",
+                    $this->line
+                )
+            );
+        }
     }
 
     /**

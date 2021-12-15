@@ -252,6 +252,46 @@ interface Opcode
     /**
      * @var int
      */
+    const MULB_R0_TO_R0 = 0x40;
+
+    /**
+     * @var int
+     */
+    const MULB_R1_TO_R0 = 0x41;
+
+    /**
+     * @var int
+     */
+    const MULB_R2_TO_R0 = 0x42;
+
+    /**
+     * @var int
+     */
+    const MULB_R3_TO_R0 = 0x43;
+
+    /**
+     * @var int
+     */
+    const MULB_R0_TO_R1 = 0x44;
+
+    /**
+     * @var int
+     */
+    const MULB_R1_TO_R1 = 0x45;
+
+    /**
+     * @var int
+     */
+    const MULB_R2_TO_R1 = 0x46;
+
+    /**
+     * @var int
+     */
+    const MULB_R3_TO_R1 = 0x47;
+
+    /**
+     * @var int
+     */
     const MOVB_IMM8_TO_R0 = 0x50;
 
     /**

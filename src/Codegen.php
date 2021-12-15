@@ -99,6 +99,9 @@ class Codegen implements CodegenInterface
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getJumpLabel(): JumpLabelInterface
     {
         return $this->jumpLabel;
@@ -116,39 +119,33 @@ class Codegen implements CodegenInterface
             $this->processUnaryJumpInstruction($ast, $result);
         }
 
-        if (sizeof($ast->getChilds()) === 2
-            && $ast->getChilds()[0]->getValue()->getValue() === "prib"
-        ) {
+        if (sizeof($ast->getChilds()) === 2 &&
+            $ast->getChilds()[0]->getValue()->getValue() === "prib") {
             $this->processUnaryPribInstruction($ast, $result);
         }
 
-        if (sizeof($ast->getChilds()) === 3
-            && $ast->getChilds()[0]->getValue()->getValue() === "movb"
-        ) {
+        if (sizeof($ast->getChilds()) === 3 &&
+            $ast->getChilds()[0]->getValue()->getValue() === "movb") {
             $this->processBinaryMovbInstruction($ast, $result);
         }
 
-        if (sizeof($ast->getChilds()) === 3
-            && $ast->getChilds()[0]->getValue()->getValue() === "addb"
-        ) {
+        if (sizeof($ast->getChilds()) === 3 &&
+            $ast->getChilds()[0]->getValue()->getValue() === "addb") {
             $this->processBinaryAddbInstruction($ast, $result);
         }
 
-        if (sizeof($ast->getChilds()) === 3
-            && $ast->getChilds()[0]->getValue()->getValue() === "subb"
-        ) {
+        if (sizeof($ast->getChilds()) === 3 &&
+            $ast->getChilds()[0]->getValue()->getValue() === "subb") {
             $this->processBinarySubbInstruction($ast, $result);
         }
 
-        if (sizeof($ast->getChilds()) === 3
-            && $ast->getChilds()[0]->getValue()->getValue() === "mulb"
-        ) {
+        if (sizeof($ast->getChilds()) === 3 &&
+            $ast->getChilds()[0]->getValue()->getValue() === "mulb") {
             $this->processBinaryMulbInstruction($ast, $result);
         }
 
-        if (sizeof($ast->getChilds()) === 3
-            && $ast->getChilds()[0]->getValue()->getValue() === "divb"
-        ) {
+        if (sizeof($ast->getChilds()) === 3 &&
+            $ast->getChilds()[0]->getValue()->getValue() === "divb") {
             $this->processBinaryDivbInstruction($ast, $result);
         }
     }
@@ -752,6 +749,68 @@ class Codegen implements CodegenInterface
             && $ast->getChilds()[2]->getValue()->getValue() === "r3"
         ) {
             $result = array_merge($result, [Opcode::MULB_IMM8_TO_R3], $serialized);
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getType() === NodeInterface::REGISTER &&
+            $ast->getChilds()[2]->getValue()->getType() === NodeInterface::REGISTER) {
+            $this->processBinaryMulbRegsToRegsInstruction($ast, $result);
+            return;
+        }
+    }
+
+    /**
+     * @param \Vm\AstInterface $ast
+     * @param array &$result
+     * @return void
+     */
+    private function processBinaryMulbRegsToRegsInstruction(AstInterface $ast, array &$result)
+    {
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r0" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r0") {
+            $result[] = Opcode::MULB_R0_TO_R0;
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r1" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r0") {
+            $result[] = Opcode::MULB_R1_TO_R0;
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r2" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r0") {
+            $result[] = Opcode::MULB_R2_TO_R0;
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r3" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r0") {
+            $result[] = Opcode::MULB_R3_TO_R0;
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r0" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r1") {
+            $result[] = Opcode::MULB_R0_TO_R1;
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r1" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r1") {
+            $result[] = Opcode::MULB_R1_TO_R1;
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r2" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r1") {
+            $result[] = Opcode::MULB_R2_TO_R1;
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r3" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r1") {
+            $result[] = Opcode::MULB_R3_TO_R1;
             return;
         }
     }
