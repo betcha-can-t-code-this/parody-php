@@ -9,34 +9,34 @@ namespace Vm;
  */
 final class JumpLabel implements JumpLabelInterface
 {
-	/**
-	 * @var array
-	 */
-	private $labelMap = [];
+    /**
+     * @var array
+     */
+    private $labelMap = [];
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function add(string $label, int $ip)
-	{
-		$this->labelMap[$label] = $ip;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function add(string $label, int $ip)
+    {
+        $this->labelMap[$label] = $ip;
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function fetch(string $label): ?int
-	{
-		return !isset($this->labelMap[$label])
-			? null
-			: $this->labelMap[$label];
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function fetch(string $label): ?int
+    {
+        return !isset($this->labelMap[$label])
+            ? null
+            : $this->labelMap[$label];
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getMap(): array
-	{
-		return $this->labelMap;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getMap(): array
+    {
+        return $this->labelMap;
+    }
 }

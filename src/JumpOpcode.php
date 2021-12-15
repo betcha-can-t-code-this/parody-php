@@ -9,8 +9,8 @@ namespace Vm;
  */
 interface JumpOpcode
 {
-	/**
-	 * @var int
-	 */
-	const JUMP_PLAIN = 0x10;
+    /**
+     * @var int
+     */
+    const JUMP_PLAIN = 0x10;
 }
