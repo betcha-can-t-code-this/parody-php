@@ -270,6 +270,12 @@ final class Vm implements RuntimeInterface
             case Opcode::MULB_R3_TO_R1:
                 $this->processBinaryMulbRegsToR1();
                 break;
+            case Opcode::MULB_R0_TO_R2:
+            case Opcode::MULB_R1_TO_R2:
+            case Opcode::MULB_R2_TO_R2:
+            case Opcode::MULB_R3_TO_R2:
+                $this->processBinaryMulbRegsToR2();
+                break;
             case Opcode::PRIB_R0:
             case Opcode::PRIB_R1:
             case Opcode::PRIB_R2:
@@ -680,6 +686,27 @@ final class Vm implements RuntimeInterface
                 break;
             case Opcode::MULB_R3_TO_R1:
                 $this->processBinaryMulbR3ToR1();
+                break;
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryMulbRegsToR2()
+    {
+        switch ($this->current()) {
+            case Opcode::MULB_R0_TO_R2:
+                $this->processBinaryMulbR0ToR2();
+                break;
+            case Opcode::MULB_R1_TO_R2:
+                $this->processBinaryMulbR1ToR2();
+                break;
+            case Opcode::MULB_R2_TO_R2:
+                $this->processBinaryMulbR2ToR2();
+                break;
+            case Opcode::MULB_R3_TO_R2:
+                $this->processBinaryMulbR3ToR2();
                 break;
         }
     }
@@ -2174,6 +2201,46 @@ final class Vm implements RuntimeInterface
     {
         $this->getRegister()->setR1(
             $this->getRegister()->getR1() * $this->getRegister()->getR3()
+        );
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryMulbR0ToR2()
+    {
+        $this->getRegister()->setR2(
+            $this->getRegister()->getR2() * $this->getRegister()->getR0()
+        );
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryMulbR1ToR2()
+    {
+        $this->getRegister()->setR2(
+            $this->getRegister()->getR2() * $this->getRegister()->getR1()
+        );
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryMulbR2ToR2()
+    {
+        $this->getRegister()->setR2(
+            $this->getRegister()->getR2() * $this->getRegister()->getR2()
+        );
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryMulbR3ToR2()
+    {
+        $this->getRegister()->setR2(
+            $this->getRegister()->getR2() * $this->getRegister()->getR3()
         );
     }
 
