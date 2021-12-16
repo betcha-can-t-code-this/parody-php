@@ -290,6 +290,12 @@ final class Vm implements RuntimeInterface
             case Opcode::DIVB_R3_TO_R0:
                 $this->processBinaryDivbRegsToR0();
                 break;
+            case Opcode::DIVB_R0_TO_R1:
+            case Opcode::DIVB_R1_TO_R1:
+            case Opcode::DIVB_R2_TO_R1:
+            case Opcode::DIVB_R3_TO_R1:
+                $this->processBinaryDivbRegsToR1();
+                break;
             case Opcode::PRIB_R0:
             case Opcode::PRIB_R1:
             case Opcode::PRIB_R2:
@@ -763,6 +769,27 @@ final class Vm implements RuntimeInterface
                 break;
             case Opcode::DIVB_R3_TO_R0:
                 $this->processBinaryDivbR3ToR0();
+                break;
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryDivbRegsToR1()
+    {
+        switch ($this->current()) {
+            case Opcode::DIVB_R0_TO_R1:
+                $this->processBinaryDivbR0ToR1();
+                break;
+            case Opcode::DIVB_R1_TO_R1:
+                $this->processBinaryDivbR1ToR1();
+                break;
+            case Opcode::DIVB_R2_TO_R1:
+                $this->processBinaryDivbR2ToR1();
+                break;
+            case Opcode::DIVB_R3_TO_R1:
+                $this->processBinaryDivbR3ToR1();
                 break;
         }
     }
@@ -2394,6 +2421,62 @@ final class Vm implements RuntimeInterface
         $result = intval($this->getRegister()->getR0() / $this->getRegister()->getR3());
 
         $this->getRegister()->setR0($result);
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryDivbR0ToR1()
+    {
+        if (!$this->getRegister()->getR0()) {
+            throw new RuntimeException("Division by zero.");
+        }
+
+        $result = intval($this->getRegister()->getR1() / $this->getRegister()->getR0());
+
+        $this->getRegister()->setR1($result);
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryDivbR1ToR1()
+    {
+        if (!$this->getRegister()->getR1()) {
+            throw new RuntimeException("Division by zero.");
+        }
+
+        $result = intval($this->getRegister()->getR1() / $this->getRegister()->getR1());
+
+        $this->getRegister()->setR1($result);
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryDivbR2ToR1()
+    {
+        if (!$this->getRegister()->getR2()) {
+            throw new RuntimeException("Division by zero.");
+        }
+
+        $result = intval($this->getRegister()->getR1() / $this->getRegister()->getR2());
+
+        $this->getRegister()->setR1($result);
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryDivbR3ToR1()
+    {
+        if (!$this->getRegister()->getR3()) {
+            throw new RuntimeException("Division by zero.");
+        }
+
+        $result = intval($this->getRegister()->getR1() / $this->getRegister()->getR3());
+
+        $this->getRegister()->setR1($result);
     }
 
     /**
