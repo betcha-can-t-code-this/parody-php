@@ -372,6 +372,26 @@ interface Opcode
     /**
      * @var int
      */
+    const DIVB_R0_TO_R2 = 0x58;
+
+    /**
+     * @var int
+     */
+    const DIVB_R1_TO_R2 = 0x59;
+
+    /**
+     * @var int
+     */
+    const DIVB_R2_TO_R2 = 0x5a;
+
+    /**
+     * @var int
+     */
+    const DIVB_R3_TO_R2 = 0x5b;
+
+    /**
+     * @var int
+     */
     const MOVB_IMM8_TO_R0 = 0x60;
 
     /**
