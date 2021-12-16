@@ -332,102 +332,122 @@ interface Opcode
     /**
      * @var int
      */
-    const MOVB_IMM8_TO_R0 = 0x50;
+    const DIVB_R0_TO_R0 = 0x50;
 
     /**
      * @var int
      */
-    const MOVB_IMM8_TO_R1 = 0x51;
+    const DIVB_R1_TO_R0 = 0x51;
 
     /**
      * @var int
      */
-    const MOVB_IMM8_TO_R2 = 0x52;
+    const DIVB_R2_TO_R0 = 0x52;
 
     /**
      * @var int
      */
-    const MOVB_IMM8_TO_R3 = 0x53;
+    const DIVB_R3_TO_R0 = 0x53;
 
     /**
      * @var int
      */
-    const ADDB_IMM8_TO_R0 = 0x54;
+    const MOVB_IMM8_TO_R0 = 0x60;
 
     /**
      * @var int
      */
-    const ADDB_IMM8_TO_R1 = 0x55;
+    const MOVB_IMM8_TO_R1 = 0x61;
 
     /**
      * @var int
      */
-    const ADDB_IMM8_TO_R2 = 0x56;
+    const MOVB_IMM8_TO_R2 = 0x62;
 
     /**
      * @var int
      */
-    const ADDB_IMM8_TO_R3 = 0x57;
+    const MOVB_IMM8_TO_R3 = 0x63;
 
     /**
      * @var int
      */
-    const SUBB_IMM8_TO_R0 = 0x58;
+    const ADDB_IMM8_TO_R0 = 0x64;
 
     /**
      * @var int
      */
-    const SUBB_IMM8_TO_R1 = 0x59;
+    const ADDB_IMM8_TO_R1 = 0x65;
 
     /**
      * @var int
      */
-    const SUBB_IMM8_TO_R2 = 0x5a;
+    const ADDB_IMM8_TO_R2 = 0x66;
 
     /**
      * @var int
      */
-    const SUBB_IMM8_TO_R3 = 0x5b;
+    const ADDB_IMM8_TO_R3 = 0x67;
 
     /**
      * @var int
      */
-    const MULB_IMM8_TO_R0 = 0x5c;
+    const SUBB_IMM8_TO_R0 = 0x68;
 
     /**
      * @var int
      */
-    const MULB_IMM8_TO_R1 = 0x5d;
+    const SUBB_IMM8_TO_R1 = 0x69;
 
     /**
      * @var int
      */
-    const MULB_IMM8_TO_R2 = 0x5e;
+    const SUBB_IMM8_TO_R2 = 0x6a;
 
     /**
      * @var int
      */
-    const MULB_IMM8_TO_R3 = 0x5f;
+    const SUBB_IMM8_TO_R3 = 0x6b;
 
     /**
      * @var int
      */
-    const DIVB_IMM8_TO_R0 = 0x60;
+    const MULB_IMM8_TO_R0 = 0x6c;
 
     /**
      * @var int
      */
-    const DIVB_IMM8_TO_R1 = 0x61;
+    const MULB_IMM8_TO_R1 = 0x6d;
 
     /**
      * @var int
      */
-    const DIVB_IMM8_TO_R2 = 0x62;
+    const MULB_IMM8_TO_R2 = 0x6e;
 
     /**
      * @var int
      */
-    const DIVB_IMM8_TO_R3 = 0x63;
+    const MULB_IMM8_TO_R3 = 0x6f;
+
+    /**
+     * @var int
+     */
+    const DIVB_IMM8_TO_R0 = 0x70;
+
+    /**
+     * @var int
+     */
+    const DIVB_IMM8_TO_R1 = 0x71;
+
+    /**
+     * @var int
+     */
+    const DIVB_IMM8_TO_R2 = 0x72;
+
+    /**
+     * @var int
+     */
+    const DIVB_IMM8_TO_R3 = 0x73;
 
     /**
      * @var int

@@ -78,15 +78,15 @@ class Codegen implements CodegenInterface
                 continue;
             }
 
-            $lists    = $this->serializeVanillaNumberIntoDwordList($offset);
-            $patchOff = $el[0];
+            $lists = $this->serializeVanillaNumberIntoDwordList($offset);
+            $pOff  = $el[0];
 
-            $tmp[$patchOff + 0] = Opcode::JUMP_REX_PREFIX;
-            $tmp[$patchOff + 1] = $el[1];
-            $tmp[$patchOff + 2] = $lists[0];
-            $tmp[$patchOff + 3] = $lists[1];
-            $tmp[$patchOff + 4] = $lists[2];
-            $tmp[$patchOff + 5] = $lists[3];
+            $tmp[$pOff + 0] = Opcode::JUMP_REX_PREFIX;
+            $tmp[$pOff + 1] = $el[1];
+            $tmp[$pOff + 2] = $lists[0];
+            $tmp[$pOff + 3] = $lists[1];
+            $tmp[$pOff + 4] = $lists[2];
+            $tmp[$pOff + 5] = $lists[3];
         }
 
         return join(
@@ -902,6 +902,44 @@ class Codegen implements CodegenInterface
             && $ast->getChilds()[2]->getValue()->getValue() === "r3"
         ) {
             $result = array_merge($result, [Opcode::DIVB_IMM8_TO_R3], $serialized);
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getType() === NodeInterface::REGISTER &&
+            $ast->getChilds()[2]->getValue()->getType() === NodeInterface::REGISTER) {
+            $this->processBinaryDivbRegsToRegsInstruction($ast, $result);
+            return;
+        }
+    }
+
+    /**
+     * @param \Vm\AstInterface $ast
+     * @param array &$result
+     * @return void
+     */
+    private function processBinaryDivbRegsToRegsInstruction(AstInterface $ast, array &$result)
+    {
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r0" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r0") {
+            $result[] = Opcode::DIVB_R0_TO_R0;
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r1" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r0") {
+            $result[] = Opcode::DIVB_R1_TO_R0;
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r2" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r0") {
+            $result[] = Opcode::DIVB_R2_TO_R0;
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r3" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r0") {
+            $result[] = Opcode::DIVB_R3_TO_R0;
             return;
         }
     }
