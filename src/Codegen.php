@@ -66,7 +66,7 @@ class Codegen implements CodegenInterface
 
         if ($gotException) {
             throw new AstException(
-                "Current ast node is not instruction line."
+                "Current ast node is not instruction line or label."
             );
         }
 
