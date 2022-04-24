@@ -1,3 +1,6 @@
+.phive/
+composer.lock
 test.php
 shit.dasm
+tools/
 vendor/
