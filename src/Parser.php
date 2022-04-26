@@ -229,7 +229,8 @@ final class Parser implements ParserInterface
      */
     private function validateBinaryMovbInstruction(array $insn)
     {
-        if ($insn[0]->getValue() === "movb" && $insn[3]->getType() === NodeInterface::NUMBER) {
+        if ($insn[0]->getValue() === "movb" &&
+            $insn[3]->getType() === NodeInterface::NUMBER) {
             throw new SyntaxException(
                 sprintf(
                     "Number cannot be placed in second operand when it's mnemonic is 'movb' (line: %d).",
@@ -259,7 +260,8 @@ final class Parser implements ParserInterface
      */
     private function validateBinaryAddbInstruction(array $insn)
     {
-        if ($insn[0]->getValue() === "addb" && $insn[3]->getType() === NodeInterface::NUMBER) {
+        if ($insn[0]->getValue() === "addb" &&
+            $insn[3]->getType() === NodeInterface::NUMBER) {
             throw new SyntaxException(
                 sprintf(
                     "Number cannot be placed in second operand when it's mnemonic is 'addb' (line: %d).",
@@ -289,7 +291,8 @@ final class Parser implements ParserInterface
      */
     private function validateBinarySubbInstruction(array $insn)
     {
-        if ($insn[0]->getValue() === "subb" && $insn[3]->getType() === NodeInterface::NUMBER) {
+        if ($insn[0]->getValue() === "subb" &&
+            $insn[3]->getType() === NodeInterface::NUMBER) {
             throw new SyntaxException(
                 sprintf(
                     "Number cannot be placed in second operand when it's mnemonic is 'subb' (line: %d).",
@@ -319,7 +322,8 @@ final class Parser implements ParserInterface
      */
     private function validateBinaryMulbInstruction(array $insn)
     {
-        if ($insn[0]->getValue() === "mulb" && $insn[3]->getType() === NodeInterface::NUMBER) {
+        if ($insn[0]->getValue() === "mulb" &&
+            $insn[3]->getType() === NodeInterface::NUMBER) {
             throw new SyntaxException(
                 sprintf(
                     "Number cannot be placed in second operand when it's mnemonic is 'mulb' (line: %d).",
@@ -348,7 +352,8 @@ final class Parser implements ParserInterface
      */
     private function validateBinaryDivbInstruction(array $insn)
     {
-        if ($insn[0]->getValue() === "divb" && $insn[3]->getType() === NodeInterface::NUMBER) {
+        if ($insn[0]->getValue() === "divb" &&
+            $insn[3]->getType() === NodeInterface::NUMBER) {
             throw new SyntaxException(
                 sprintf(
                     "Number cannot be placed in second operand when it's mnemonic is 'divb' (line: %d).",
@@ -372,10 +377,40 @@ final class Parser implements ParserInterface
     }
 
     /**
+     * @param array $insn
+     * @return void
+     */
+    private function validateBinaryCmpbInstruction(array $insn)
+    {
+        if ($insn[0]->getValue() === "cmpb" &&
+            $insn[3]->getType() === NodeInterface::NUMBER) {
+            throw new SyntaxException(
+                sprintf(
+                    "Number cannot be placed in second operand when it's mnemonic is 'cmpb' (line: %d).",
+                    $this->line
+                )
+            );
+        }
+
+        if ($insn[0]->getValue() == "cmpb" &&
+            (($insn[1]->getType() !== NodeInterface::REGISTER ||
+              $insn[1]->getType() !== NodeInterface::NUMBER) &&
+             $insn[3]->getType() !== NodeInterface::REGISTER)) {
+            throw new SyntaxException(
+                sprintf(
+                    "First operand must be register or numeric constant, and second operand must be " .
+                    "register (line: %d).",
+                    $this->line
+                )
+            );
+        }
+    }
+
+    /**
      * @param  array $insn
      * @return void
      */
-    private function validateBinaryPribInstruction(array $insn)
+    private function validateUnaryPribInstruction(array $insn)
     {
         if ($insn[0]->getValue() === "prib"
             && ($insn[1]->getType() !== NodeInterface::NUMBER && $insn[1]->getType() !== NodeInterface::REGISTER)
@@ -387,16 +422,28 @@ final class Parser implements ParserInterface
     }
 
     /**
+     * @param array $insn
+     * @return void
+     */
+    private function validateNullaryHaltInstruction(array $insn)
+    {
+    }
+
+    /**
      * @param  array $insn
      * @return void
      */
     private function runInstructionLineValidator(array $insn)
     {
         switch (sizeof($insn)) {
+            case 1:
+                $this->validateNullaryHaltInstruction($insn);
+                break;
             case 2:
-                $this->validateBinaryPribInstruction($insn);
+                $this->validateUnaryPribInstruction($insn);
                 break;
             case 4:
+                $this->validateBinaryCmpbInstruction($insn);
                 $this->validateBinaryMovbInstruction($insn);
                 $this->validateBinaryAddbInstruction($insn);
                 $this->validateBinarySubbInstruction($insn);

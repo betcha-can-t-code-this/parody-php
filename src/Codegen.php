@@ -114,40 +114,80 @@ class Codegen implements CodegenInterface
      */
     private function processInstructionLine(AstInterface $ast, array &$result)
     {
+        if (sizeof($ast->getChilds()) === 1) {
+            $this->processNullaryHaltInstruction($ast, $result);
+            return;
+        }
+
         if (sizeof($ast->getChilds()) === 2 &&
             $ast->getChilds()[0]->getValue()->getValue() === "jmp") {
             $this->processUnaryJumpInstruction($ast, $result);
+            return;
+        }
+
+        if (sizeof($ast->getChilds()) === 2 &&
+            $ast->getChilds()[0]->getValue()->getValue() === "jnz") {
+            $this->processUnaryJumpIfNotZeroInstruction($ast, $result);
+            return;
+        }
+
+        if (sizeof($ast->getChilds()) === 2 &&
+            $ast->getChilds()[0]->getValue()->getValue() === "jz") {
+            $this->processUnaryJumpIfZeroInstruction($ast, $result);
+            return;
         }
 
         if (sizeof($ast->getChilds()) === 2 &&
             $ast->getChilds()[0]->getValue()->getValue() === "prib") {
             $this->processUnaryPribInstruction($ast, $result);
+            return;
         }
 
         if (sizeof($ast->getChilds()) === 3 &&
             $ast->getChilds()[0]->getValue()->getValue() === "movb") {
             $this->processBinaryMovbInstruction($ast, $result);
+            return;
         }
 
         if (sizeof($ast->getChilds()) === 3 &&
             $ast->getChilds()[0]->getValue()->getValue() === "addb") {
             $this->processBinaryAddbInstruction($ast, $result);
+            return;
         }
 
         if (sizeof($ast->getChilds()) === 3 &&
             $ast->getChilds()[0]->getValue()->getValue() === "subb") {
             $this->processBinarySubbInstruction($ast, $result);
+            return;
         }
 
         if (sizeof($ast->getChilds()) === 3 &&
             $ast->getChilds()[0]->getValue()->getValue() === "mulb") {
             $this->processBinaryMulbInstruction($ast, $result);
+            return;
         }
 
         if (sizeof($ast->getChilds()) === 3 &&
             $ast->getChilds()[0]->getValue()->getValue() === "divb") {
             $this->processBinaryDivbInstruction($ast, $result);
+            return;
         }
+
+        if (sizeof($ast->getChilds()) == 3 &&
+            $ast->getChilds()[0]->getValue()->getValue() === "cmpb") {
+            $this->processBinaryCmpbInstruction($ast, $result);
+            return;
+        }
+    }
+
+    /**
+     * @param \Vm\AstInterface $ast
+     * @param array &$result
+     * @return void
+     */
+    private function processNullaryHaltInstruction(AstInterface $ast, array &$result)
+    {
+        $result[] = Opcode::HALT;
     }
 
     /**
@@ -166,6 +206,44 @@ class Codegen implements CodegenInterface
         $name              = $ast->getChilds()[1]->getValue()->getValue();
         $replacement       = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
         $this->patchJump[] = [sizeof($result), JumpOpcode::JUMP_PLAIN, $name];
+        $result            = array_merge($result, $replacement);
+    }
+
+    /**
+     * @param \Vm\AstInterface $ast
+     * @param array &$result
+     * @return void
+     */
+    private function processUnaryJumpIfNotZeroInstruction(AstInterface $ast, array &$result)
+    {
+        if ($ast->getChilds()[1]->getValue()->getType() !== NodeInterface::LABEL) {
+            throw new AstException(
+                "Jump-related instruction must be followed by label name."
+            );
+        }
+
+        $name              = $ast->getChilds()[1]->getValue()->getValue();
+        $replacement       = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
+        $this->patchJump[] = [sizeof($result), JumpOpcode::JUMP_IF_NOT_ZERO, $name];
+        $result            = array_merge($result, $replacement);
+    }
+
+    /**
+     * @param \Vm\AstInterface $ast
+     * @param array &$result
+     * @return void
+     */
+    private function processUnaryJumpIfZeroInstruction(AstInterface $ast, array &$result)
+    {
+        if ($ast->getChilds()[1]->getValue()->getType() !== NodeInterface::LABEL) {
+            throw new AstException(
+                "Jump-related instruction must be followed by label name."
+            );
+        }
+
+        $name              = $ast->getChilds()[1]->getValue()->getValue();
+        $replacement       = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
+        $this->patchJump[] = [sizeof($result), JumpOpcode::JUMP_IF_ZERO, $name];
         $result            = array_merge($result, $replacement);
     }
 
@@ -917,6 +995,51 @@ class Codegen implements CodegenInterface
      * @param array &$result
      * @return void
      */
+    private function processBinaryCmpbInstruction(AstInterface $ast, array &$result)
+    {
+        if ($ast->getChilds()[1]->getValue()->getType() === NodeInterface::NUMBER) {
+            $number = $ast->getChilds()[1]
+                ->getValue()
+                ->getValue();
+            $serialized = $this->serializeNumberIntoDwordList($number);
+        }
+
+        if (isset($serialized) &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r0") {
+            $result = array_merge($result, [Opcode::CMPB_IMM8_TO_R0], $serialized);
+            return;
+        }
+
+        if (isset($serialized) &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r1") {
+            $result = array_merge($result, [Opcode::CMPB_IMM8_TO_R1], $serialized);
+            return;
+        }
+
+        if (isset($serialized) &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r2") {
+            $result = array_merge($result, [Opcode::CMPB_IMM8_TO_R2], $serialized);
+            return;
+        }
+
+        if (isset($serialized) &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r3") {
+            $result = array_merge($result, [Opcode::CMPB_IMM8_TO_R3], $serialized);
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getType() === NodeInterface::REGISTER &&
+            $ast->getChilds()[2]->getValue()->getType() === NodeInterface::REGISTER) {
+            $this->processBinaryCmpbRegsToRegsInstruction($ast, $result);
+            return;
+        }
+    }
+
+    /**
+     * @param \Vm\AstInterface $ast
+     * @param array &$result
+     * @return void
+     */
     private function processBinaryDivbRegsToRegsInstruction(AstInterface $ast, array &$result)
     {
         if ($ast->getChilds()[1]->getValue()->getValue() === "r0" &&
@@ -1012,6 +1135,110 @@ class Codegen implements CodegenInterface
         if ($ast->getChilds()[1]->getValue()->getValue() === "r3" &&
             $ast->getChilds()[2]->getValue()->getValue() === "r3") {
             $result[] = Opcode::DIVB_R3_TO_R3;
+            return;
+        }
+    }
+
+    /**
+     * @param \Vm\AstInterface $ast
+     * @param array &$result
+     * @return void
+     */
+    private function processBinaryCmpbRegsToRegsInstruction(AstInterface $ast, array &$result)
+    {
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r0" &&
+            $ast->getChilds()[1]->getValue()->getValue() === "r0") {
+            $result[] = Opcode::CMPB_R0_TO_R0;
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r1" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r0") {
+            $result[] = Opcode::CMPB_R1_TO_R0;
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r2" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r0") {
+            $result[] = Opcode::CMPB_R2_TO_R0;
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r3" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r0") {
+            $result[] = Opcode::CMPB_R3_TO_R0;
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r0" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r1") {
+            $result[] = Opcode::CMPB_R0_TO_R1;
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r1" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r1") {
+            $result[] = Opcode::CMPB_R1_TO_R1;
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r2" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r1") {
+            $result[] = Opcode::CMPB_R2_TO_R1;
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r3" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r1") {
+            $result[] = Opcode::CMPB_R3_TO_R1;
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r0" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r2") {
+            $result[] = Opcode::CMPB_R0_TO_R2;
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r1" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r2") {
+            $result[] = Opcode::CMPB_R1_TO_R2;
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r2" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r2") {
+            $result[] = Opcode::CMPB_R2_TO_R2;
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r3" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r2") {
+            $result[] = Opcode::CMPB_R3_TO_R2;
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r0" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r3") {
+            $result[] = Opcode::CMPB_R0_TO_R3;
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r1" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r3") {
+            $result[] = Opcode::CMPB_R1_TO_R3;
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r2" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r3") {
+            $result[] = Opcode::CMPB_R2_TO_R3;
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r3" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r3") {
+            $result[] = Opcode::CMPB_R3_TO_R3;
             return;
         }
     }

@@ -512,6 +512,106 @@ interface Opcode
     /**
      * @var int
      */
+    const CMPB_R0_TO_R0 = 0x74;
+
+    /**
+     * @var int
+     */
+    const CMPB_R1_TO_R0 = 0x75;
+
+    /**
+     * @var int
+     */
+    const CMPB_R2_TO_R0 = 0x76;
+
+    /**
+     * @var int
+     */
+    const CMPB_R3_TO_R0 = 0x77;
+
+    /**
+     * @var int
+     */
+    const CMPB_R0_TO_R1 = 0x78;
+
+    /**
+     * @var int
+     */
+    const CMPB_R1_TO_R1 = 0x79;
+
+    /**
+     * @var int
+     */
+    const CMPB_R2_TO_R1 = 0x7a;
+
+    /**
+     * @var int
+     */
+    const CMPB_R3_TO_R1 = 0x7b;
+
+    /**
+     * @var int
+     */
+    const CMPB_R0_TO_R2 = 0x7c;
+
+    /**
+     * @var int
+     */
+    const CMPB_R1_TO_R2 = 0x7d;
+
+    /**
+     * @var int
+     */
+    const CMPB_R2_TO_R2 = 0x7e;
+
+    /**
+     * @var int
+     */
+    const CMPB_R3_TO_R2 = 0x7f;
+
+    /**
+     * @var int
+     */
+    const CMPB_R0_TO_R3 = 0x80;
+
+    /**
+     * @var int
+     */
+    const CMPB_R1_TO_R3 = 0x81;
+
+    /**
+     * @var int
+     */
+    const CMPB_R2_TO_R3 = 0x82;
+
+    /**
+     * @var int
+     */
+    const CMPB_R3_TO_R3 = 0x83;
+
+    /**
+     * @var int
+     */
+    const CMPB_IMM8_TO_R0 = 0x84;
+
+    /**
+     * @var int
+     */
+    const CMPB_IMM8_TO_R1 = 0x85;
+
+    /**
+     * @var int
+     */
+    const CMPB_IMM8_TO_R2 = 0x86;
+
+    /**
+     * @var int
+     */
+    const CMPB_IMM8_TO_R3 = 0x87;
+
+    /**
+     * @var int
+     */
     const PRIB_R0 = 0xb0;
 
     /**
@@ -538,4 +638,9 @@ interface Opcode
      * @var int
      */
     const JUMP_REX_PREFIX = 0xc0;
+
+    /**
+     * @var int
+     */
+    const HALT = 0xfd;
 }

@@ -27,12 +27,32 @@ final class Vm implements RuntimeInterface
     private $buffer;
 
     /**
+     * @var \Vm\RegisterInterface
+     */
+    private $register;
+
+    /**
+     * @var \Vm\EflagsInterface
+     */
+    private $eflags;
+
+    /**
+     * @var bool
+     */
+    private $halted = false;
+
+    /**
      * @param  \Vm\RegisterInterface $register
+     * @param  \Vm\EflagsInterface   $eflags
      * @param  string                $buffer
      * @return static
      */
-    public function __construct(RegisterInterface $register, string $buffer)
-    {
+    public function __construct(
+        RegisterInterface $register,
+        EflagsInterface $eflags,
+        string $buffer
+    ) {
+        $this->setEflags($eflags);
         $this->setRegister($register);
         $this->setBuffer($buffer);
         $this->setLength(strlen($this->getBuffer()));
@@ -43,7 +63,7 @@ final class Vm implements RuntimeInterface
      */
     public function run()
     {
-        while (true) {
+        while (!$this->isHalted()) {
             if ($this->isEOF()) {
                 break;
             }
@@ -51,6 +71,22 @@ final class Vm implements RuntimeInterface
             $this->processOpcode();
             $this->incrementIp();
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEflags(): EflagsInterface
+    {
+        return $this->eflags;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setEflags(EflagsInterface $eflags)
+    {
+        $this->eflags = $eflags;
     }
 
     /**
@@ -67,6 +103,22 @@ final class Vm implements RuntimeInterface
     public function setRegister(RegisterInterface $register)
     {
         $this->register = $register;
+    }
+
+    /**
+     * @return void
+     */
+    private function halt()
+    {
+        $this->halted = true;
+    }
+
+    /**
+     * @return bool
+     */
+    private function isHalted(): bool
+    {
+        return $this->halted;
     }
 
     /**
@@ -188,6 +240,12 @@ final class Vm implements RuntimeInterface
             case Opcode::DIVB_IMM8_TO_R3:
                 $this->processBinaryDivbImm8ToRegs();
                 break;
+            case Opcode::CMPB_IMM8_TO_R0:
+            case Opcode::CMPB_IMM8_TO_R1:
+            case Opcode::CMPB_IMM8_TO_R2:
+            case Opcode::CMPB_IMM8_TO_R3:
+                $this->processBinaryCmpbImm8ToRegs();
+                break;
             case Opcode::MOVB_R0_TO_R0:
             case Opcode::MOVB_R1_TO_R0:
             case Opcode::MOVB_R2_TO_R0:
@@ -308,6 +366,30 @@ final class Vm implements RuntimeInterface
             case Opcode::DIVB_R3_TO_R3:
                 $this->processBinaryDivbRegsToR3();
                 break;
+            case Opcode::CMPB_R0_TO_R0:
+            case Opcode::CMPB_R1_TO_R0:
+            case Opcode::CMPB_R2_TO_R0:
+            case Opcode::CMPB_R3_TO_R0:
+                $this->processBinaryCmpbRegsToR0();
+                break;
+            case Opcode::CMPB_R0_TO_R1:
+            case Opcode::CMPB_R1_TO_R1:
+            case Opcode::CMPB_R2_TO_R1:
+            case Opcode::CMPB_R3_TO_R1:
+                $this->processBinaryCmpbRegsToR1();
+                break;
+            case Opcode::CMPB_R0_TO_R2:
+            case Opcode::CMPB_R1_TO_R2:
+            case Opcode::CMPB_R2_TO_R2:
+            case Opcode::CMPB_R3_TO_R2:
+                $this->processBinaryCmpbRegsToR2();
+                break;
+            case Opcode::CMPB_R0_TO_R3:
+            case Opcode::CMPB_R1_TO_R3:
+            case Opcode::CMPB_R2_TO_R3:
+            case Opcode::CMPB_R3_TO_R3:
+                $this->processBinaryCmpbRegsToR3();
+                break;
             case Opcode::PRIB_R0:
             case Opcode::PRIB_R1:
             case Opcode::PRIB_R2:
@@ -319,6 +401,9 @@ final class Vm implements RuntimeInterface
                 break;
             case Opcode::JUMP_REX_PREFIX:
                 $this->processJumpRexPrefix();
+                break;
+            case Opcode::HALT:
+                $this->halt();
                 break;
         }
     }
@@ -424,6 +509,27 @@ final class Vm implements RuntimeInterface
                 break;
             case Opcode::DIVB_IMM8_TO_R3:
                 $this->processBinaryDivbImm8ToR3();
+                break;
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryCmpbImm8ToRegs()
+    {
+        switch ($this->current()) {
+            case Opcode::CMPB_IMM8_TO_R0:
+                $this->processBinaryCmpbImm8ToR0();
+                break;
+            case Opcode::CMPB_IMM8_TO_R1:
+                $this->processBinaryCmpbImm8ToR1();
+                break;
+            case Opcode::CMPB_IMM8_TO_R2:
+                $this->processBinaryCmpbImm8ToR2();
+                break;
+            case Opcode::CMPB_IMM8_TO_R3:
+                $this->processBinaryCmpbImm8ToR3();
                 break;
         }
     }
@@ -851,6 +957,90 @@ final class Vm implements RuntimeInterface
     /**
      * @return void
      */
+    private function processBinaryCmpbRegsToR0()
+    {
+        switch ($this->current()) {
+            case Opcode::CMPB_R0_TO_R0:
+                $this->processBinaryCmpbR0ToR0();
+                break;
+            case Opcode::CMPB_R1_TO_R0:
+                $this->processBinaryCmpbR1ToR0();
+                break;
+            case Opcode::CMPB_R2_TO_R0:
+                $this->processBinaryCmpbR2ToR0();
+                break;
+            case Opcode::CMPB_R3_TO_R0:
+                $this->processBinaryCmpbR3ToR0();
+                break;
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryCmpbRegsToR1()
+    {
+        switch ($this->current()) {
+            case Opcode::CMPB_R0_TO_R1:
+                $this->processBinaryCmpbR0ToR1();
+                break;
+            case Opcode::CMPB_R1_TO_R1:
+                $this->processBinaryCmpbR1ToR1();
+                break;
+            case Opcode::CMPB_R2_TO_R1:
+                $this->processBinaryCmpbR2ToR1();
+                break;
+            case Opcode::CMPB_R3_TO_R1:
+                $this->processBinaryCmpbR3ToR1();
+                break;
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryCmpbRegsToR2()
+    {
+        switch ($this->current()) {
+            case Opcode::CMPB_R0_TO_R2:
+                $this->processBinaryCmpbR0ToR2();
+                break;
+            case Opcode::CMPB_R1_TO_R2:
+                $this->processBinaryCmpbR1ToR2();
+                break;
+            case Opcode::CMPB_R2_TO_R2:
+                $this->processBinaryCmpbR2ToR2();
+                break;
+            case Opcode::CMPB_R3_TO_R2:
+                $this->processBinaryCmpbR3ToR2();
+                break;
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryCmpbRegsToR3()
+    {
+        switch ($this->current()) {
+            case Opcode::CMPB_R0_TO_R3:
+                $this->processBinaryCmpbR0ToR3();
+                break;
+            case Opcode::CMPB_R1_TO_R3:
+                $this->processBinaryCmpbR1ToR3();
+                break;
+            case Opcode::CMPB_R2_TO_R3:
+                $this->processBinaryCmpbR2ToR3();
+                break;
+            case Opcode::CMPB_R3_TO_R3:
+                $this->processBinaryCmpbR3ToR3();
+                break;
+        }
+    }
+
+    /**
+     * @return void
+     */
     private function processUnaryPribRegs()
     {
         switch ($this->current()) {
@@ -921,6 +1111,12 @@ final class Vm implements RuntimeInterface
         switch ($this->current()) {
             case JumpOpcode::JUMP_PLAIN:
                 $this->processPlainJumpInstruction();
+                break;
+            case JumpOpcode::JUMP_IF_NOT_ZERO:
+                $this->processJumpIfNotZeroInstruction();
+                break;
+            case JumpOpcode::JUMP_IF_ZERO:
+                $this->processJumpIfZeroInstruction();
                 break;
         }
     }
@@ -1816,6 +2012,198 @@ final class Vm implements RuntimeInterface
     /**
      * @return void
      */
+    private function processBinaryCmpbImm8ToR0()
+    {
+        $this->incrementIp();
+        $this->checkForEOF();
+
+        $tmp  = [];
+        $sign = $this->current();
+
+        $this->checkForNumberSign($sign);
+
+        $this->incrementIp();
+        $this->checkForEOF();
+
+        $tmp[] = $this->current();
+
+        $this->incrementIp();
+        $this->checkForEOF();
+
+        $tmp[] = $this->current();
+
+        $this->incrementIp();
+        $this->checkForEOF();
+
+        $tmp[] = $this->current();
+
+        $this->incrementIp();
+        $this->checkForEOF();
+
+        $tmp[] = $this->current();
+
+        $num = 0    | (($tmp[0] & 0xff) << 24);
+        $num = $num | (($tmp[1] & 0xff) << 16);
+        $num = $num | (($tmp[2] & 0xff) <<  8);
+        $num = $num | (($tmp[3] & 0xff) <<  0);
+
+        $num    = $sign === 0xfe ? $num : (-1 * $num);
+        $result = $this->getRegister()->getR0() - $num;
+
+        if (!$result) {
+            $this->getEflags()->setFlag(
+                $this->getEflags()->getFlag() | EflagsInterface::ZERO
+            );
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryCmpbImm8ToR1()
+    {
+        $this->incrementIp();
+        $this->checkForEOF();
+
+        $tmp  = [];
+        $sign = $this->current();
+
+        $this->checkForNumberSign($sign);
+
+        $this->incrementIp();
+        $this->checkForEOF();
+
+        $tmp[] = $this->current();
+
+        $this->incrementIp();
+        $this->checkForEOF();
+
+        $tmp[] = $this->current();
+
+        $this->incrementIp();
+        $this->checkForEOF();
+
+        $tmp[] = $this->current();
+
+        $this->incrementIp();
+        $this->checkForEOF();
+
+        $tmp[] = $this->current();
+
+        $num = 0    | (($tmp[0] & 0xff) << 24);
+        $num = $num | (($tmp[1] & 0xff) << 16);
+        $num = $num | (($tmp[2] & 0xff) <<  8);
+        $num = $num | (($tmp[3] & 0xff) <<  0);
+
+        $num    = $sign === 0xfe ? $num : (-1 * $num);
+        $result = $this->getRegister()->getR1() - $num;
+
+        if (!$result) {
+            $this->getEflags()->setFlag(
+                $this->getEflags()->getFlag() | EflagsInterface::ZERO
+            );
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryCmpbImm8ToR2()
+    {
+        $this->incrementIp();
+        $this->checkForEOF();
+
+        $tmp  = [];
+        $sign = $this->current();
+
+        $this->checkForNumberSign($sign);
+
+        $this->incrementIp();
+        $this->checkForEOF();
+
+        $tmp[] = $this->current();
+
+        $this->incrementIp();
+        $this->checkForEOF();
+
+        $tmp[] = $this->current();
+
+        $this->incrementIp();
+        $this->checkForEOF();
+
+        $tmp[] = $this->current();
+
+        $this->incrementIp();
+        $this->checkForEOF();
+
+        $tmp[] = $this->current();
+
+        $num = 0    | (($tmp[0] & 0xff) << 24);
+        $num = $num | (($tmp[1] & 0xff) << 16);
+        $num = $num | (($tmp[2] & 0xff) <<  8);
+        $num = $num | (($tmp[3] & 0xff) <<  0);
+
+        $num    = $sign === 0xfe ? $num : (-1 * $num);
+        $result = $this->getRegister()->getR2() - $num;
+
+        if (!$result) {
+            $this->getEflags()->setFlag(
+                $this->getEflags()->getFlag() | EflagsInterface::ZERO
+            );
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryCmpbImm8ToR3()
+    {
+        $this->incrementIp();
+        $this->checkForEOF();
+
+        $tmp  = [];
+        $sign = $this->current();
+
+        $this->checkForNumberSign($sign);
+
+        $this->incrementIp();
+        $this->checkForEOF();
+
+        $tmp[] = $this->current();
+
+        $this->incrementIp();
+        $this->checkForEOF();
+
+        $tmp[] = $this->current();
+
+        $this->incrementIp();
+        $this->checkForEOF();
+
+        $tmp[] = $this->current();
+
+        $this->incrementIp();
+        $this->checkForEOF();
+
+        $tmp[] = $this->current();
+
+        $num = 0    | (($tmp[0] & 0xff) << 24);
+        $num = $num | (($tmp[1] & 0xff) << 16);
+        $num = $num | (($tmp[2] & 0xff) <<  8);
+        $num = $num | (($tmp[3] & 0xff) <<  0);
+
+        $num    = $sign == 0xfe ? $num : (-1 * $num);
+        $result = $this->getRegister()->getR3() - $num;
+
+        if (!$result) {
+            $this->getEflags()->setFlag(
+                $this->getEflags()->getFlag() | EflagsInterface::ZERO
+            );
+        }
+    }
+
+    /**
+     * @return void
+     */
     private function processBinaryMovbR0ToR0()
     {
         $this->getRegister()->setR0($this->getRegister()->getR0());
@@ -2648,6 +3036,230 @@ final class Vm implements RuntimeInterface
     /**
      * @return void
      */
+    private function processBinaryCmpbR0ToR0()
+    {
+        $result = $this->getRegister()->getR0() - $this->getRegister()->getR0();
+
+        if (!$result) {
+            $this->getEflags()->setFlag(
+                $this->getEflags()->getFlag() | EflagsInterface::ZERO
+            );
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryCmpbR1ToR0()
+    {
+        $result = $this->getRegister()->getR0() - $this->getRegister()->getR1();
+
+        if (!$result) {
+            $this->getEflags()->setFlag(
+                $this->getEflags()->getFlag() | EflagsInterface::ZERO
+            );
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryCmpbR2ToR0()
+    {
+        $result = $this->getRegister()->getR0() - $this->getRegister()->getR2();
+
+        if (!$result) {
+            $this->getEflags()->setFlag(
+                $this->getEflags()->getFlag() | EflagsInterface::ZERO
+            );
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryCmpbR3toR0()
+    {
+        $result = $this->getRegister()->getR0() - $this->getRegister()->getR3();
+
+        if (!$result) {
+            $this->getEflags()->setFlag(
+                $this->getEflags()->getFlag() | EflagsInterface::ZERO
+            );
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryCmpbR0ToR1()
+    {
+        $result = $this->getRegister()->getR1() - $this->getRegister()->getR0();
+
+        if (!$result) {
+            $this->getEflags()->setFlag(
+                $this->getEflags()->getFlag() | EflagsInterface::ZERO
+            );
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryCmpbR1ToR1()
+    {
+        $result = $this->getRegister()->getR1() - $this->getRegister()->getR1();
+
+        if (!$result) {
+            $this->getEflags()->setFlag(
+                $this->getEflags()->getFlag() | EflagsInterface::ZERO
+            );
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryCmpbR2ToR1()
+    {
+        $result = $this->getRegister()->getR1() - $this->getRegister()->getR2();
+
+        if (!$result) {
+            $this->getEflags()->setFlag(
+                $this->getEflags()->getFlag() | EflagsInterface::ZERO
+            );
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryCmpbR3ToR1()
+    {
+        $result = $this->getRegister()->getR1() - $this->getRegister()->getR3();
+
+        if (!$result) {
+            $this->getEflags()->setFlag(
+                $this->getEflags()->getFlag() | EflagsInterface::ZERO
+            );
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryCmpbR0ToR2()
+    {
+        $result = $this->getRegister()->getR2() - $this->getRegister()->getR0();
+
+        if (!$result) {
+            $this->getEflags()->setFlag(
+                $this->getEflags()->getFlag() | EflagsInterface::ZERO
+            );
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryCmpbR1ToR2()
+    {
+        $result = $this->getRegister()->getR2() - $this->getRegister()->getR1();
+
+        if (!$result) {
+            $this->getEflags()->setFlag(
+                $this->getEflags()->getFlag() | EflagsInterface::ZERO
+            );
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryCmpbR2ToR2()
+    {
+        $result = $this->getRegister()->getR2() - $this->getRegister()->getR2();
+
+        if (!$result) {
+            $this->getEflags()->setFlag(
+                $this->getEflags()->getFlag() | EflagsInterface::ZERO
+            );
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryCmpbR3ToR2()
+    {
+        $result = $this->getRegister()->getR2() - $this->getRegister()->getR3();
+
+        if (!$result) {
+            $this->getEflags()->setFlag(
+                $this->getEflags()->getFlag() | EflagsInterface::ZERO
+            );
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryCmpbR0ToR3()
+    {
+        $result = $this->getRegister()->getR3() - $this->getRegister()->getR0();
+
+        if (!$result) {
+            $this->getEflags()->setFlag(
+                $this->getEflags()->getFlag() | EflagsInterface::ZERO
+            );
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryCmpbR1ToR3()
+    {
+        $result = $this->getRegister()->getR3() - $this->getRegister()->getR1();
+
+        if (!$result) {
+            $this->getEflags()->setFlag(
+                $this->getEflags()->getFlag() | EflagsInterface::ZERO
+            );
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryCmpbR2ToR3()
+    {
+        $result = $this->getRegister()->getR3() - $this->getRegister()->getR2();
+
+        if (!$result) {
+            $this->getEflags()->setFlag(
+                $this->getEflags()->getFlag() | EflagsInterface::ZERO
+            );
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryCmpbR3ToR3()
+    {
+        $result = $this->getRegister()->getR3() - $this->getRegister()->getR3();
+
+        if (!$result) {
+            $this->getEflags()->setFlag(
+                $this->getEflags()->getFlag() | EflagsInterface::ZERO
+            );
+        }
+    }
+
+    /**
+     * @return void
+     */
     private function processUnaryPribR0()
     {
         echo sprintf("%d\n", $this->getRegister()->getR0());
@@ -2682,6 +3294,84 @@ final class Vm implements RuntimeInterface
      */
     private function processPlainJumpInstruction()
     {
+        $tmp = [];
+
+        $this->incrementIp();
+        $this->checkForEOF();
+
+        $tmp[] = $this->current();
+
+        $this->incrementIp();
+        $this->checkForEOF();
+
+        $tmp[] = $this->current();
+
+        $this->incrementIp();
+        $this->checkForEOF();
+
+        $tmp[] = $this->current();
+
+        $this->incrementIp();
+        $this->checkForEOF();
+
+        $tmp[] = $this->current();
+
+        $offset = 0       | (($tmp[0] & 0xff) << 24);
+        $offset = $offset | (($tmp[1] & 0xff) << 16);
+        $offset = $offset | (($tmp[2] & 0xff) <<  8);
+        $offset = $offset | (($tmp[3] & 0xff) <<  0);
+
+        $this->setIp($offset);
+    }
+
+    /**
+     * @return void
+     */
+    private function processJumpIfNotZeroInstruction()
+    {
+        if ($this->getEflags()->isZero()) {
+            return;
+        }
+
+        $tmp = [];
+
+        $this->incrementIp();
+        $this->checkForEOF();
+
+        $tmp[] = $this->current();
+
+        $this->incrementIp();
+        $this->checkForEOF();
+
+        $tmp[] = $this->current();
+
+        $this->incrementIp();
+        $this->checkForEOF();
+
+        $tmp[] = $this->current();
+
+        $this->incrementIp();
+        $this->checkForEOF();
+
+        $tmp[] = $this->current();
+
+        $offset = 0       | (($tmp[0] & 0xff) << 24);
+        $offset = $offset | (($tmp[1] & 0xff) << 16);
+        $offset = $offset | (($tmp[2] & 0xff) <<  8);
+        $offset = $offset | (($tmp[3] & 0xff) <<  0);
+
+        $this->setIp($offset);
+    }
+
+    /**
+     * @return void
+     */
+    private function processJumpIfZeroInstruction()
+    {
+        if (!$this->getEflags()->isZero()) {
+            return;
+        }
+
         $tmp = [];
 
         $this->incrementIp();

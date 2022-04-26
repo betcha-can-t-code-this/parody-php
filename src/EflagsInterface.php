@@ -55,11 +55,6 @@ interface EflagsInterface
     const OVERFLOW = 0x800;
 
     /**
-     * @return void
-     */
-    public function calculate();
-
-    /**
      * @return int
      */
     public function getFlag(): int;
@@ -69,4 +64,49 @@ interface EflagsInterface
      * @return void
      */
     public function setFlag(int $flag);
+
+    /**
+     * @return bool
+     */
+    public function isCarry(): bool;
+
+    /**
+     * @return bool
+     */
+    public function isParity(): bool;
+
+    /**
+     * @return bool
+     */
+    public function isAdjust(): bool;
+
+    /**
+     * @return bool
+     */
+    public function isZero(): bool;
+
+    /**
+     * @return bool
+     */
+    public function isSign(): bool;
+
+    /**
+     * @return bool
+     */
+    public function isTrap(): bool;
+
+    /**
+     * @return bool
+     */
+    public function isInterruptEnable(): bool;
+
+    /**
+     * @return bool
+     */
+    public function isDirection(): bool;
+
+    /**
+     * @return bool
+     */
+    public function isOverflow(): bool;
 }

@@ -15,6 +15,17 @@ interface RuntimeInterface
     public function run();
 
     /**
+     * @return \Vm\EflagsInterface
+     */
+    public function getEflags(): EflagsInterface;
+
+    /**
+     * @param \Vm\EflagsInterface $eflags
+     * @return void
+     */
+    public function setEflags(EflagsInterface $eflags);
+
+    /**
      * @return \Vm\RegisterInterface
      */
     public function getRegister(): RegisterInterface;

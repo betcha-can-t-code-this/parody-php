@@ -29,7 +29,7 @@ interface LexerInterface
     /**
      * @var string
      */
-    const T_START_COMMENT_LINE = '%';
+    const T_START_COMMENT_LINE = ';';
 
     /**
      * @var string

@@ -341,8 +341,12 @@ class Lexer implements LexerInterface
     {
         return [
             "movb", "addb", "subb", "mulb",
-            "divb", "prib",
-            "jmp"
+            "divb", "prib", "cmpb",
+            "jmp",
+            // conditional jump (depends on zero flag status).
+            "jz", "jnz",
+            // halt the VM.
+            "halt"
         ];
     }
 
