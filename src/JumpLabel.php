@@ -25,10 +25,10 @@ final class JumpLabel implements JumpLabelInterface
     /**
      * {@inheritdoc}
      */
-    public function fetch(string $label): ?int
+    public function fetch(string $label): int
     {
         return !isset($this->labelMap[$label])
-            ? null
+            ? -1
             : $this->labelMap[$label];
     }
 

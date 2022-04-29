@@ -18,9 +18,9 @@ interface JumpLabelInterface
 
     /**
      * @param string $label
-     * @return int|null
+     * @return int
      */
-    public function fetch(string $label): ?int;
+    public function fetch(string $label): int;
 
     /**
      * @return array

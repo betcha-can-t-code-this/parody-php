@@ -93,6 +93,31 @@ class Lexer implements LexerInterface
                 continue;
             }
 
+            if ($this->isValidInstruction($this->token) &&
+                $this->current() !== LexerInterface::T_SPACE &&
+                $this->current() !== LexerInterface::T_TAB &&
+                $this->current() !== LexerInterface::T_NEWLINE) {
+                while ($this->current() !== LexerInterface::T_SPACE &&
+                       $this->current() !== LexerInterface::T_TAB &&
+                       $this->current() !== LexerInterface::T_NEWLINE) {
+                    $this->token .= $this->current();
+                    $this->next();
+                }
+
+                if (!$this->isValidInstruction($this->token)) {
+                    throw new SyntaxException(
+                        sprintf(
+                            "'%s' is not a valid mnemonic.",
+                            $this->token
+                        )
+                    );
+                }
+
+                $this->processMnemonic();
+                $this->token = '';
+                continue;
+            }
+
             if ($this->isValidInstruction($this->token)) {
                 $this->processMnemonic();
                 $this->token = '';
@@ -344,7 +369,11 @@ class Lexer implements LexerInterface
             "divb", "prib", "cmpb",
             "jmp",
             // conditional jump (depends on zero flag status).
-            "jz", "jnz",
+            "je", "jne", "jz", "jnz",
+            // conditional jump (depends on great flag / zero flag status).
+            "jge", "jg",
+            // conditional jump (depends on less flag / zero flag status).
+            "jle", "jl",
             // halt the VM.
             "halt"
         ];
@@ -384,7 +413,9 @@ class Lexer implements LexerInterface
     {
         if (!$this->isValidInstruction($buffer) &&
             !$this->isValidRegister($buffer)) {
-            throw new LexedEntityException("Current 'lexeme' is not valid register or instruction.");
+            throw new LexedEntityException(
+                "Current 'lexeme' is not valid register or instruction."
+            );
         }
     }
 }

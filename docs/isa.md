@@ -54,7 +54,13 @@
   Print 8-bit immediate value to teletype (TTY) console.
 
 - jmp @<label>
-  Jump to specified label.
+  Jump (near) to specified label.
+
+- jne @<label>
+  Jump to specified label (ZF = 0)
+
+- je @<label>
+  Jump to specified label (ZF = 1)
 
 - jnz @<label>
   Jump to specified label (ZF = 0)
@@ -62,6 +68,18 @@
 - jz @<label>
   Jump to specified label (ZF = 1)
 
+- jg @<label>
+  Jump to specified label (GF = 1)
+
+- jge @<label>
+  Jump to specified label (GF = 1 or ZF = 1)
+
+- jl @<label>
+  Jump to specified label (LF = 1)
+
+- jle @<label>
+  Jump to specified label (LF = 1 or ZF = 1)
+
 - halt
-  Terminating current running process.
+  Terminate current running process.
 ```

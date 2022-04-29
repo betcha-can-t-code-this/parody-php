@@ -10,11 +10,6 @@ namespace Vm;
 class Eflags implements EflagsInterface
 {
     /**
-     * @var array
-     */
-    private $serialized = [];
-
-    /**
      * @var int
      */
     private $flag = 0;
@@ -38,36 +33,6 @@ class Eflags implements EflagsInterface
     /**
      * {@inheritdoc}
      */
-    public function isCarry(): bool
-    {
-        return !($this->getFlag() & EflagsInterface::CARRY)
-            ? false
-            : true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isParity(): bool
-    {
-        return !($this->getFlag() & EflagsInterface::PARITY)
-            ? false
-            : true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isAdjust(): bool
-    {
-        return !($this->getFlag() & EflagsInterface::ADJUST)
-            ? false
-            : true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function isZero(): bool
     {
         return ($this->getFlag() & EflagsInterface::ZERO) !== EflagsInterface::ZERO
@@ -78,9 +43,9 @@ class Eflags implements EflagsInterface
     /**
      * {@inheritdoc}
      */
-    public function isSign(): bool
+    public function isGreat(): bool
     {
-        return !($this->getFlag() & EflagsInterface::SIGN)
+        return ($this->getFlag() & EflagsInterface::GREAT) !== EflagsInterface::GREAT
             ? false
             : true;
     }
@@ -88,39 +53,9 @@ class Eflags implements EflagsInterface
     /**
      * {@inheritdoc}
      */
-    public function isTrap(): bool
+    public function isLess(): bool
     {
-        return !($this->getFlag() & EflagsInterface::TRAP)
-            ? false
-            : true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isInterruptEnable(): bool
-    {
-        return !($this->getFlag() & EflagsInterface::INTERRUPT_ENABLE)
-            ? false
-            : true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isDirection(): bool
-    {
-        return !($this->getFlag() & EflagsInterface::DIRECTION)
-            ? false
-            : true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isOverflow(): bool
-    {
-        return !($this->getFlag() & EflagsInterface::OVERFLOW)
+        return ($this->getFlag() & EflagsInterface::LESS) !== EflagsInterface::LESS
             ? false
             : true;
     }

@@ -12,47 +12,17 @@ interface EflagsInterface
     /**
      * @var int
      */
-    const CARRY = 0x1;
+    const ZERO = 0x10;
 
     /**
      * @var int
      */
-    const PARITY = 0x2;
+    const GREAT = 0x100;
 
     /**
      * @var int
      */
-    const ADJUST = 0x10;
-
-    /**
-     * @var int
-     */
-    const ZERO = 0x40;
-
-    /**
-     * @var int
-     */
-    const SIGN = 0x80;
-
-    /**
-     * @var int
-     */
-    const TRAP = 0x100;
-
-    /**
-     * @var int
-     */
-    const INTERRUPT_ENABLE = 0x200;
-
-    /**
-     * @var int
-     */
-    const DIRECTION = 0x400;
-
-    /**
-     * @var int
-     */
-    const OVERFLOW = 0x800;
+    const LESS = 0x1000;
 
     /**
      * @return int
@@ -68,45 +38,15 @@ interface EflagsInterface
     /**
      * @return bool
      */
-    public function isCarry(): bool;
-
-    /**
-     * @return bool
-     */
-    public function isParity(): bool;
-
-    /**
-     * @return bool
-     */
-    public function isAdjust(): bool;
-
-    /**
-     * @return bool
-     */
     public function isZero(): bool;
 
     /**
      * @return bool
      */
-    public function isSign(): bool;
+    public function isGreat(): bool;
 
     /**
      * @return bool
      */
-    public function isTrap(): bool;
-
-    /**
-     * @return bool
-     */
-    public function isInterruptEnable(): bool;
-
-    /**
-     * @return bool
-     */
-    public function isDirection(): bool;
-
-    /**
-     * @return bool
-     */
-    public function isOverflow(): bool;
+    public function isLess(): bool;
 }

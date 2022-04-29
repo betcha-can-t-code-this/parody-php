@@ -58,7 +58,10 @@ class Codegen implements CodegenInterface
             }
 
             if ($vnode->getType() === AstInterface::AST_LABEL) {
-                $this->jumpLabel->add($vnode->getValue()->getValue(), sizeof($tmp) - 1);
+                $this->jumpLabel->add(
+                    $vnode->getValue()->getValue(),
+                    sizeof($tmp) === 0 ? 0 : sizeof($tmp)
+                );
             }
 
             $this->processInstructionLine($vnode, $tmp);
@@ -126,6 +129,18 @@ class Codegen implements CodegenInterface
         }
 
         if (sizeof($ast->getChilds()) === 2 &&
+            $ast->getChilds()[0]->getValue()->getValue() === "je") {
+            $this->processUnaryJumpIfEqualInstruction($ast, $result);
+            return;
+        }
+
+        if (sizeof($ast->getChilds()) === 2 &&
+            $ast->getChilds()[0]->getValue()->getValue() === "jne") {
+            $this->processUnaryJumpIfNotEqualInstruction($ast, $result);
+            return;
+        }
+
+        if (sizeof($ast->getChilds()) === 2 &&
             $ast->getChilds()[0]->getValue()->getValue() === "jnz") {
             $this->processUnaryJumpIfNotZeroInstruction($ast, $result);
             return;
@@ -134,6 +149,30 @@ class Codegen implements CodegenInterface
         if (sizeof($ast->getChilds()) === 2 &&
             $ast->getChilds()[0]->getValue()->getValue() === "jz") {
             $this->processUnaryJumpIfZeroInstruction($ast, $result);
+            return;
+        }
+
+        if (sizeof($ast->getChilds()) === 2 &&
+            $ast->getChilds()[0]->getValue()->getValue() === "jg") {
+            $this->processUnaryJumpIfGreaterInstruction($ast, $result);
+            return;
+        }
+
+        if (sizeof($ast->getChilds()) === 2 &&
+            $ast->getChilds()[0]->getValue()->getValue() === "jge") {
+            $this->processUnaryJumpIfGreaterOrEqualInstruction($ast, $result);
+            return;
+        }
+
+        if (sizeof($ast->getChilds()) === 2 &&
+            $ast->getChilds()[0]->getValue()->getValue() === "jl") {
+            $this->processUnaryJumpIfLessInstruction($ast, $result);
+            return;
+        }
+
+        if (sizeof($ast->getChilds()) === 2 &&
+            $ast->getChilds()[0]->getValue()->getValue() === "jle") {
+            $this->processUnaryJumpIfLessOrEqualInstruction($ast, $result);
             return;
         }
 
@@ -214,6 +253,44 @@ class Codegen implements CodegenInterface
      * @param array &$result
      * @return void
      */
+    private function processUnaryJumpIfEqualInstruction(AstInterface $ast, array &$result)
+    {
+        if ($ast->getChilds()[1]->getValue()->getType() !== NodeInterface::LABEL) {
+            throw new AstException(
+                "Jump-related instruction must be followed by label name."
+            );
+        }
+
+        $name              = $ast->getChilds()[1]->getValue()->getValue();
+        $replacement       = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
+        $this->patchJump[] = [sizeof($result), JumpOpcode::JUMP_IF_EQUAL, $name];
+        $result            = array_merge($result, $replacement);
+    }
+
+    /**
+     * @param \Vm\AstInterface $ast
+     * @param array &$result
+     * @return void
+     */
+    private function processUnaryJumpIfNotEqualInstruction(AstInterface $ast, array &$result)
+    {
+        if ($ast->getChilds()[1]->getValue()->getType() !== NodeInterface::LABEL) {
+            throw new AstException(
+                "Jump-related instruction must be followed by label name."
+            );
+        }
+
+        $name              = $ast->getChilds()[1]->getValue()->getValue();
+        $replacement       = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
+        $this->patchJump[] = [sizeof($result), JumpOpcode::JUMP_IF_NOT_EQUAL, $name];
+        $result            = array_merge($result, $replacement);
+    }
+
+    /**
+     * @param \Vm\AstInterface $ast
+     * @param array &$result
+     * @return void
+     */
     private function processUnaryJumpIfNotZeroInstruction(AstInterface $ast, array &$result)
     {
         if ($ast->getChilds()[1]->getValue()->getType() !== NodeInterface::LABEL) {
@@ -244,6 +321,82 @@ class Codegen implements CodegenInterface
         $name              = $ast->getChilds()[1]->getValue()->getValue();
         $replacement       = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
         $this->patchJump[] = [sizeof($result), JumpOpcode::JUMP_IF_ZERO, $name];
+        $result            = array_merge($result, $replacement);
+    }
+
+    /**
+     * @param \Vm\AstInterface $ast
+     * @param array &$result
+     * @return void
+     */
+    private function processUnaryJumpIfGreaterInstruction(AstInterface $ast, array &$result)
+    {
+        if ($ast->getChilds()[1]->getValue()->getType() !== NodeInterface::LABEL) {
+            throw new AstException(
+                "Jump-related instruction must be followed by label name."
+            );
+        }
+
+        $name              = $ast->getChilds()[1]->getValue()->getValue();
+        $replacement       = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
+        $this->patchJump[] = [sizeof($result), JumpOpcode::JUMP_IF_GREATER, $name];
+        $result            = array_merge($result, $replacement);
+    }
+
+    /**
+     * @param \Vm\AstInterface $ast
+     * @param array &$result
+     * @return void
+     */
+    private function processUnaryJumpIfGreaterOrEqualInstruction(AstInterface $ast, array &$result)
+    {
+        if ($ast->getChilds()[1]->getValue()->getType() !== NodeInterface::LABEL) {
+            throw new AstException(
+                "Jump-related instruction must be followed by label name."
+            );
+        }
+
+        $name              = $ast->getChilds()[1]->getValue()->getValue();
+        $replacement       = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
+        $this->patchJump[] = [sizeof($result), JumpOpcode::JUMP_IF_GREATER_OR_EQUAL, $name];
+        $result            = array_merge($result, $replacement);
+    }
+
+    /**
+     * @param \Vm\AstInterface $ast
+     * @param array &$result
+     * @return void
+     */
+    private function processUnaryJumpIfLessInstruction(AstInterface $ast, array &$result)
+    {
+        if ($ast->getChilds()[1]->getValue()->getType() !== NodeInterface::LABEL) {
+            throw new AstException(
+                "Jump-related instruction must be followed by label name."
+            );
+        }
+
+        $name              = $ast->getChilds()[1]->getValue()->getValue();
+        $replacement       = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
+        $this->patchJump[] = [sizeof($result), JumpOpcode::JUMP_IF_LESS, $name];
+        $result            = array_merge($result, $replacement);
+    }
+
+    /**
+     * @param \Vm\AstInterface $ast
+     * @param array &$result
+     * @return void
+     */
+    private function processUnaryJumpIfLessOrEqualInstruction(AstInterface $ast, array &$result)
+    {
+        if ($ast->getChilds()[1]->getValue()->getType() !== NodeInterface::LABEL) {
+            throw new AstException(
+                "Jump-related instruction must be followed by label name."
+            );
+        }
+
+        $name              = $ast->getChilds()[1]->getValue()->getValue();
+        $replacement       = [0x00, 0x00, 0x00, 0x00, 0x00, 0x00];
+        $this->patchJump[] = [sizeof($result), JumpOpcode::JUMP_IF_LESS_OR_EQUAL, $name];
         $result            = array_merge($result, $replacement);
     }
 

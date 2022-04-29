@@ -1064,40 +1064,15 @@ final class Vm implements RuntimeInterface
      */
     private function processUnaryPribImm8()
     {
-        $this->incrementIp();
-        $this->checkForEOF();
+        try {
+            $sign = $this->getAndCheckForNumberSign();
+        } catch (RuntimeException $e) {
+            throw $e;
+        }
 
-        $tmp  = [];
-        $sign = $this->current();
+        $number = $this->deserializeVanillaNumber();
 
-        $this->checkForNumberSign($sign);
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $num = 0    | (($tmp[0] & 0xff) << 24);
-        $num = $num | (($tmp[1] & 0xff) << 16);
-        $num = $num | (($tmp[2] & 0xff) <<  8);
-        $num = $num | (($tmp[3] & 0xff) <<  0);
-
-        echo sprintf("%d\n", $sign == 0xfe ? $num : (-1 * $num));
+        echo sprintf("%d\n", $sign == 0xfe ? $number : (-1 * $number));
     }
 
     /**
@@ -1112,11 +1087,29 @@ final class Vm implements RuntimeInterface
             case JumpOpcode::JUMP_PLAIN:
                 $this->processPlainJumpInstruction();
                 break;
+            case JumpOpcode::JUMP_IF_NOT_EQUAL:
+                $this->processJumpIfNotEqualInstruction();
+                break;
+            case JumpOpcode::JUMP_IF_EQUAL:
+                $this->processJumpIfEqualInstruction();
+                break;
             case JumpOpcode::JUMP_IF_NOT_ZERO:
                 $this->processJumpIfNotZeroInstruction();
                 break;
             case JumpOpcode::JUMP_IF_ZERO:
                 $this->processJumpIfZeroInstruction();
+                break;
+            case JumpOpcode::JUMP_IF_GREATER:
+                $this->processJumpIfGreaterInstruction();
+                break;
+            case JumpOpcode::JUMP_IF_GREATER_OR_EQUAL:
+                $this->processJumpIfGreaterOrEqualInstruction();
+                break;
+            case JumpOpcode::JUMP_IF_LESS:
+                $this->processJumpIfLessInstruction();
+                break;
+            case JumpOpcode::JUMP_IF_LESS_OR_EQUAL:
+                $this->processJumpIfLessOrEqualInstruction();
                 break;
         }
     }
@@ -1126,40 +1119,14 @@ final class Vm implements RuntimeInterface
      */
     private function processBinaryMovbImm8ToR0()
     {
-        $this->incrementIp();
-        $this->checkForEOF();
+        try {
+            $sign = $this->getAndCheckForNumberSign();
+        } catch (RuntimeException $e) {
+            throw $e;
+        }
 
-        $tmp  = [];
-        $sign = $this->current();
-
-        $this->checkForNumberSign($sign);
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $num = 0    | (($tmp[0] & 0xff) << 24);
-        $num = $num | (($tmp[1] & 0xff) << 16);
-        $num = $num | (($tmp[2] & 0xff) <<  8);
-        $num = $num | (($tmp[3] & 0xff) <<  0);
-
-        $this->getRegister()->setR0($sign == 0xfe ? $num : (-1 * $num));
+        $number = $this->deserializeVanillaNumber();
+        $this->getRegister()->setR0($sign == 0xfe ? $number : (-1 * $number));
     }
 
     /**
@@ -1167,40 +1134,14 @@ final class Vm implements RuntimeInterface
      */
     private function processBinaryMovbImm8ToR1()
     {
-        $this->incrementIp();
-        $this->checkForEOF();
+        try {
+            $sign = $this->getAndCheckForNumberSign();
+        } catch (RuntimeException $e) {
+            throw $e;
+        }
 
-        $tmp  = [];
-        $sign = $this->current();
-
-        $this->checkForNumberSign($sign);
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $num = 0    | (($tmp[0] & 0xff) << 24);
-        $num = $num | (($tmp[1] & 0xff) << 16);
-        $num = $num | (($tmp[2] & 0xff) <<  8);
-        $num = $num | (($tmp[3] & 0xff) <<  0);
-
-        $this->getRegister()->setR1($sign == 0xfe ? $num : (-1 * $num));
+        $number = $this->deserializeVanillaNumber();
+        $this->getRegister()->setR1($sign == 0xfe ? $number : (-1 * $number));
     }
 
     /**
@@ -1208,40 +1149,14 @@ final class Vm implements RuntimeInterface
      */
     private function processBinaryMovbImm8ToR2()
     {
-        $this->incrementIp();
-        $this->checkForEOF();
+        try {
+            $sign = $this->getAndCheckForNumberSign();
+        } catch (RuntimeException $e) {
+            throw $e;
+        }
 
-        $tmp  = [];
-        $sign = $this->current();
-
-        $this->checkForNumberSign($sign);
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $num = 0    | (($tmp[0] & 0xff) << 24);
-        $num = $num | (($tmp[1] & 0xff) << 16);
-        $num = $num | (($tmp[2] & 0xff) <<  8);
-        $num = $num | (($tmp[3] & 0xff) <<  0);
-
-        $this->getRegister()->setR2($sign == 0xfe ? $num : (-1 * $num));
+        $number = $this->deserializeVanillaNumber();
+        $this->getRegister()->setR2($sign == 0xfe ? $number : (-1 * $number));
     }
 
     /**
@@ -1249,40 +1164,14 @@ final class Vm implements RuntimeInterface
      */
     private function processBinaryMovbImm8ToR3()
     {
-        $this->incrementIp();
-        $this->checkForEOF();
+        try {
+            $sign = $this->getAndCheckForNumberSign();
+        } catch (RuntimeException $e) {
+            throw $e;
+        }
 
-        $tmp  = [];
-        $sign = $this->current();
-
-        $this->checkForNumberSign($sign);
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $num = 0    | (($tmp[0] & 0xff) << 24);
-        $num = $num | (($tmp[1] & 0xff) << 16);
-        $num = $num | (($tmp[2] & 0xff) <<  8);
-        $num = $num | (($tmp[3] & 0xff) <<  0);
-
-        $this->getRegister()->setR3($sign == 0xfe ? $num : (-1 * $num));
+        $number = $this->deserializeVanillaNumber();
+        $this->getRegister()->setR3($sign == 0xfe ? $number : (-1 * $number));
     }
 
     /**
@@ -1290,43 +1179,17 @@ final class Vm implements RuntimeInterface
      */
     private function processBinaryAddbImm8ToR0()
     {
-        $this->incrementIp();
-        $this->checkForEOF();
+        try {
+            $sign = $this->getAndCheckForNumberSign();
+        } catch (RuntimeException $e) {
+            throw $e;
+        }
 
-        $tmp  = [];
-        $sign = $this->current();
-
-        $this->checkForNumberSign($sign);
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $num = 0    | (($tmp[0] & 0xff) << 24);
-        $num = $num | (($tmp[1] & 0xff) << 16);
-        $num = $num | (($tmp[2] & 0xff) <<  8);
-        $num = $num | (($tmp[3] & 0xff) <<  0);
-
-        $num = $sign == 0xfe ? $num : (-1 * $num);
+        $number = $this->deserializeVanillaNumber();
+        $number = $sign == 0xfe ? $number : (-1 * $number);
 
         $this->getRegister()
-            ->setR0($this->getRegister()->getR0() + $num);
+            ->setR0($this->getRegister()->getR0() + $number);
     }
 
     /**
@@ -1334,43 +1197,17 @@ final class Vm implements RuntimeInterface
      */
     private function processBinaryAddbImm8ToR1()
     {
-        $this->incrementIp();
-        $this->checkForEOF();
+        try {
+            $sign = $this->getAndCheckForNumberSign();
+        } catch (RuntimeException $e) {
+            throw $e;
+        }
 
-        $tmp  = [];
-        $sign = $this->current();
-
-        $this->checkForNumberSign($sign);
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $num = 0    | (($tmp[0] & 0xff) << 24);
-        $num = $num | (($tmp[1] & 0xff) << 16);
-        $num = $num | (($tmp[2] & 0xff) <<  8);
-        $num = $num | (($tmp[3] & 0xff) <<  0);
-
-        $num = $sign == 0xfe ? $num : (-1 * $num);
+        $number = $this->deserializeVanillaNumber();
+        $number = $sign == 0xfe ? $number : (-1 * $number);
 
         $this->getRegister()
-            ->setR1($this->getRegister()->getR1() + $num);
+            ->setR1($this->getRegister()->getR1() + $number);
     }
 
     /**
@@ -1378,43 +1215,17 @@ final class Vm implements RuntimeInterface
      */
     private function processBinaryAddbImm8ToR2()
     {
-        $this->incrementIp();
-        $this->checkForEOF();
+        try {
+            $sign = $this->getAndCheckForNumberSign();
+        } catch (RuntimeException $e) {
+            throw $e;
+        }
 
-        $tmp  = [];
-        $sign = $this->current();
-
-        $this->checkForNumberSign($sign);
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $num = 0    | (($tmp[0] & 0xff) << 24);
-        $num = $num | (($tmp[1] & 0xff) << 16);
-        $num = $num | (($tmp[2] & 0xff) <<  8);
-        $num = $num | (($tmp[3] & 0xff) <<  0);
-
-        $num = $sign == 0xfe ? $num : (-1 * $num);
+        $number = $this->deserializeVanillaNumber();
+        $number = $sign == 0xfe ? $number : (-1 * $number);
 
         $this->getRegister()
-            ->setR2($this->getRegister()->getR2() + $num);
+            ->setR2($this->getRegister()->getR2() + $number);
     }
 
     /**
@@ -1422,43 +1233,17 @@ final class Vm implements RuntimeInterface
      */
     private function processBinaryAddbImm8ToR3()
     {
-        $this->incrementIp();
-        $this->checkForEOF();
+        try {
+            $sign = $this->getAndCheckForNumberSign();
+        } catch (RuntimeException $e) {
+            throw $e;
+        }
 
-        $tmp  = [];
-        $sign = $this->current();
-
-        $this->checkForNumberSign($sign);
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $num = 0    | (($tmp[0] & 0xff) << 24);
-        $num = $num | (($tmp[1] & 0xff) << 16);
-        $num = $num | (($tmp[2] & 0xff) <<  8);
-        $num = $num | (($tmp[3] & 0xff) <<  0);
-
-        $num = $sign == 0xfe ? $num : (-1 * $num);
+        $number = $this->deserializeVanillaNumber();
+        $number = $sign == 0xfe ? $number : (-1 * $number);
 
         $this->getRegister()
-            ->setR3($this->getRegister()->getR3() + $num);
+            ->setR3($this->getRegister()->getR3() + $number);
     }
 
     /**
@@ -1466,43 +1251,17 @@ final class Vm implements RuntimeInterface
      */
     private function processBinarySubbImm8ToR0()
     {
-        $this->incrementIp();
-        $this->checkForEOF();
+        try {
+            $sign = $this->getAndCheckForNumberSign();
+        } catch (RuntimeException $e) {
+            throw $e;
+        }
 
-        $tmp  = [];
-        $sign = $this->current();
-
-        $this->checkForNumberSign($sign);
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $num = 0    | (($tmp[0] & 0xff) << 24);
-        $num = $num | (($tmp[1] & 0xff) << 16);
-        $num = $num | (($tmp[2] & 0xff) <<  8);
-        $num = $num | (($tmp[3] & 0xff) <<  0);
-
-        $num = $sign == 0xfe ? $num : (-1 * $num);
+        $number = $this->deserializeVanillaNumber();
+        $number = $sign == 0xfe ? $number : (-1 * $number);
 
         $this->getRegister()
-            ->setR0($this->getRegister()->getR0() - $num);
+            ->setR0($this->getRegister()->getR0() - $number);
     }
 
     /**
@@ -1510,43 +1269,17 @@ final class Vm implements RuntimeInterface
      */
     private function processBinarySubbImm8ToR1()
     {
-        $this->incrementIp();
-        $this->checkForEOF();
+        try {
+            $sign = $this->getAndCheckForNumberSign();
+        } catch (RuntimeException $e) {
+            throw $e;
+        }
 
-        $tmp  = [];
-        $sign = $this->current();
-
-        $this->checkForNumberSign($sign);
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $num = 0    | (($tmp[0] & 0xff) << 24);
-        $num = $num | (($tmp[1] & 0xff) << 16);
-        $num = $num | (($tmp[2] & 0xff) <<  8);
-        $num = $num | (($tmp[3] & 0xff) <<  0);
-
-        $num = $sign == 0xfe ? $num : (-1 * $num);
+        $number = $this->deserializeVanillaNumber();
+        $number = $sign == 0xfe ? $number : (-1 * $number);
 
         $this->getRegister()
-            ->setR1($this->getRegister()->getR1() - $num);
+            ->setR1($this->getRegister()->getR1() - $number);
     }
 
     /**
@@ -1554,43 +1287,17 @@ final class Vm implements RuntimeInterface
      */
     private function processBinarySubbImm8ToR2()
     {
-        $this->incrementIp();
-        $this->checkForEOF();
+        try {
+            $sign = $this->getAndCheckForNumberSign();
+        } catch (RuntimeException $e) {
+            throw $e;
+        }
 
-        $tmp  = [];
-        $sign = $this->current();
-
-        $this->checkForNumberSign($sign);
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $num = 0    | (($tmp[0] & 0xff) << 24);
-        $num = $num | (($tmp[1] & 0xff) << 16);
-        $num = $num | (($tmp[2] & 0xff) <<  8);
-        $num = $num | (($tmp[3] & 0xff) <<  0);
-
-        $num = $sign == 0xfe ? $num : (-1 * $num);
+        $number = $this->deserializeVanillaNumber();
+        $number = $sign == 0xfe ? $number : (-1 * $number);
 
         $this->getRegister()
-            ->setR2($this->getRegister()->getR2() - $num);
+            ->setR2($this->getRegister()->getR2() - $number);
     }
 
     /**
@@ -1598,43 +1305,17 @@ final class Vm implements RuntimeInterface
      */
     private function processBinarySubbImm8ToR3()
     {
-        $this->incrementIp();
-        $this->checkForEOF();
+        try {
+            $sign = $this->getAndCheckForNumberSign();
+        } catch (RuntimeException $e) {
+            throw $e;
+        }
 
-        $tmp  = [];
-        $sign = $this->current();
-
-        $this->checkForNumberSign($sign);
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $num = 0    | (($tmp[0] & 0xff) << 24);
-        $num = $num | (($tmp[1] & 0xff) << 16);
-        $num = $num | (($tmp[2] & 0xff) <<  8);
-        $num = $num | (($tmp[3] & 0xff) <<  0);
-
-        $num = $sign == 0xfe ? $num : (-1 * $num);
+        $number = $this->deserializeVanillaNumber();
+        $number = $sign == 0xfe ? $number : (-1 * $number);
 
         $this->getRegister()
-            ->setR3($this->getRegister()->getR3() - $num);
+            ->setR3($this->getRegister()->getR3() - $number);
     }
 
     /**
@@ -1642,43 +1323,17 @@ final class Vm implements RuntimeInterface
      */
     private function processBinaryMulbImm8ToR0()
     {
-        $this->incrementIp();
-        $this->checkForEOF();
+        try {
+            $sign = $this->getAndCheckForNumberSign();
+        } catch (RuntimeException $e) {
+            throw $e;
+        }
 
-        $tmp  = [];
-        $sign = $this->current();
-
-        $this->checkForNumberSign($sign);
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $num = 0    | (($tmp[0] & 0xff) << 24);
-        $num = $num | (($tmp[1] & 0xff) << 16);
-        $num = $num | (($tmp[2] & 0xff) <<  8);
-        $num = $num | (($tmp[3] & 0xff) <<  0);
-
-        $num = $sign == 0xfe ? $num : (-1 * $num);
+        $number = $this->deserializeVanillaNumber();
+        $number = $sign == 0xfe ? $number : (-1 * $number);
 
         $this->getRegister()
-            ->setR0($this->getRegister()->getR0() * $num);
+            ->setR0($this->getRegister()->getR0() * $number);
     }
 
     /**
@@ -1686,43 +1341,17 @@ final class Vm implements RuntimeInterface
      */
     private function processBinaryMulbImm8ToR1()
     {
-        $this->incrementIp();
-        $this->checkForEOF();
+        try {
+            $sign = $this->getAndCheckForNumberSign();
+        } catch (RuntimeException $e) {
+            throw $e;
+        }
 
-        $tmp  = [];
-        $sign = $this->current();
-
-        $this->checkForNumberSign($sign);
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $num = 0    | (($tmp[0] & 0xff) << 24);
-        $num = $num | (($tmp[1] & 0xff) << 16);
-        $num = $num | (($tmp[2] & 0xff) <<  8);
-        $num = $num | (($tmp[3] & 0xff) <<  0);
-
-        $num = $sign == 0xfe ? $num : (-1 * $num);
+        $number = $this->deserializeVanillaNumber();
+        $number = $sign == 0xfe ? $number : (-1 * $number);
 
         $this->getRegister()
-            ->setR1($this->getRegister()->getR1() * $num);
+            ->setR1($this->getRegister()->getR1() * $number);
     }
 
     /**
@@ -1730,43 +1359,17 @@ final class Vm implements RuntimeInterface
      */
     private function processBinaryMulbImm8ToR2()
     {
-        $this->incrementIp();
-        $this->checkForEOF();
+        try {
+            $sign = $this->getAndCheckForNumberSign();
+        } catch (RuntimeException $e) {
+            throw $e;
+        }
 
-        $tmp  = [];
-        $sign = $this->current();
-
-        $this->checkForNumberSign($sign);
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $num = 0    | (($tmp[0] & 0xff) << 24);
-        $num = $num | (($tmp[1] & 0xff) << 16);
-        $num = $num | (($tmp[2] & 0xff) <<  8);
-        $num = $num | (($tmp[3] & 0xff) <<  0);
-
-        $num = $sign == 0xfe ? $num : (-1 * $num);
+        $number = $this->deserializeVanillaNumber();
+        $number = $sign == 0xfe ? $number : (-1 * $number);
 
         $this->getRegister()
-            ->setR2($this->getRegister()->getR2() * $num);
+            ->setR2($this->getRegister()->getR2() * $number);
     }
 
     /**
@@ -1774,43 +1377,17 @@ final class Vm implements RuntimeInterface
      */
     private function processBinaryMulbImm8ToR3()
     {
-        $this->incrementIp();
-        $this->checkForEOF();
+        try {
+            $sign = $this->getAndCheckForNumberSign();
+        } catch (RuntimeException $e) {
+            throw $e;
+        }
 
-        $tmp  = [];
-        $sign = $this->current();
-
-        $this->checkForNumberSign($sign);
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $num = 0    | (($tmp[0] & 0xff) << 24);
-        $num = $num | (($tmp[1] & 0xff) << 16);
-        $num = $num | (($tmp[2] & 0xff) <<  8);
-        $num = $num | (($tmp[3] & 0xff) <<  0);
-
-        $num = $sign == 0xfe ? $num : (-1 * $num);
+        $number = $this->deserializeVanillaNumber();
+        $number = $sign == 0xfe ? $number : (-1 * $number);
 
         $this->getRegister()
-            ->setR3($this->getRegister()->getR3() * $num);
+            ->setR3($this->getRegister()->getR3() * $number);
     }
 
     /**
@@ -1818,47 +1395,20 @@ final class Vm implements RuntimeInterface
      */
     private function processBinaryDivbImm8ToR0()
     {
-        $this->incrementIp();
-        $this->checkForEOF();
+        try {
+            $sign = $this->getAndCheckForNumberSign();
+        } catch (RuntimeException $e) {
+            throw $e;
+        }
 
-        $tmp  = [];
-        $sign = $this->current();
+        $number = $this->deserializeVanillaNumber();
+        $number = $sign === 0xfe ? $number : (-1 * $number);
 
-        $this->checkForNumberSign($sign);
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $num = 0    | (($tmp[0] & 0xff) << 24);
-        $num = $num | (($tmp[1] & 0xff) << 16);
-        $num = $num | (($tmp[2] & 0xff) <<  8);
-        $num = $num | (($tmp[3] & 0xff) <<  0);
-
-        $num = $sign === 0xfe ? $num : (-1 * $num);
-
-        if (!$num) {
+        if (!$number) {
             throw new RuntimeException("Division by zero.");
         }
 
-        $result = intval($this->getRegister()->getR0() / $num);
-
+        $result = intval($this->getRegister()->getR0() / $number);
         $this->getRegister()->setR0($result);
     }
 
@@ -1867,47 +1417,20 @@ final class Vm implements RuntimeInterface
      */
     private function processBinaryDivbImm8ToR1()
     {
-        $this->incrementIp();
-        $this->checkForEOF();
+        try {
+            $sign = $this->getAndCheckForNumberSign();
+        } catch (RuntimeException $e) {
+            throw $e;
+        }
 
-        $tmp  = [];
-        $sign = $this->current();
+        $number = $this->deserializeVanillaNumber();
+        $number = $sign === 0xfe ? $number : (-1 * $number);
 
-        $this->checkForNumberSign($sign);
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $num = 0    | (($tmp[0] & 0xff) << 24);
-        $num = $num | (($tmp[1] & 0xff) << 16);
-        $num = $num | (($tmp[2] & 0xff) <<  8);
-        $num = $num | (($tmp[3] & 0xff) <<  0);
-
-        $num = $sign === 0xfe ? $num : (-1 * $num);
-
-        if (!$num) {
+        if (!$number) {
             throw new RuntimeException("Division by zero.");
         }
 
-        $result = intval($this->getRegister()->getR1() / $num);
-
+        $result = intval($this->getRegister()->getR1() / $number);
         $this->getRegister()->setR1($result);
     }
 
@@ -1916,47 +1439,20 @@ final class Vm implements RuntimeInterface
      */
     private function processBinaryDivbImm8ToR2()
     {
-        $this->incrementIp();
-        $this->checkForEOF();
+        try {
+            $sign = $this->getAndCheckForNumberSign();
+        } catch (RuntimeException $e) {
+            throw $e;
+        }
 
-        $tmp  = [];
-        $sign = $this->current();
+        $number = $this->deserializeVanillaNumber();
+        $number = $sign === 0xfe ? $number : (-1 * $number);
 
-        $this->checkForNumberSign($sign);
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $num = 0    | (($tmp[0] & 0xff) << 24);
-        $num = $num | (($tmp[1] & 0xff) << 16);
-        $num = $num | (($tmp[2] & 0xff) <<  8);
-        $num = $num | (($tmp[3] & 0xff) <<  0);
-
-        $num = $sign === 0xfe ? $num : (-1 * $num);
-
-        if (!$num) {
+        if (!$number) {
             throw new RuntimeException("Division by zero.");
         }
 
-        $result = intval($this->getRegister()->getR2() / $num);
-
+        $result = intval($this->getRegister()->getR2() / $number);
         $this->getRegister()->setR2($result);
     }
 
@@ -1965,47 +1461,20 @@ final class Vm implements RuntimeInterface
      */
     private function processBinaryDivbImm8ToR3()
     {
-        $this->incrementIp();
-        $this->checkForEOF();
+        try {
+            $sign = $this->getAndCheckForNumberSign();
+        } catch (RuntimeException $e) {
+            throw $e;
+        }
 
-        $tmp  = [];
-        $sign = $this->current();
+        $number = $this->deserializeVanillaNumber();
+        $number = $sign === 0xfe ? $number : (-1 * $number);
 
-        $this->checkForNumberSign($sign);
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $num = 0    | (($tmp[0] & 0xff) << 24);
-        $num = $num | (($tmp[1] & 0xff) << 16);
-        $num = $num | (($tmp[2] & 0xff) <<  8);
-        $num = $num | (($tmp[3] & 0xff) <<  0);
-
-        $num = $sign === 0xfe ? $num : (-1 * $num);
-
-        if (!$num) {
+        if (!$number) {
             throw new RuntimeException("Division by zero.");
         }
 
-        $result = intval($this->getRegister()->getR3() / $num);
-
+        $result = intval($this->getRegister()->getR3() / $number);
         $this->getRegister()->setR3($result);
     }
 
@@ -2014,47 +1483,18 @@ final class Vm implements RuntimeInterface
      */
     private function processBinaryCmpbImm8ToR0()
     {
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp  = [];
-        $sign = $this->current();
-
-        $this->checkForNumberSign($sign);
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $num = 0    | (($tmp[0] & 0xff) << 24);
-        $num = $num | (($tmp[1] & 0xff) << 16);
-        $num = $num | (($tmp[2] & 0xff) <<  8);
-        $num = $num | (($tmp[3] & 0xff) <<  0);
-
-        $num    = $sign === 0xfe ? $num : (-1 * $num);
-        $result = $this->getRegister()->getR0() - $num;
-
-        if (!$result) {
-            $this->getEflags()->setFlag(
-                $this->getEflags()->getFlag() | EflagsInterface::ZERO
-            );
+        try {
+            $sign = $this->getAndCheckForNumberSign();
+        } catch (RuntimeException $e) {
+            throw $e;
         }
+
+        $number = $this->deserializeVanillaNumber();
+        $number = $sign === 0xfe ? $number : (-1 * $number);
+        $result = $this->getRegister()->getR0() - $number;
+
+        $this->clearEflagStatus();
+        $this->setEflagStatusAfterComparation($result);
     }
 
     /**
@@ -2062,47 +1502,18 @@ final class Vm implements RuntimeInterface
      */
     private function processBinaryCmpbImm8ToR1()
     {
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp  = [];
-        $sign = $this->current();
-
-        $this->checkForNumberSign($sign);
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $num = 0    | (($tmp[0] & 0xff) << 24);
-        $num = $num | (($tmp[1] & 0xff) << 16);
-        $num = $num | (($tmp[2] & 0xff) <<  8);
-        $num = $num | (($tmp[3] & 0xff) <<  0);
-
-        $num    = $sign === 0xfe ? $num : (-1 * $num);
-        $result = $this->getRegister()->getR1() - $num;
-
-        if (!$result) {
-            $this->getEflags()->setFlag(
-                $this->getEflags()->getFlag() | EflagsInterface::ZERO
-            );
+        try {
+            $sign = $this->getAndCheckForNumberSign();
+        } catch (RuntimeException $e) {
+            throw $e;
         }
+
+        $number = $this->deserializeVanillaNumber();
+        $number = $sign === 0xfe ? $number : (-1 * $number);
+        $result = $this->getRegister()->getR1() - $number;
+
+        $this->clearEflagStatus();
+        $this->setEflagStatusAfterComparation($result);
     }
 
     /**
@@ -2110,47 +1521,18 @@ final class Vm implements RuntimeInterface
      */
     private function processBinaryCmpbImm8ToR2()
     {
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp  = [];
-        $sign = $this->current();
-
-        $this->checkForNumberSign($sign);
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $num = 0    | (($tmp[0] & 0xff) << 24);
-        $num = $num | (($tmp[1] & 0xff) << 16);
-        $num = $num | (($tmp[2] & 0xff) <<  8);
-        $num = $num | (($tmp[3] & 0xff) <<  0);
-
-        $num    = $sign === 0xfe ? $num : (-1 * $num);
-        $result = $this->getRegister()->getR2() - $num;
-
-        if (!$result) {
-            $this->getEflags()->setFlag(
-                $this->getEflags()->getFlag() | EflagsInterface::ZERO
-            );
+        try {
+            $sign = $this->getAndCheckForNumberSign();
+        } catch (RuntimeException $e) {
+            throw $e;
         }
+
+        $number = $this->deserializeVanillaNumber();
+        $number = $sign === 0xfe ? $number : (-1 * $number);
+        $result = $this->getRegister()->getR2() - $number;
+
+        $this->clearEflagStatus();
+        $this->setEflagStatusAfterComparation($result);
     }
 
     /**
@@ -2158,47 +1540,18 @@ final class Vm implements RuntimeInterface
      */
     private function processBinaryCmpbImm8ToR3()
     {
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp  = [];
-        $sign = $this->current();
-
-        $this->checkForNumberSign($sign);
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $num = 0    | (($tmp[0] & 0xff) << 24);
-        $num = $num | (($tmp[1] & 0xff) << 16);
-        $num = $num | (($tmp[2] & 0xff) <<  8);
-        $num = $num | (($tmp[3] & 0xff) <<  0);
-
-        $num    = $sign == 0xfe ? $num : (-1 * $num);
-        $result = $this->getRegister()->getR3() - $num;
-
-        if (!$result) {
-            $this->getEflags()->setFlag(
-                $this->getEflags()->getFlag() | EflagsInterface::ZERO
-            );
+        try {
+            $sign = $this->getAndCheckForNumberSign();
+        } catch (RuntimeException $e) {
+            throw $e;
         }
+
+        $number = $this->deserializeVanillaNumber();
+        $number = $sign == 0xfe ? $number : (-1 * $number);
+        $result = $this->getRegister()->getR3() - $number;
+
+        $this->clearEflagStatus();
+        $this->setEflagStatusAfterComparation($result);
     }
 
     /**
@@ -3040,11 +2393,8 @@ final class Vm implements RuntimeInterface
     {
         $result = $this->getRegister()->getR0() - $this->getRegister()->getR0();
 
-        if (!$result) {
-            $this->getEflags()->setFlag(
-                $this->getEflags()->getFlag() | EflagsInterface::ZERO
-            );
-        }
+        $this->clearEflagStatus();
+        $this->setEflagStatusAfterComparation($result);
     }
 
     /**
@@ -3054,11 +2404,8 @@ final class Vm implements RuntimeInterface
     {
         $result = $this->getRegister()->getR0() - $this->getRegister()->getR1();
 
-        if (!$result) {
-            $this->getEflags()->setFlag(
-                $this->getEflags()->getFlag() | EflagsInterface::ZERO
-            );
-        }
+        $this->clearEflagStatus();
+        $this->setEflagStatusAfterComparation($result);
     }
 
     /**
@@ -3068,11 +2415,8 @@ final class Vm implements RuntimeInterface
     {
         $result = $this->getRegister()->getR0() - $this->getRegister()->getR2();
 
-        if (!$result) {
-            $this->getEflags()->setFlag(
-                $this->getEflags()->getFlag() | EflagsInterface::ZERO
-            );
-        }
+        $this->clearEflagStatus();
+        $this->setEflagStatusAfterComparation($result);
     }
 
     /**
@@ -3082,11 +2426,8 @@ final class Vm implements RuntimeInterface
     {
         $result = $this->getRegister()->getR0() - $this->getRegister()->getR3();
 
-        if (!$result) {
-            $this->getEflags()->setFlag(
-                $this->getEflags()->getFlag() | EflagsInterface::ZERO
-            );
-        }
+        $this->clearEflagStatus();
+        $this->setEflagStatusAfterComparation($result);
     }
 
     /**
@@ -3096,11 +2437,8 @@ final class Vm implements RuntimeInterface
     {
         $result = $this->getRegister()->getR1() - $this->getRegister()->getR0();
 
-        if (!$result) {
-            $this->getEflags()->setFlag(
-                $this->getEflags()->getFlag() | EflagsInterface::ZERO
-            );
-        }
+        $this->clearEflagStatus();
+        $this->setEflagStatusAfterComparation($result);
     }
 
     /**
@@ -3110,11 +2448,8 @@ final class Vm implements RuntimeInterface
     {
         $result = $this->getRegister()->getR1() - $this->getRegister()->getR1();
 
-        if (!$result) {
-            $this->getEflags()->setFlag(
-                $this->getEflags()->getFlag() | EflagsInterface::ZERO
-            );
-        }
+        $this->clearEflagStatus();
+        $this->setEflagStatusAfterComparation($result);
     }
 
     /**
@@ -3124,11 +2459,8 @@ final class Vm implements RuntimeInterface
     {
         $result = $this->getRegister()->getR1() - $this->getRegister()->getR2();
 
-        if (!$result) {
-            $this->getEflags()->setFlag(
-                $this->getEflags()->getFlag() | EflagsInterface::ZERO
-            );
-        }
+        $this->clearEflagStatus();
+        $this->setEflagStatusAfterComparation($result);
     }
 
     /**
@@ -3138,11 +2470,8 @@ final class Vm implements RuntimeInterface
     {
         $result = $this->getRegister()->getR1() - $this->getRegister()->getR3();
 
-        if (!$result) {
-            $this->getEflags()->setFlag(
-                $this->getEflags()->getFlag() | EflagsInterface::ZERO
-            );
-        }
+        $this->clearEflagStatus();
+        $this->setEflagStatusAfterComparation($result);
     }
 
     /**
@@ -3152,11 +2481,8 @@ final class Vm implements RuntimeInterface
     {
         $result = $this->getRegister()->getR2() - $this->getRegister()->getR0();
 
-        if (!$result) {
-            $this->getEflags()->setFlag(
-                $this->getEflags()->getFlag() | EflagsInterface::ZERO
-            );
-        }
+        $this->clearEflagStatus();
+        $this->setEflagStatusAfterComparation($result);
     }
 
     /**
@@ -3166,11 +2492,8 @@ final class Vm implements RuntimeInterface
     {
         $result = $this->getRegister()->getR2() - $this->getRegister()->getR1();
 
-        if (!$result) {
-            $this->getEflags()->setFlag(
-                $this->getEflags()->getFlag() | EflagsInterface::ZERO
-            );
-        }
+        $this->clearEflagStatus();
+        $this->setEflagStatusAfterComparation($result);
     }
 
     /**
@@ -3180,11 +2503,8 @@ final class Vm implements RuntimeInterface
     {
         $result = $this->getRegister()->getR2() - $this->getRegister()->getR2();
 
-        if (!$result) {
-            $this->getEflags()->setFlag(
-                $this->getEflags()->getFlag() | EflagsInterface::ZERO
-            );
-        }
+        $this->clearEflagStatus();
+        $this->setEflagStatusAfterComparation($result);
     }
 
     /**
@@ -3194,11 +2514,8 @@ final class Vm implements RuntimeInterface
     {
         $result = $this->getRegister()->getR2() - $this->getRegister()->getR3();
 
-        if (!$result) {
-            $this->getEflags()->setFlag(
-                $this->getEflags()->getFlag() | EflagsInterface::ZERO
-            );
-        }
+        $this->clearEflagStatus();
+        $this->setEflagStatusAfterComparation($result);
     }
 
     /**
@@ -3208,11 +2525,8 @@ final class Vm implements RuntimeInterface
     {
         $result = $this->getRegister()->getR3() - $this->getRegister()->getR0();
 
-        if (!$result) {
-            $this->getEflags()->setFlag(
-                $this->getEflags()->getFlag() | EflagsInterface::ZERO
-            );
-        }
+        $this->clearEflagStatus();
+        $this->setEflagStatusAfterComparation($result);
     }
 
     /**
@@ -3222,11 +2536,8 @@ final class Vm implements RuntimeInterface
     {
         $result = $this->getRegister()->getR3() - $this->getRegister()->getR1();
 
-        if (!$result) {
-            $this->getEflags()->setFlag(
-                $this->getEflags()->getFlag() | EflagsInterface::ZERO
-            );
-        }
+        $this->clearEflagStatus();
+        $this->setEflagStatusAfterComparation($result);
     }
 
     /**
@@ -3236,11 +2547,8 @@ final class Vm implements RuntimeInterface
     {
         $result = $this->getRegister()->getR3() - $this->getRegister()->getR2();
 
-        if (!$result) {
-            $this->getEflags()->setFlag(
-                $this->getEflags()->getFlag() | EflagsInterface::ZERO
-            );
-        }
+        $this->clearEflagStatus();
+        $this->setEflagStatusAfterComparation($result);
     }
 
     /**
@@ -3250,11 +2558,8 @@ final class Vm implements RuntimeInterface
     {
         $result = $this->getRegister()->getR3() - $this->getRegister()->getR3();
 
-        if (!$result) {
-            $this->getEflags()->setFlag(
-                $this->getEflags()->getFlag() | EflagsInterface::ZERO
-            );
-        }
+        $this->clearEflagStatus();
+        $this->setEflagStatusAfterComparation($result);
     }
 
     /**
@@ -3294,34 +2599,23 @@ final class Vm implements RuntimeInterface
      */
     private function processPlainJumpInstruction()
     {
-        $tmp = [];
+        $this->setIp($this->deserializeVanillaNumber() - 1);
+    }
 
-        $this->incrementIp();
-        $this->checkForEOF();
+    /**
+     * @return void
+     */
+    private function processJumpIfNotEqualInstruction()
+    {
+        $this->processJumpIfNotZeroInstruction();
+    }
 
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $offset = 0       | (($tmp[0] & 0xff) << 24);
-        $offset = $offset | (($tmp[1] & 0xff) << 16);
-        $offset = $offset | (($tmp[2] & 0xff) <<  8);
-        $offset = $offset | (($tmp[3] & 0xff) <<  0);
-
-        $this->setIp($offset);
+    /**
+     * @return void
+     */
+    private function processJumpIfEqualInstruction()
+    {
+        $this->processJumpIfZeroInstruction();
     }
 
     /**
@@ -3333,34 +2627,7 @@ final class Vm implements RuntimeInterface
             return;
         }
 
-        $tmp = [];
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $this->incrementIp();
-        $this->checkForEOF();
-
-        $tmp[] = $this->current();
-
-        $offset = 0       | (($tmp[0] & 0xff) << 24);
-        $offset = $offset | (($tmp[1] & 0xff) << 16);
-        $offset = $offset | (($tmp[2] & 0xff) <<  8);
-        $offset = $offset | (($tmp[3] & 0xff) <<  0);
-
-        $this->setIp($offset);
+        $this->setIp($this->deserializeVanillaNumber() - 1);
     }
 
     /**
@@ -3372,34 +2639,57 @@ final class Vm implements RuntimeInterface
             return;
         }
 
-        $tmp = [];
+        $this->setIp($this->deserializeVanillaNumber() - 1);
+    }
 
-        $this->incrementIp();
-        $this->checkForEOF();
+    /**
+     * @return void
+     */
+    private function processJumpIfGreaterInstruction()
+    {
+        if (!$this->getEflags()->isGreat()) {
+            return;
+        }
 
-        $tmp[] = $this->current();
+        $this->setIp($this->deserializeVanillaNumber() - 1);
+    }
 
-        $this->incrementIp();
-        $this->checkForEOF();
+    /**
+     * @return void
+     */
+    private function processJumpIfGreaterOrEqualInstruction()
+    {
+        if (!$this->getEflags()->isGreat() &&
+            !$this->getEflags()->isZero()) {
+            return;
+        }
 
-        $tmp[] = $this->current();
+        $this->setIp($this->deserializeVanillaNumber() - 1);
+    }
 
-        $this->incrementIp();
-        $this->checkForEOF();
+    /**
+     * @return void
+     */
+    private function processJumpIfLessInstruction()
+    {
+        if (!$this->getEflags()->isLess()) {
+            return;
+        }
 
-        $tmp[] = $this->current();
+        $this->setIp($this->deserializeVanillaNumber() - 1);
+    }
 
-        $this->incrementIp();
-        $this->checkForEOF();
+    /**
+     * @return void
+     */
+    private function processJumpIfLessOrEqualInstruction()
+    {
+        if (!$this->getEflags()->isLess() &&
+            !$this->getEflags()->isZero()) {
+            return;
+        }
 
-        $tmp[] = $this->current();
-
-        $offset = 0       | (($tmp[0] & 0xff) << 24);
-        $offset = $offset | (($tmp[1] & 0xff) << 16);
-        $offset = $offset | (($tmp[2] & 0xff) <<  8);
-        $offset = $offset | (($tmp[3] & 0xff) <<  0);
-
-        $this->setIp($offset);
+        $this->setIp($this->deserializeVanillaNumber() - 1);
     }
 
     /**
@@ -3419,10 +2709,16 @@ final class Vm implements RuntimeInterface
 
     /**
      * @param  int $sign
-     * @return void
+     * @return int
+     * @throws \Vm\RuntimeException If given number is not sign number.
      */
-    private function checkForNumberSign(int $sign)
+    private function getAndCheckForNumberSign()
     {
+        $this->incrementIp();
+        $this->checkForEOF();
+
+        $sign = $this->current();
+
         if ($sign !== 0xfe && $sign !== 0xff) {
             throw new RuntimeException(
                 sprintf(
@@ -3431,5 +2727,86 @@ final class Vm implements RuntimeInterface
                 )
             );
         }
+
+        return $sign;
+    }
+
+    /**
+     * @return void
+     */
+    private function clearEflagStatus()
+    {
+        $flag = $this->getEflags()->getFlag();
+        $flag &= ~EflagsInterface::ZERO;
+        $flag &= ~EflagsInterface::GREAT;
+        $flag &= ~EflagsInterface::LESS;
+
+        $this->getEflags()->setFlag($flag);
+    }
+
+    /**
+     * @param int $result
+     * @return void
+     */
+    private function setEflagStatusAfterComparation(int $result)
+    {
+        if ($result < 0) {
+            $this->getEflags()->setFlag(
+                $this->getEflags()->getFlag() | EflagsInterface::LESS
+            );
+
+            return;
+        }
+
+        if ($result === 0) {
+            $this->getEflags()->setFlag(
+                $this->getEflags()->getFlag() | EflagsInterface::ZERO
+            );
+
+            return;
+        }
+
+        if ($result > 0) {
+            $this->getEflags()->setFlag(
+                $this->getEflags()->getFlag() | EflagsInterface::GREAT
+            );
+
+            return;
+        }
+    }
+
+    /**
+     * @return int
+     */
+    private function deserializeVanillaNumber()
+    {
+        $tmp = [];
+
+        $this->incrementIp();
+        $this->checkForEOF();
+
+        $tmp[] = $this->current();
+
+        $this->incrementIp();
+        $this->checkForEOF();
+
+        $tmp[] = $this->current();
+
+        $this->incrementIp();
+        $this->checkForEOF();
+
+        $tmp[] = $this->current();
+
+        $this->incrementIp();
+        $this->checkForEOF();
+
+        $tmp[] = $this->current();
+
+        $result = 0       | (($tmp[0] & 0xff) << 24);
+        $result = $result | (($tmp[1] & 0xff) << 16);
+        $result = $result | (($tmp[2] & 0xff) <<  8);
+        $result = $result | (($tmp[3] & 0xff) <<  0);
+
+        return $result;
     }
 }

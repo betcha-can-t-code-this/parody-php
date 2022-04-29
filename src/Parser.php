@@ -425,6 +425,133 @@ final class Parser implements ParserInterface
      * @param array $insn
      * @return void
      */
+    private function validateUnaryJmpInstruction(array $insn)
+    {
+        if ($insn[0]->getValue() === "jmp" &&
+            $insn[1]->getType() !== NodeInterface::LABEL) {
+            throw new SyntaxException(
+                "'jmp' instruction must be followed by label name."
+            );
+        }
+    }
+
+    /**
+     * @param array $insn
+     * @return void
+     */
+    private function validateUnaryJeInstruction(array $insn)
+    {
+        if ($insn[0]->getValue() === "je" &&
+            $insn[1]->getType() !== NodeInterface::LABEL) {
+            throw new SyntaxException(
+                "'je' instruction must be followed by label name."
+            );
+        }
+    }
+
+    /**
+     * @param array $insn
+     * @return void
+     */
+    private function validateUnaryJneInstruction(array $insn)
+    {
+        if ($insn[0]->getValue() === "jne" &&
+            $insn[1]->getType() !== NodeInterface::LABEL) {
+            throw new SyntaxException(
+                "'jne' instruction must be followed by label name."
+            );
+        }
+    }
+
+    /**
+     * @param array $insn
+     * @return void
+     */
+    private function validateUnaryJnzInstruction(array $insn)
+    {
+        if ($insn[0]->getValue() === "jnz" &&
+            $insn[1]->getType() !== NodeInterface::LABEL) {
+            throw new SyntaxException(
+                "'jnz' instruction must be followed by label name."
+            );
+        }
+    }
+
+    /**
+     * @param array $insn
+     * @return void
+     */
+    private function validateUnaryJzInstruction(array $insn)
+    {
+        if ($insn[0]->getValue() === "jz" &&
+            $insn[1]->getType() !== NodeInterface::LABEL) {
+            throw new SyntaxException(
+                "'jz' instruction must be followed by label name."
+            );
+        }
+    }
+
+    /**
+     * @param array $insn
+     * @return void
+     */
+    private function validateUnaryJgInstruction(array $insn)
+    {
+        if ($insn[0]->getValue() === "jg" &&
+            $insn[1]->getType() !== NodeInterface::LABEL) {
+            throw new SyntaxException(
+                "'jg' instruction must be followed by label name."
+            );
+        }
+    }
+
+    /**
+     * @param array $insn
+     * @return void
+     */
+    private function validateUnaryJgeInstruction(array $insn)
+    {
+        if ($insn[0]->getValue() === "jge" &&
+            $insn[1]->getType() !== NodeInterface::LABEL) {
+            throw new SyntaxException(
+                "'jge' instruction must be followed by label name."
+            );
+        }
+    }
+
+    /**
+     * @param array $insn
+     * @return void
+     */
+    private function validateUnaryJlInstruction(array $insn)
+    {
+        if ($insn[0]->getValue() === "jl" &&
+            $insn[1]->getType() !== NodeInterface::LABEL) {
+            throw new SyntaxException(
+                "'jl' instruction must be followed by label name."
+            );
+        }
+    }
+
+    /**
+     * @param array $insn
+     * @return void
+     */
+    private function validateUnaryJleInstruction(array $insn)
+    {
+        if ($insn[0]->getValue() === "jle" &&
+            $insn[1]->getType() !== NodeInterface::LABEL) {
+            throw new SyntaxException(
+                "'jle' instruction must be followed by label name."
+            );
+        }
+    }
+
+    /**
+     * @param array $insn
+     * @return void
+     * @intrinsic-stub
+     */
     private function validateNullaryHaltInstruction(array $insn)
     {
     }
@@ -441,6 +568,15 @@ final class Parser implements ParserInterface
                 break;
             case 2:
                 $this->validateUnaryPribInstruction($insn);
+                $this->validateUnaryJmpInstruction($insn);
+                $this->validateUnaryJeInstruction($insn);
+                $this->validateUnaryJneInstruction($insn);
+                $this->validateUnaryJnzInstruction($insn);
+                $this->validateUnaryJzInstruction($insn);
+                $this->validateUnaryJgInstruction($insn);
+                $this->validateUnaryJgeInstruction($insn);
+                $this->validateUnaryJlInstruction($insn);
+                $this->validateUnaryJleInstruction($insn);
                 break;
             case 4:
                 $this->validateBinaryCmpbInstruction($insn);
