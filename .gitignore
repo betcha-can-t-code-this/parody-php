@@ -2,5 +2,6 @@
 composer.lock
 test.php
 shit.dasm
+shit.cplx
 tools/
 vendor/
