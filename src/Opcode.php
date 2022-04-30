@@ -642,5 +642,10 @@ interface Opcode
     /**
      * @var int
      */
+    const BITWISE_REX_CALL_GATE_PREFIX = 0xc1;
+
+    /**
+     * @var int
+     */
     const HALT = 0xfd;
 }

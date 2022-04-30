@@ -47,6 +47,14 @@
   Compare 8-bit source register value with 8-bit destination register value. The result
   of the comparation will be set the proper status flag, respectively.
 
+- orb #<imm8>, r8
+  Perform bitwise or-ing 8-bit immediate value with 8-bit destination register value and
+  put its result to destination register.
+
+- orb r8, r8
+  Perform bitwise or-ing 8-bit source register value with 8-bit destination register value and
+  put its result to destination register.
+
 - prib reg8
   Print 8-bit source register value to teletype (TTY) console.
 

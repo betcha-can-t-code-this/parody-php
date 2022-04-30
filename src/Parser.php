@@ -380,6 +380,36 @@ final class Parser implements ParserInterface
      * @param array $insn
      * @return void
      */
+    private function validateBinaryBitwiseOrbInstruction(array $insn)
+    {
+        if ($insn[0]->getValue() === "orb" &&
+            $insn[3]->getType() === NodeInterface::NUMBER) {
+            throw new SyntaxException(
+                sprintf(
+                    "Number cannot be placed in second operand when it's mnemonic is 'divb' (line: %d).",
+                    $this->line
+                )
+            );
+        }
+
+        if ($insn[0]->getValue() === "orb" &&
+            (($insn[1]->getType() !== NodeInterface::REGISTER ||
+              $insn[1]->getType() !== NodeInterface::NUMBER) &&
+            $insn[3]->getType() !== NodeInterface::REGISTER)) {
+            throw new SyntaxException(
+                sprintf(
+                    "First operand must be register or numeric constant, and second operand must be " .
+                    "register (line: %d).",
+                    $this->line
+                )
+            );
+        }
+    }
+
+    /**
+     * @param array $insn
+     * @return void
+     */
     private function validateBinaryCmpbInstruction(array $insn)
     {
         if ($insn[0]->getValue() === "cmpb" &&
@@ -585,6 +615,7 @@ final class Parser implements ParserInterface
                 $this->validateBinarySubbInstruction($insn);
                 $this->validateBinaryMulbInstruction($insn);
                 $this->validateBinaryDivbInstruction($insn);
+                $this->validateBinaryBitwiseOrbInstruction($insn);
                 break;
             default:
                 throw new SyntaxException("Unknown instruction.");

@@ -374,6 +374,8 @@ class Lexer implements LexerInterface
             "jge", "jg",
             // conditional jump (depends on less flag / zero flag status).
             "jle", "jl",
+            // 'or' bitwise
+            "orb",
             // halt the VM.
             "halt"
         ];
