@@ -55,6 +55,14 @@
   Perform bitwise or-ing 8-bit source register value with 8-bit destination register value and
   put its result to destination register.
 
+- xorb #<imm8>, r8
+  Perform bitwise xor-ing 8-bit immediate value with 8-bit destination register value and
+  put its result to destination register.
+
+- xorb r8, r8
+  Perform bitwise xor-ing 8-bit source register value with 8-bit destination register value and
+  put its result to destination register.
+
 - prib reg8
   Print 8-bit source register value to teletype (TTY) console.
 
