@@ -376,6 +376,8 @@ class Lexer implements LexerInterface
             "jle", "jl",
             // 'or' bitwise
             "orb",
+            // 'xor' bitwise
+            "xorb",
             // halt the VM.
             "halt"
         ];

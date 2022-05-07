@@ -108,4 +108,104 @@ interface BitwiseOpcode
      * @var int
      */
     const ORB_R3_TO_R3 = 0x23;
+
+    /**
+     * @var int
+     */
+    const XORB_IMM8_TO_R0 = 0x24;
+
+    /**
+     * @var int
+     */
+    const XORB_IMM8_TO_R1 = 0x25;
+
+    /**
+     * @var int
+     */
+    const XORB_IMM8_TO_R2 = 0x26;
+
+    /**
+     * @var int
+     */
+    const XORB_IMM8_TO_R3 = 0x27;
+
+    /**
+     * @var int
+     */
+    const XORB_R0_TO_R0 = 0x28;
+
+    /**
+     * @var int
+     */
+    const XORB_R1_TO_R0 = 0x29;
+
+    /**
+     * @var int
+     */
+    const XORB_R2_TO_R0 = 0x2a;
+
+    /**
+     * @var int
+     */
+    const XORB_R3_TO_R0 = 0x2b;
+
+    /**
+     * @var int
+     */
+    const XORB_R0_TO_R1 = 0x2c;
+
+    /**
+     * @var int
+     */
+    const XORB_R1_TO_R1 = 0x2d;
+
+    /**
+     * @var int
+     */
+    const XORB_R2_TO_R1 = 0x2e;
+
+    /**
+     * @var int
+     */
+    const XORB_R3_TO_R1 = 0x2f;
+
+    /**
+     * @var int
+     */
+    const XORB_R0_TO_R2 = 0x30;
+
+    /**
+     * @var int
+     */
+    const XORB_R1_TO_R2 = 0x31;
+
+    /**
+     * @var int
+     */
+    const XORB_R2_TO_R2 = 0x32;
+
+    /**
+     * @var int
+     */
+    const XORB_R3_TO_R2 = 0x33;
+
+    /**
+     * @var int
+     */
+    const XORB_R0_TO_R3 = 0x34;
+
+    /**
+     * @var int
+     */
+    const XORB_R1_TO_R3 = 0x35;
+
+    /**
+     * @var int
+     */
+    const XORB_R2_TO_R3 = 0x36;
+
+    /**
+     * @var int
+     */
+    const XORB_R3_TO_R3 = 0x37;
 }

@@ -223,6 +223,12 @@ class Codegen implements CodegenInterface
             $this->processBinaryBitwiseOrbInstruction($ast, $result);
             return;
         }
+
+        if (sizeof($ast->getChilds()) === 3 &&
+            $ast->getChilds()[0]->getValue()->getValue() === "xorb") {
+            $this->processBinaryBitwiseXorbInstruction($ast, $result);
+            return;
+        }
     }
 
     /**
@@ -1264,6 +1270,71 @@ class Codegen implements CodegenInterface
      * @param array &$result
      * @return void
      */
+    private function processBinaryBitwiseXorbInstruction(AstInterface $ast, array &$result)
+    {
+        if ($ast->getChilds()[1]->getValue()->getType() === NodeInterface::NUMBER) {
+            $number = $ast->getChilds()[1]
+                ->getValue()
+                ->getValue();
+            $serialized = $this->serializeNumberIntoDwordList($number);
+        }
+
+        if (isset($serialized) &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r0") {
+            $result = array_merge(
+                $result,
+                [Opcode::BITWISE_REX_CALL_GATE_PREFIX, BitwiseOpcode::XORB_IMM8_TO_R0],
+                $serialized
+            );
+
+            return;
+        }
+
+        if (isset($serialized) &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r1") {
+            $result = array_merge(
+                $result,
+                [Opcode::BITWISE_REX_CALL_GATE_PREFIX, BitwiseOpcode::XORB_IMM8_TO_R1],
+                $serialized
+            );
+
+            return;
+        }
+
+        if (isset($serialized) &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r2") {
+            $result = array_merge(
+                $result,
+                [Opcode::BITWISE_REX_CALL_GATE_PREFIX, BitwiseOpcode::XORB_IMM8_TO_R2],
+                $serialized
+            );
+
+            return;
+        }
+
+        if (isset($serialized) &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r3") {
+            $result = array_merge(
+                $result,
+                [Opcode::BITWISE_REX_CALL_GATE_PREFIX, BitwiseOpcode::XORB_IMM8_TO_R3],
+                $serialized
+            );
+
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getType() === NodeInterface::REGISTER &&
+            $ast->getChilds()[2]->getValue()->getType() === NodeInterface::REGISTER) {
+            $this->processBinaryBitwiseXorbRegsToRegsInstruction($ast, $result);
+            return;
+        }
+    }
+
+    /**
+     * @param \Vm\AstInterface $ast
+     * @param array &$result
+     * @return void
+     */
     private function processBinaryDivbRegsToRegsInstruction(AstInterface $ast, array &$result)
     {
         if ($ast->getChilds()[1]->getValue()->getValue() === "r0" &&
@@ -1371,7 +1442,7 @@ class Codegen implements CodegenInterface
     private function processBinaryCmpbRegsToRegsInstruction(AstInterface $ast, array &$result)
     {
         if ($ast->getChilds()[1]->getValue()->getValue() === "r0" &&
-            $ast->getChilds()[1]->getValue()->getValue() === "r0") {
+            $ast->getChilds()[2]->getValue()->getValue() === "r0") {
             $result[] = Opcode::CMPB_R0_TO_R0;
             return;
         }
@@ -1634,6 +1705,174 @@ class Codegen implements CodegenInterface
             );
 
             return;
+        }
+    }
+
+    /**
+     * @param \Vm\AstInterface $ast
+     * @param array &$result
+     * @return void
+     */
+    private function processBinaryBitwiseXorbRegsToRegsInstruction(
+        AstInterface $ast,
+        array &$result
+    ) {
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r0" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r0") {
+            $result = array_merge(
+                $result,
+                [Opcode::BITWISE_REX_CALL_GATE_PREFIX, BitwiseOpcode::XORB_R0_TO_R0]
+            );
+
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r1" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r0") {
+            $result = array_merge(
+                $result,
+                [Opcode::BITWISE_REX_CALL_GATE_PREFIX, BitwiseOpcode::XORB_R1_TO_R0]
+            );
+
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r2" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r0") {
+            $result = array_merge(
+                $result,
+                [Opcode::BITWISE_REX_CALL_GATE_PREFIX, BitwiseOpcode::XORB_R2_TO_R0]
+            );
+
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r3" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r0") {
+            $result = array_merge(
+                $result,
+                [Opcode::BITWISE_REX_CALL_GATE_PREFIX, BitwiseOpcode::XORB_R3_TO_R0]
+            );
+
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r0" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r1") {
+            $result = array_merge(
+                $result,
+                [Opcode::BITWISE_REX_CALL_GATE_PREFIX, BitwiseOpcode::XORB_R0_TO_R1]
+            );
+
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r1" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r1") {
+            $result = array_merge(
+                $result,
+                [Opcode::BITWISE_REX_CALL_GATE_PREFIX, BitwiseOpcode::XORB_R1_TO_R1]
+            );
+
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r2" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r1") {
+            $result = array_merge(
+                $result,
+                [Opcode::BITWISE_REX_CALL_GATE_PREFIX, BitwiseOpcode::XORB_R2_TO_R1]
+            );
+
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r3" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r1") {
+            $result = array_merge(
+                $result,
+                [Opcode::BITWISE_REX_CALL_GATE_PREFIX, BitwiseOpcode::XORB_R3_TO_R1]
+            );
+
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r0" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r2") {
+            $result = array_merge(
+                $result,
+                [Opcode::BITWISE_REX_CALL_GATE_PREFIX, BitwiseOpcode::XORB_R0_TO_R2]
+            );
+
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r1" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r2") {
+            $result = array_merge(
+                $result,
+                [Opcode::BITWISE_REX_CALL_GATE_PREFIX, BitwiseOpcode::XORB_R1_TO_R2]
+            );
+
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r2" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r2") {
+            $result = array_merge(
+                $result,
+                [Opcode::BITWISE_REX_CALL_GATE_PREFIX, BitwiseOpcode::XORB_R2_TO_R2]
+            );
+
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r3" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r2") {
+            $result = array_merge(
+                $result,
+                [Opcode::BITWISE_REX_CALL_GATE_PREFIX, BitwiseOpcode::XORB_R3_TO_R2]
+            );
+
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r0" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r3") {
+            $result = array_merge(
+                $result,
+                [Opcode::BITWISE_REX_CALL_GATE_PREFIX, BitwiseOpcode::XORB_R0_TO_R3]
+            );
+
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r1" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r3") {
+            $result = array_merge(
+                $result,
+                [Opcode::BITWISE_REX_CALL_GATE_PREFIX, BitwiseOpcode::XORB_R1_TO_R3]
+            );
+
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r2" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r3") {
+            $result = array_merge(
+                $result,
+                [Opcode::BITWISE_REX_CALL_GATE_PREFIX, BitwiseOpcode::XORB_R2_TO_R3]
+            );
+
+            return;
+        }
+
+        if ($ast->getChilds()[1]->getValue()->getValue() === "r3" &&
+            $ast->getChilds()[2]->getValue()->getValue() === "r3") {
+            $result = array_merge(
+                $result,
+                [Opcode::BITWISE_REX_CALL_GATE_PREFIX, BitwiseOpcode::XORB_R3_TO_R3]
+            );
         }
     }
 

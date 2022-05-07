@@ -1156,6 +1156,36 @@ final class Vm implements RuntimeInterface
             case BitwiseOpcode::ORB_R3_TO_R3:
                 $this->processBinaryBitwiseOrbRegsToR3();
                 break;
+            case BitwiseOpcode::XORB_IMM8_TO_R0:
+            case BitwiseOpcode::XORB_IMM8_TO_R1:
+            case BitwiseOpcode::XORB_IMM8_TO_R2:
+            case BitwiseOpcode::XORB_IMM8_TO_R3:
+                $this->processBinaryBitwiseXorbImm8ToRegs();
+                break;
+            case BitwiseOpcode::XORB_R0_TO_R0:
+            case BitwiseOpcode::XORB_R1_TO_R0:
+            case BitwiseOpcode::XORB_R2_TO_R0:
+            case BitwiseOpcode::XORB_R3_TO_R0:
+                $this->processBinaryBitwiseXorbRegsToR0();
+                break;
+            case BitwiseOpcode::XORB_R0_TO_R1:
+            case BitwiseOpcode::XORB_R1_TO_R1:
+            case BitwiseOpcode::XORB_R2_TO_R1:
+            case BitwiseOpcode::XORB_R3_TO_R1:
+                $this->processBinaryBitwiseXorbRegsToR1();
+                break;
+            case BitwiseOpcode::XORB_R0_TO_R2:
+            case BitwiseOpcode::XORB_R1_TO_R2:
+            case BitwiseOpcode::XORB_R2_TO_R2:
+            case BitwiseOpcode::XORB_R3_TO_R2:
+                $this->processBinaryBitwiseXorbRegsToR2();
+                break;
+            case BitwiseOpcode::XORB_R0_TO_R3:
+            case BitwiseOpcode::XORB_R1_TO_R3:
+            case BitwiseOpcode::XORB_R2_TO_R3:
+            case BitwiseOpcode::XORB_R3_TO_R3:
+                $this->processBinaryBitwiseXorbRegsToR3();
+                break;
         }
     }
 
@@ -1260,6 +1290,111 @@ final class Vm implements RuntimeInterface
                 break;
             case BitwiseOpcode::ORB_R3_TO_R3:
                 $this->processBinaryBitwiseOrbR3ToR3();
+                break;
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryBitwiseXorbImm8ToRegs()
+    {
+        switch ($this->current()) {
+            case BitwiseOpcode::XORB_IMM8_TO_R0:
+                $this->processBinaryBitwiseXorbImm8ToR0();
+                break;
+            case BitwiseOpcode::XORB_IMM8_TO_R1:
+                $this->processBinaryBitwiseXorbImm8ToR1();
+                break;
+            case BitwiseOpcode::XORB_IMM8_TO_R2:
+                $this->processBinaryBitwiseXorbImm8ToR2();
+                break;
+            case BitwiseOpcode::XORB_IMM8_TO_R3:
+                $this->processBinaryBitwiseXorbImm8ToR3();
+                break;
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryBitwiseXorbRegsToR0()
+    {
+        switch ($this->current()) {
+            case BitwiseOpcode::XORB_R0_TO_R0:
+                $this->processBinaryBitwiseXorbR0ToR0();
+                break;
+            case BitwiseOpcode::XORB_R1_TO_R0:
+                $this->processBinaryBitwiseXorbR1ToR0();
+                break;
+            case BitwiseOpcode::XORB_R2_TO_R0:
+                $this->processBinaryBitwiseXorbR2ToR0();
+                break;
+            case BitwiseOpcode::XORB_R3_TO_R0:
+                $this->processBinaryBitwiseXorbR3ToR0();
+                break;
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryBitwiseXorbRegsToR1()
+    {
+        switch ($this->current()) {
+            case BitwiseOpcode::XORB_R0_TO_R1:
+                $this->processBinaryBitwiseXorbR0ToR1();
+                break;
+            case BitwiseOpcode::XORB_R1_TO_R1:
+                $this->processBinaryBitwiseXorbR1ToR1();
+                break;
+            case BitwiseOpcode::XORB_R2_TO_R1:
+                $this->processBinaryBitwiseXorbR2ToR1();
+                break;
+            case BitwiseOpcode::XORB_R3_TO_R1:
+                $this->processBinaryBitwiseXorbR3ToR1();
+                break;
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryBitwiseXorbRegsToR2()
+    {
+        switch ($this->current()) {
+            case BitwiseOpcode::XORB_R0_TO_R2:
+                $this->processBinaryBitwiseXorbR0ToR2();
+                break;
+            case BitwiseOpcode::XORB_R1_TO_R2:
+                $this->processBinaryBitwiseXorbR1ToR2();
+                break;
+            case BitwiseOpcode::XORB_R2_TO_R2:
+                $this->processBinaryBitwiseXorbR2ToR2();
+                break;
+            case BitwiseOpcode::XORB_R3_TO_R2:
+                $this->processBinaryBitwiseXorbR3ToR2();
+                break;
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryBitwiseXorbRegsToR3()
+    {
+        switch ($this->current()) {
+            case BitwiseOpcode::XORB_R0_TO_R3:
+                $this->processBinaryBitwiseXorbR0ToR3();
+                break;
+            case BitwiseOpcode::XORB_R1_TO_R3:
+                $this->processBinaryBitwiseXorbR1ToR3();
+                break;
+            case BitwiseOpcode::XORB_R2_TO_R3:
+                $this->processBinaryBitwiseXorbR2ToR3();
+                break;
+            case BitwiseOpcode::XORB_R3_TO_R3:
+                $this->processBinaryBitwiseXorbR3ToR3();
                 break;
         }
     }
@@ -1777,6 +1912,82 @@ final class Vm implements RuntimeInterface
 
         $this->getRegister()->setR3(
             $this->getRegister()->getR3() | $number
+        );
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryBitwiseXorbImm8ToR0()
+    {
+        try {
+            $sign = $this->getAndCheckForNumberSign();
+        } catch (RuntimeException $e) {
+            throw $e;
+        }
+
+        $number = $this->deserializeVanillaNumber();
+        $number = $sign === 0xfe ? $number : (-1 * $number);
+
+        $this->getRegister()->setR0(
+            $this->getRegister()->getR0() ^ $number
+        );
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryBitwiseXorbImm8ToR1()
+    {
+        try {
+            $sign = $this->getAndCheckForNumberSign();
+        } catch (RuntimeException $e) {
+            throw $e;
+        }
+
+        $number = $this->deserializeVanillaNumber();
+        $number = $sign === 0xfe ? $number : (-1 * $number);
+
+        $this->getRegister()->setR1(
+            $this->getRegister()->getR1() ^ $number
+        );
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryBitwiseXorbImm8ToR2()
+    {
+        try {
+            $sign = $this->getAndCheckForNumberSign();
+        } catch (RuntimeException $e) {
+            throw $e;
+        }
+
+        $number = $this->deserializeVanillaNumber();
+        $number = $sign === 0xfe ? $number : (-1 * $number);
+
+        $this->getRegister()->setR2(
+            $this->getRegister()->getR2() ^ $number
+        );
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryBitwiseXorbImm8ToR3()
+    {
+        try {
+            $sign = $this->getAndCheckForNumberSign();
+        } catch (RuntimeException $e) {
+            throw $e;
+        }
+
+        $number = $this->deserializeVanillaNumber();
+        $number = $sign === 0xfe ? $number : (-1 * $number);
+
+        $this->getRegister()->setR3(
+            $this->getRegister()->getR3() ^ $number
         );
     }
 
@@ -2945,6 +3156,166 @@ final class Vm implements RuntimeInterface
     {
         $this->getRegister()->setR3(
             $this->getRegister()->getR3() | $this->getRegister()->getR3()
+        );
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryBitwiseXorbR0ToR0()
+    {
+        $this->getRegister()->setR0(
+            $this->getRegister()->getR0() ^ $this->getRegister()->getR0()
+        );
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryBitwiseXorbR1ToR0()
+    {
+        $this->getRegister()->setR0(
+            $this->getRegister()->getR0() ^ $this->getRegister()->getR1()
+        );
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryBitwiseXorbR2ToR0()
+    {
+        $this->getRegister()->setR0(
+            $this->getRegister()->getR0() ^ $this->getRegister()->getR2()
+        );
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryBitwiseXorbR3ToR0()
+    {
+        $this->getRegister()->setR0(
+            $this->getRegister()->getR0() ^ $this->getRegister()->getR3()
+        );
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryBitwiseXorbR0ToR1()
+    {
+        $this->getRegister()->setR1(
+            $this->getRegister()->getR1() ^ $this->getRegister()->getR0()
+        );
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryBitwiseXorbR1ToR1()
+    {
+        $this->getRegister()->setR1(
+            $this->getRegister()->getR1() ^ $this->getRegister()->getR1()
+        );
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryBitwiseXorbR2ToR1()
+    {
+        $this->getRegister()->setR1(
+            $this->getRegister()->getR1() ^ $this->getRegister()->getR2()
+        );
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryBitwiseXorbR3ToR1()
+    {
+        $this->getRegister()->setR1(
+            $this->getRegister()->getR1() ^ $this->getRegister()->getR3()
+        );
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryBitwiseXorbR0ToR2()
+    {
+        $this->getRegister()->setR2(
+            $this->getRegister()->getR2() ^ $this->getRegister()->getR0()
+        );
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryBitwiseXorbR1ToR2()
+    {
+        $this->getRegister()->setR2(
+            $this->getRegister()->getR2() ^ $this->getRegister()->getR1()
+        );
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryBitwiseXorbR2ToR2()
+    {
+        $this->getRegister()->setR2(
+            $this->getRegister()->getR2() ^ $this->getRegister()->getR2()
+        );
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryBitwiseXorbR3ToR2()
+    {
+        $this->getRegister()->setR2(
+            $this->getRegister()->getR2() ^ $this->getRegister()->getR3()
+        );
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryBitwiseXorbR0ToR3()
+    {
+        $this->getRegister()->setR3(
+            $this->getRegister()->getR3() ^ $this->getRegister()->getR0()
+        );
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryBitwiseXorbR1ToR3()
+    {
+        $this->getRegister()->setR3(
+            $this->getRegister()->getR3() ^ $this->getRegister()->getR1()
+        );
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryBitwiseXorbR2ToR3()
+    {
+        $this->getRegister()->setR3(
+            $this->getRegister()->getR3() ^ $this->getRegister()->getR2()
+        );
+    }
+
+    /**
+     * @return void
+     */
+    private function processBinaryBitwiseXorbR3ToR3()
+    {
+        $this->getRegister()->setR3(
+            $this->getRegister()->getR3() ^ $this->getRegister()->getR3()
         );
     }
 
