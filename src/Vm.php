@@ -3410,7 +3410,7 @@ final class Vm implements RuntimeInterface
      */
     private function processUnaryIncbR0()
     {
-        $this->getRegister()->setR0($this->getRegister()->getR0() + 1);  
+        $this->getRegister()->setR0($this->getRegister()->getR0() + 1);
     }
 
     /**

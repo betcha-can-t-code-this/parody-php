@@ -501,7 +501,7 @@ class Codegen implements CodegenInterface
                 break;
             case 'r3':
                 $result[] = Opcode::DECB_R3;
-                break; 
+                break;
         }
     }
 
