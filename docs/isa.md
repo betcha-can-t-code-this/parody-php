@@ -69,6 +69,12 @@
 - prib #<imm8>
   Print 8-bit immediate value to teletype (TTY) console.
 
+- incb r8
+  Increment the value of 8-bit source register value.
+
+- decb r8
+  Decrement the value of 8-bit source register value.
+
 - jmp @<label>
   Jump (near) to specified label.
 

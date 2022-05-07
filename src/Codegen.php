@@ -182,6 +182,18 @@ class Codegen implements CodegenInterface
             return;
         }
 
+        if (sizeof($ast->getChilds()) === 2 &&
+            $ast->getChilds()[0]->getValue()->getValue() === "incb") {
+            $this->processUnaryIncbInstruction($ast, $result);
+            return;
+        }
+
+        if (sizeof($ast->getChilds()) === 2 &&
+            $ast->getChilds()[0]->getValue()->getValue() === "decb") {
+            $this->processUnaryDecbInstruction($ast, $result);
+            return;
+        }
+
         if (sizeof($ast->getChilds()) === 3 &&
             $ast->getChilds()[0]->getValue()->getValue() === "movb") {
             $this->processBinaryMovbInstruction($ast, $result);
@@ -444,6 +456,52 @@ class Codegen implements CodegenInterface
             case 'r3':
                 $result[] = Opcode::PRIB_R3;
                 break;
+        }
+    }
+
+    /**
+     * @param \Vm\AstInterface $ast
+     * @param array &$result
+     * @return void
+     */
+    private function processUnaryIncbInstruction(AstInterface $ast, array &$result)
+    {
+        switch ($ast->getChilds()[1]->getValue()->getValue()) {
+            case 'r0':
+                $result[] = Opcode::INCB_R0;
+                break;
+            case 'r1':
+                $result[] = Opcode::INCB_R1;
+                break;
+            case 'r2':
+                $result[] = Opcode::INCB_R2;
+                break;
+            case 'r3':
+                $result[] = Opcode::INCB_R3;
+                break;
+        }
+    }
+
+    /**
+     * @param \Vm\AstInterface $ast
+     * @param array &$result
+     * @return void
+     */
+    private function processUnaryDecbInstruction(AstInterface $ast, array &$result)
+    {
+        switch ($ast->getChilds()[1]->getValue()->getValue()) {
+            case 'r0':
+                $result[] = Opcode::DECB_R0;
+                break;
+            case 'r1':
+                $result[] = Opcode::DECB_R1;
+                break;
+            case 'r2':
+                $result[] = Opcode::DECB_R2;
+                break;
+            case 'r3':
+                $result[] = Opcode::DECB_R3;
+                break; 
         }
     }
 

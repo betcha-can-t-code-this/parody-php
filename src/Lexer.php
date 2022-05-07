@@ -367,6 +367,9 @@ class Lexer implements LexerInterface
         return [
             "movb", "addb", "subb", "mulb",
             "divb", "prib", "cmpb",
+            // increment and decrement registers (byte)
+            "incb", "decb",
+            // plain jump (near)
             "jmp",
             // conditional jump (depends on zero flag status).
             "je", "jne", "jz", "jnz",

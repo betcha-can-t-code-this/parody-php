@@ -399,6 +399,18 @@ final class Vm implements RuntimeInterface
             case Opcode::PRIB_IMM8:
                 $this->processUnaryPribImm8();
                 break;
+            case Opcode::INCB_R0:
+            case Opcode::INCB_R1:
+            case Opcode::INCB_R2:
+            case Opcode::INCB_R3:
+                $this->processUnaryIncbRegs();
+                break;
+            case Opcode::DECB_R0:
+            case Opcode::DECB_R1:
+            case Opcode::DECB_R2:
+            case Opcode::DECB_R3:
+                $this->processUnaryDecbRegs();
+                break;
             case Opcode::JUMP_REX_PREFIX:
                 $this->processJumpRexPrefix();
                 break;
@@ -1076,6 +1088,48 @@ final class Vm implements RuntimeInterface
         $number = $this->deserializeVanillaNumber();
 
         echo sprintf("%d\n", $sign == 0xfe ? $number : (-1 * $number));
+    }
+
+    /**
+     * @return void
+     */
+    private function processUnaryIncbRegs()
+    {
+        switch ($this->current()) {
+            case Opcode::INCB_R0:
+                $this->processUnaryIncbR0();
+                break;
+            case Opcode::INCB_R1:
+                $this->processUnaryIncbR1();
+                break;
+            case Opcode::INCB_R2:
+                $this->processUnaryIncbR2();
+                break;
+            case Opcode::INCB_R3:
+                $this->processUnaryIncbR3();
+                break;
+        }
+    }
+
+    /**
+     * @return void
+     */
+    private function processUnaryDecbRegs()
+    {
+        switch ($this->current()) {
+            case Opcode::DECB_R0:
+                $this->processUnaryDecbR0();
+                break;
+            case Opcode::DECB_R1:
+                $this->processUnaryDecbR1();
+                break;
+            case Opcode::DECB_R2:
+                $this->processUnaryDecbR2();
+                break;
+            case Opcode::DECB_R3:
+                $this->processUnaryDecbR3();
+                break;
+        }
     }
 
     /**
@@ -3349,6 +3403,70 @@ final class Vm implements RuntimeInterface
     private function processUnaryPribR3()
     {
         echo sprintf("%d\n", $this->getRegister()->getR3());
+    }
+
+    /**
+     * @return void
+     */
+    private function processUnaryIncbR0()
+    {
+        $this->getRegister()->setR0($this->getRegister()->getR0() + 1);  
+    }
+
+    /**
+     * @return void
+     */
+    private function processUnaryIncbR1()
+    {
+        $this->getRegister()->setR1($this->getRegister()->getR1() + 1);
+    }
+
+    /**
+     * @return void
+     */
+    private function processUnaryIncbR2()
+    {
+        $this->getRegister()->setR2($this->getRegister()->getR2() + 1);
+    }
+
+    /**
+     * @return void
+     */
+    private function processUnaryIncbR3()
+    {
+        $this->getRegister()->setR3($this->getRegister()->getR3() + 1);
+    }
+
+    /**
+     * @return void
+     */
+    private function processUnaryDecbR0()
+    {
+        $this->getRegister()->setR0($this->getRegister()->getR0() - 1);
+    }
+
+    /**
+     * @return void
+     */
+    private function processUnaryDecbR1()
+    {
+        $this->getRegister()->setR1($this->getRegister()->getR1() - 1);
+    }
+
+    /**
+     * @return void
+     */
+    private function processUnaryDecbR2()
+    {
+        $this->getRegister()->setR2($this->getRegister()->getR2() - 1);
+    }
+
+    /**
+     * @return void
+     */
+    private function processUnaryDecbR3()
+    {
+        $this->getRegister()->setR3($this->getRegister()->getR3() - 1);
     }
 
     /**

@@ -485,6 +485,34 @@ final class Parser implements ParserInterface
      * @param array $insn
      * @return void
      */
+    private function validateUnaryIncbInstruction(array $insn)
+    {
+        if ($insn[0]->getValue() === "incb" &&
+            $insn[1]->getType() !== NodeInterface::REGISTER) {
+            throw new SyntaxException(
+                "'incb' instruction must be followed by register name or number."
+            );
+        }
+    }
+
+    /**
+     * @param array $insn
+     * @return void
+     */
+    private function validateUnaryDecbInstruction(array $insn)
+    {
+        if ($insn[0]->getValue() === "decb" &&
+            $insn[1]->getType() !== NodeInterface::REGISTER) {
+            throw new SyntaxException(
+                "'decb' instruction must be followed by register name or number."
+            );
+        }
+    }
+
+    /**
+     * @param array $insn
+     * @return void
+     */
     private function validateUnaryJmpInstruction(array $insn)
     {
         if ($insn[0]->getValue() === "jmp" &&
@@ -628,6 +656,8 @@ final class Parser implements ParserInterface
                 break;
             case 2:
                 $this->validateUnaryPribInstruction($insn);
+                $this->validateUnaryIncbInstruction($insn);
+                $this->validateUnaryDecbInstruction($insn);
                 $this->validateUnaryJmpInstruction($insn);
                 $this->validateUnaryJeInstruction($insn);
                 $this->validateUnaryJneInstruction($insn);

@@ -632,7 +632,47 @@ interface Opcode
     /**
      * @var int
      */
-    const PRIB_IMM8 = 0xbf;
+    const PRIB_IMM8 = 0xb4;
+
+    /**
+     * @var int
+     */
+    const INCB_R0 = 0xb5;
+
+    /**
+     * @var int
+     */
+    const INCB_R1 = 0xb6;
+
+    /**
+     * @var int
+     */
+    const INCB_R2 = 0xb7;
+
+    /**
+     * @var int
+     */
+    const INCB_R3 = 0xb8;
+
+    /**
+     * @var int
+     */
+    const DECB_R0 = 0xb9;
+
+    /**
+     * @var int
+     */
+    const DECB_R1 = 0xba;
+
+    /**
+     * @var int
+     */
+    const DECB_R2 = 0xbb;
+
+    /**
+     * @var int
+     */
+    const DECB_R3 = 0xbc;
 
     /**
      * @var int
