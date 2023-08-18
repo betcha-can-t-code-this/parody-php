@@ -130,6 +130,20 @@ class Lexer implements LexerInterface
                 continue;
             }
 
+            if (($this->current() === '' ||
+                 $this->current() === ' ' ||
+                 $this->current() === "\n") &&
+                !empty($this->token) &&
+                (!$this->isValidInstruction(rtrim($this->token)) &&
+                 !$this->isValidRegister(rtrim($this->token)))) {
+                throw new SyntaxException(
+                    sprintf(
+                        "Current 'lexeme' -> '%s' is not valid register or instruction.",
+                        $this->token
+                    )
+                );
+            }
+
             $this->token .= $this->current();
             $this->next();
         }
